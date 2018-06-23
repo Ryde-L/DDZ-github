@@ -1,0 +1,4 @@
+#only push *.c and *.cpp
+Debug/**
+*.vcxproj
+*.filters
