@@ -21,7 +21,7 @@ struct ddz
 	char cWinner;	            //Ê¤ÀûÕß·½Î»±àºÅ
 	int iBid[3];                //½ĞÅÆ¹ı³Ì
 	int iBmax;                  //µ±Ç°½ĞÅÆÊı£¬ÖµÓò{0,1,2,3}
-	int iOTmax;                 //µ±Ç°³öÅÆÊÖÊı
+	int iOTmax;                 //×ÀÃæÅÆÊÖÊı
 	int iRoundNow;              //µ±Ç°¾Ö´Î
 	int iRoundTotal;            //ºÍ×Ü¾ÖÊı
 	int iLevelUp;	            //½ú¼¶Ñ¡ÊÖÊı
@@ -33,6 +33,8 @@ struct ddz
 	int HandCard[2];            //ÁíÍâÁ½¼ÒÊÖÖĞµÄÊ£ÓàÅÆÊı
 	int WarLine;                //ÕóÈİÈ·¶¨ 1.¡¾Å© AI Å©¡¿ 2.¡¾ÓÑ AI µØ¡¿ 3.¡¾µØ AI ÓÑ¡¿
 };
+
+
 struct PaiXing{
 	int ShouPai[21];       //Ôİ´æÊÖÅÆ 
 	bool Rocket;             //ÓĞÎŞ»ğ¼ı 1  52 53
@@ -48,8 +50,11 @@ struct PaiXing{
 	// ËÄ´ø2 ËÄ´ø1 ÅĞ¶¨ 11  
 	int Time;    //Ê£ÓàÊÖÊı
 };
-void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])    //³öÅÆ
-{                           //ÈÎÒâÊÖ³öÅÆÊ± ÈıË³>Ë«Ë³>µ¥Ë³>ÈıÕÅ>¶Ô×Ó>µ¥ÕÅ 
+
+
+/*ÈÎÒâÊÖ³öÅÆÊ± ÈıË³>Ë«Ë³>µ¥Ë³>ÈıÕÅ>¶Ô×Ó>µ¥ÕÅ */
+void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[]) 
+{                         
 	int i,sign=0,cmp;
 	if(px->SaS[0][0]>0)
 	{
@@ -297,13 +302,19 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 	
 	
 }
-int  count(int cards[])//¼ÆËãÓĞĞ§ÅÆÊı
+
+
+/*¼ÆËãÓĞĞ§ÅÆÊı*/
+int  count(int cards[])
 {
 	int iCount=0;
 	while(cards[iCount]>=0)
 		iCount++;
 	return iCount;
 }
+
+
+/*¸´ÖÆÅÆ*/
 void copycards(int arrOnHandCopy[], int arrOnHand[])
 {
 	int i=0;
@@ -311,7 +322,10 @@ void copycards(int arrOnHandCopy[], int arrOnHand[])
 		arrOnHandCopy[i]=arrOnHand[i];
 	arrOnHandCopy[i]=-1;
 }
-void mainsort(int cards[])//½«totableÒ»ËÄÕÅ£¬ÈıÕÅ£¬Á½ÕÅ£¬Ò»ÕÅÅÅĞò£¬·½±ãÈ·¶¨³öÅÆÀàĞÍ£¬²¢±È½Ï´óĞ¡
+
+
+/*½«totableÒ»ËÄÕÅ£¬ÈıÕÅ£¬Á½ÕÅ£¬Ò»ÕÅÅÅĞò£¬·½±ãÈ·¶¨³öÅÆÀàĞÍ£¬²¢±È½Ï´óĞ¡*/
+void mainsort(int cards[])
 {
 	int card_num = 0;/*ÅÆµÄÊıÁ¿*/
 	int i,j,k=0,l;  
@@ -371,7 +385,12 @@ void mainsort(int cards[])//½«totableÒ»ËÄÕÅ£¬ÈıÕÅ£¬Á½ÕÅ£¬Ò»ÕÅÅÅĞò£¬·½±ãÈ·¶¨³öÅÆÀ
 	for (l=0;l<=card_num;l++)//½«ÅÅÁĞºÃµÄÅÆ£¬¸²¸ÇÔÚÔ­À´µÄÅÆÉÏÃæ	
 		cards[l]=sortcards[l];
 } 
-void pokersort(int cards[])//½«cards´ÓĞ¡µ½´óÅÅĞò
+
+
+/*½«´«ÈëµÄÊı×é´ÓĞ¡µ½´óÅÅĞò
+	@param£ºint cards[] ´«ÈëµÄÊı×é
+*/
+void pokersort(int cards[])
 {
 	int i,j;
 	int temp;//½»»»ÖµµÄÖĞ¼ä±äÁ¿
@@ -387,6 +406,8 @@ void pokersort(int cards[])//½«cards´ÓĞ¡µ½´óÅÅĞò
 			}
 	}
 }
+
+
 int  cardtype(int nCardsArr[])
 {
 	int i = 0;
@@ -577,7 +598,9 @@ int  cardtype(int nCardsArr[])
 		return 11;
 	return -1;
 }
-void init(struct ddz * dp)					//Êı¾İ³õÊ¼»¯
+
+/*Êı¾İ³õÊ¼»¯*/
+void init(struct ddz * dp)					
 {
 	int i,j;
 	dp->iStatus=1;							//³õÊ¼
@@ -596,7 +619,13 @@ void init(struct ddz * dp)					//Êı¾İ³õÊ¼»¯
 	dp->HandCard[0]=17;    //³õÊ¼»¯ÊÖÅÆÊı
 	dp->HandCard[1]=17;
 }
-void iTos(int iToTable[],char sCommandOut[])	//½«iToTable[]ÖĞµÄÊı×Ö×ª»¯ÎªsCommandOut[]×Ö·û´®
+
+/*
+½«iToTable[]ÖĞµÄÊı×Ö×ª»¯ÎªsCommandOut[]×Ö·û´®
+@param£ºiToTable
+@param£ºsCommandOut
+*/
+void iTos(int iToTable[],char sCommandOut[])	//
 {
 	int i;
 	char t[4];
@@ -630,7 +659,13 @@ void iTos(int iToTable[],char sCommandOut[])	//½«iToTable[]ÖĞµÄÊı×Ö×ª»¯ÎªsComman
 
 	sCommandOut[strlen(sCommandOut)-1]='\0';
 }
-void TakeOff(int iOnHand[],int iToTable[])	//½«iToTable[]ÖĞµÄÅÆ´ÓiOnHand[]ÖĞÌŞ³ı
+
+
+/*½«iToTable[]ÖĞµÄÅÆ´ÓiOnHand[]ÖĞÌŞ³ı
+	@param£ºint iOnHand[]
+	@param£ºint iToTable[]
+*/
+void TakeOff(int iOnHand[],int iToTable[])	
 {
 	int i,j,k;
 	for(i=0;iToTable[i]>=0;i++)
@@ -644,7 +679,8 @@ void TakeOff(int iOnHand[],int iToTable[])	//½«iToTable[]ÖĞµÄÅÆ´ÓiOnHand[]ÖĞÌŞ³ı
 }
 
 
-void GetDou(struct ddz * dp)					//°æ±¾ĞÅÏ¢
+/*°æ±¾ĞÅÏ¢*/
+void GetDou(struct ddz * dp)					
 {
 	int i;
 	for(i=0; dp->sCommandIn[i]!='\0'; i++)
@@ -653,7 +689,12 @@ void GetDou(struct ddz * dp)					//°æ±¾ĞÅÏ¢
 	strcpy(dp->sCommandOut,"ZSC_DDZ");
 }
 
-void GetInf(struct ddz * dp)					//ÂÖ´ÎĞÅÏ¢´¦Àíº¯Êı:ÊäÈëINFO 1/4 1/9 9 2450 Êä³öOK INFO
+
+/*ÂÖ´ÎĞÅÏ¢´¦Àíº¯Êı:
+	ÊäÈëINFO 1/4 1/9 9 2450 
+	Êä³öOK INFO
+*/
+void GetInf(struct ddz * dp)					
 {
 	int a,b,c,d;
 	dp->iTurnNow    =dp->sCommandIn[ 5]-'0';	//µ±Ç°ÂÖ´Î
@@ -669,7 +710,9 @@ void GetInf(struct ddz * dp)					//ÂÖ´ÎĞÅÏ¢´¦Àíº¯Êı:ÊäÈëINFO 1/4 1/9 9 2450 Êä³ö
 	strcpy(dp->sCommandOut,"OK INFO");
 }
 
-void GetDea(struct ddz * dp)		//µ×ÅÆĞÅÏ¢
+
+/*µ×ÅÆĞÅÏ¢*/
+void GetDea(struct ddz * dp)		
 {
 	int i,j=0,t;
 	dp->cDir=dp->sCommandIn[5];     //»ñÈ¡±¾¼ÒAI·½Î»±àºÅ
@@ -699,7 +742,9 @@ void GetDea(struct ddz * dp)		//µ×ÅÆĞÅÏ¢
 
 }
 
-void GetLef(struct ddz * dp)			 //´¦Àíµ×ÅÆĞÅÏ¢
+
+/*´¦Àíµ×ÅÆĞÅÏ¢*/
+void GetLef(struct ddz * dp)			 
 {
     int i,j=17;
     dp->cLandlord=dp->sCommandIn[9];     //È·¶¨µØÖ÷·½
@@ -734,7 +779,8 @@ void GetLef(struct ddz * dp)			 //´¦Àíµ×ÅÆĞÅÏ¢
 }
 
 
-void GetGam(struct ddz * dp)				//GAMEOVER Ö¸Áî´¦Àí
+/*GAMEOVER Ö¸Áî´¦Àí*/
+void GetGam(struct ddz * dp)				
 {
     dp->cWinner=dp->sCommandIn[9];			//Ê¤ÀûÕß·½Î»±àºÅ
 	strcpy(dp->sCommandOut,"OK GAMEOVER");
@@ -744,7 +790,17 @@ void GetGam(struct ddz * dp)				//GAMEOVER Ö¸Áî´¦Àí
 	else									//·ñÔò
 		init(dp);							//ÒıÇæ×´Ì¬±äÁ¿ÉèÎªÖØĞÂ¿ªÊ¼
 }
-void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct PaiXing *px,int Line)//ÔÚarrToTableÖĞ·µ»ØËùÓĞ¿ÉĞĞĞòÁĞ-1¼ä¸ô,-2½áÊø
+
+
+/*ÔÚarrToTableÖĞ·µ»ØËùÓĞ¿ÉĞĞĞòÁĞ -1¼ä¸ô,-2½áÊø
+	@param£ºint arrOnHand[]
+	@param£ºint arrOnTable[]
+	@param£ºint arrToTable[]
+	@param£ºint Hands[]
+	@param£ºstruct PaiXing *px
+	@param£ºint Line			ÕóÈİ
+*/
+void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct PaiXing *px,int Line)
 {
 	int nCardToPlay;//È·¶¨µØÖ÷Ëù³öµÄÅÆĞÍ
 	int nInsertCards = 0;//ÔÚarrToTableÖĞ²åÈë¿ÉÒÔ³öµÄÅÆ

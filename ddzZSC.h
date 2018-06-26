@@ -2,8 +2,9 @@
 /*非评估搜索型策略*/
 #include "ddzv100.h"
 
+/*将有效手牌叠置前方 */
 void ReSort(int cards[])
-{                         //将有效手牌叠置前方 
+{                        
     int i,j;
 	int check[21];
 	for(i=0;i<21;i++) check[i]=-2;
@@ -11,12 +12,15 @@ void ReSort(int cards[])
        check[j++]=cards[i];
     for(i=0;i<21;i++) cards[i]=check[i];
 }
-void GameInit(int iOnHand[],struct PaiXing *px) //每次轮到自己出牌时初始化手牌类，重新计算
+
+
+/*每次轮到自己出牌时初始化手牌类，重新计算*/
+void GameInit(int iOnHand[],struct PaiXing *px) 
 {
 	int i,j;
 		for(i=0;i<21;i++) px->ShouPai[i]=-2;
 	for(i=0;iOnHand[i]>=0;i++)
-		px->ShouPai[i]=iOnHand[i]; //手牌录入cout<<px->ShouPai[i]<<" "; 
+		px->ShouPai[i]=iOnHand[i]; //手牌录入
 	/***************************
 	 下面为手中各个牌型的初始化
 	***************************/
@@ -52,9 +56,11 @@ void GameInit(int iOnHand[],struct PaiXing *px) //每次轮到自己出牌时初始化手牌类
 	px->Time=0;        //剩余手数
 }
 
-/*辅助策略*/
+
+/*辅助策略
+//查询是否有火箭*/
 bool Rocket(struct PaiXing *px)
-{                              //查询是否有火箭
+{                              
 	int flag=0,JL[2];
 	for(int i=0,j=0;i<21;i++)
 	{
@@ -66,7 +72,7 @@ bool Rocket(struct PaiXing *px)
 	}
 	if(flag==2){         //确认查询到火箭
 		px->Rocket=1;
-		px->ShouPai[JL[0]]=-2;
+		px->ShouPai[JL[0]]=-2;//火箭位置的手牌置-2
 		px->ShouPai[JL[1]]=-2;
 		return 1;
 	}
@@ -75,19 +81,21 @@ bool Rocket(struct PaiXing *px)
 
 }
 
-bool BomB(int a,struct PaiXing *px)
-{                           //查询炸弹 例AAAA
+
+/*查询炸弹 例AAAA*/
+bool BomB(int index,struct PaiXing *px)
+{                           
 	int i,j,k=0,flag=0;
-	int PP=px->ShouPai[a];
+	int PP=px->ShouPai[index];
 	for(i=0;i<5;i++) if(px->ZhaDan[i][0]==-2)
 	{                      //记录牌型类中 炸弹部分的空缺位置
 			j=i;
 			break;
 	}
-	for(i=0;i<a;i++) if(PP/4==px->ShouPai[i]/4&&px->ShouPai[i]>=0)
+	for (i = 0; i<index; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
 		flag++;            //判定条件
 	if(flag==4){
-		for(i=0;i<=a;i++) if(PP/4==px->ShouPai[i]/4)
+		for (i = 0; i <= index; i++) if (PP / 4 == px->ShouPai[i] / 4)
 		{
 			px->ZhaDan[j][k]=px->ShouPai[i];
 			px->ShouPai[i]=-2;
@@ -99,8 +107,10 @@ bool BomB(int a,struct PaiXing *px)
 		return 0;
 }
 
+
+/* 是否足够两张等值牌 TwoPieces*/
 bool TwoP(int PP,struct PaiXing *px)
-{                                //是否足够两张等值牌 TwoPieces
+{                               
 	int flag=0;
 	for(int i=0;i<21;i++) if(PP==px->ShouPai[i]/4&&px->ShouPai[i]>=0)
 		flag++;
@@ -110,8 +120,10 @@ bool TwoP(int PP,struct PaiXing *px)
 	  return 0;
 } 
 
+
+/*是否足够三张等值牌*/
 bool ThrP(int PP,struct PaiXing *px)
-{                               //是否足够三张等值牌
+{                               
 	int flag=0;
 	for(int i=0;i<21;i++) if(PP==px->ShouPai[i]/4 && px->ShouPai[i]>=0)
 		flag++;
@@ -121,10 +133,12 @@ bool ThrP(int PP,struct PaiXing *px)
 	  return 0;
 }
 
-int  ThirShun(int a,struct PaiXing *px)
-{                               //ThirdShun三顺
+
+/*ThirdShun三顺*/
+int  ThirShun(int index,struct PaiXing *px)
+{                               
 	int i,sign=0,time=0;
-	int PP=px->ShouPai[a];
+	int PP=px->ShouPai[index];
 	for(i=0;i<2;i++) if(px->SaS[i][0]<0)
 	{                           //空缺位置
 			sign=i;
@@ -145,7 +159,7 @@ int  ThirShun(int a,struct PaiXing *px)
 		while(piece<time*3)
 		{
 			int flag=0;
-			for(i=0;i<=a&&flag!=3;i++)
+			for (i = 0; i <= index&&flag != 3; i++)
 			{
 				if(PP/4 - time +1 + piece/3 == px->ShouPai[i]/4)
 				{
@@ -162,10 +176,14 @@ int  ThirShun(int a,struct PaiXing *px)
 		return 0;
 }
 
-int  TwoShun(int a,struct PaiXing *px) //双顺
-{                               //返回查到了多少张牌 例AABBCC为6张
+
+/*双顺
+@return：查到了多少张牌 例AABBCC为6张
+*/
+int  TwoShun(int index,struct PaiXing *px) 
+{                               //
 	int i,sign=0,time=0;
-	int PP=px->ShouPai[a];
+	int PP=px->ShouPai[index];
 	for(i=0;i<3;i++) if(px->ShS[i][0]<=0)
 	{                           //空缺位置
 			sign=i;
@@ -173,7 +191,7 @@ int  TwoShun(int a,struct PaiXing *px) //双顺
 	}
 	while(1)
 	{                           //对连续的对张进行判断
-		if(TwoP(PP/4 - time,px)&&px->ShouPai[a]<48){
+		if(TwoP(PP/4 - time,px)&&px->ShouPai[index]<48){
 			++time;
 		}
 		else 
@@ -186,7 +204,7 @@ int  TwoShun(int a,struct PaiXing *px) //双顺
 		while(piece<time*2)
 		{ 
 			int flag=0;
-			for(i=0;i<=a&&flag!=2;i++)
+			for(i=0;i<=index&&flag!=2;i++)
 			{                   //每次抽到一对结束循环
 				if(PP/4 - time + 1 + piece/2 == px->ShouPai[i]/4)
 				{
@@ -203,10 +221,12 @@ int  TwoShun(int a,struct PaiXing *px) //双顺
 		return 0;
 }
 
-int  DS(int a,struct PaiXing *px)
-{                               //查询单顺
+
+/* 查询单顺*/
+int  DS(int index,struct PaiXing *px)
+{                              
 	int i,sign=0,time=0,flag=1;
-	int PP=px->ShouPai[a];
+	int PP=px->ShouPai[index];
 	for(i=0;i<4;i++) if(px->DanShun[i][0]<5)
 	{                           //空缺位置
 			sign=i;
@@ -216,7 +236,7 @@ int  DS(int a,struct PaiXing *px)
 	while(flag)
 	{                           //首先判断是否大于5 ,46,40,39,32,29
 		flag=0;
-		for(i=0;i<=a;i++)
+		for(i=0;i<=index;i++)
         {
           if((PP/4 - time == px->ShouPai[i]/4)&&PP<48){
 		    	++time;
@@ -234,7 +254,7 @@ int  DS(int a,struct PaiXing *px)
 		px->DanShun[sign][0]=time;
 		while(piece<=time)
 		{
-			for(i=0;i<=a;i++) if(PP/4 - time + piece == px->ShouPai[i]/4)
+			for(i=0;i<=index;i++) if(PP/4 - time + piece == px->ShouPai[i]/4)
 			{
 				px->DanShun[sign][piece]=px->ShouPai[i];
 				px->ShouPai[i]=-2;
@@ -248,11 +268,14 @@ int  DS(int a,struct PaiXing *px)
 		return 0;
 }
 
-//辅助判断
-bool SZ(int a,struct PaiXing *px)
-{                                //三张
+
+/*辅助判断
+三张
+*/
+bool SZ(int index,struct PaiXing *px)
+{                                
 	int i,sign=0,flag=2;
-	int PP=px->ShouPai[a];
+	int PP=px->ShouPai[index];
 	for(i=0;i<6;i++) if(px->SanZhang[i][0]<0)
 	{                           //空缺位置
 			sign=i;
@@ -260,7 +283,7 @@ bool SZ(int a,struct PaiXing *px)
 	}
 	if(ThrP(PP/4,px))
 	{
-		for(i=0;i<=a&&flag>=0;i++) if(PP/4 == px->ShouPai[i]/4)
+		for(i=0;i<=index&&flag>=0;i++) if(PP/4 == px->ShouPai[i]/4)
 		{                      //升序
 			px->SanZhang[sign][flag--]=px->ShouPai[i];
 			px->ShouPai[i]=-2;
@@ -271,26 +294,31 @@ bool SZ(int a,struct PaiXing *px)
 		return 0;
 }
 
-//策略方案
-void Query(struct PaiXing *px)  //按下列顺序规则查询手上的牌型
-{                               //火箭>炸弹>三顺>双顺>单顺>三张>对子>单张
+
+/*策略方案
+按下列顺序规则查询手上的牌型
+火箭>炸弹>三顺>双顺>单顺>三张>对子>单张
+*/
+void Query(struct PaiXing *px)  
+{                               
 	bool key=1;
 	int i,piece=0;
 	ReSort(px->ShouPai);
 	pokersort(px->ShouPai);
 	for(i=0;i<21;i++) if(px->ShouPai[i]>=0&&px->ShouPai[i]>px->ShouPai[piece])
-		piece=i;  //记录当前查询最大牌值的单牌，用其搜索
+		piece=i;  //记录当前查询最大牌值的单牌位置，用其搜索
 	
 	while(1)
 	{
 		key=0;   //用于下方的手牌判定
 	    ReSort(px->ShouPai);
 		pokersort(px->ShouPai);
-		for(i=0;i<21;i++) if(px->ShouPai[i]>=0)
-		{ 
-			key=1;
-			break;
-		}
+		for(i=0;i<21;i++)
+			if(px->ShouPai[i]>=0)
+			{ 
+				key=1;
+				break;
+			}
 		if(key==0) break;  //判定手牌是否分完
 		
 		
@@ -375,6 +403,7 @@ void Query(struct PaiXing *px)  //按下列顺序规则查询手上的牌型
 			}
 }
 
+
 /*牌桌策略*/
 void AllHand(struct PaiXing *px)
 {
@@ -391,23 +420,36 @@ void AllHand(struct PaiXing *px)
 
 }
 
+
+/*
+另外两家手牌计算
+	@param：int cards[] 桌上牌
+
+	=========================
+	疑问：只能算iOnTable[0]和iOnTable[1]的牌数？
+*/
 void Calcu(int cards[],struct ddz *dp)
-{                          //另外两家手牌计算
+{                         
 	int k=0,key=2;
-	for(int i=0;key;i++)
+	for(int i=0;key;i++)//次大循环
 	{
-		if(cards[i]==-1)
+		if(cards[i]==-1)//即iOnTable换行
 		{
 			key--;
-			k++;
+			k++;			
 		}
 		else 
-			dp->HandCard[k]--;
+			dp->HandCard[k]--;//其他玩家k的牌数减一
 	}
+	//cout << dp->HandCard[0] << " ,"<<dp->HandCard[1] << endl;
 }
 
+
+/*  确定地主相对自己的位置
+	1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
+*/
 void Lineup(struct ddz *dp)
-{                             //阵容确定 
+{                           
     //我的位置 cDir 地主的位置 cLandlord
 	int i;
 

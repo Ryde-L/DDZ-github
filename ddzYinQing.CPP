@@ -3,9 +3,10 @@
 #include<iostream>
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
+
 //评估型策略 - （未用）  
 //思路辅助
-double CalCardsValue(int iPlaOnHand[])	
+/*double CalCardsValue(int iPlaOnHand[])	
 {
 	int i;
 	double dSum = 100;			//估值
@@ -22,10 +23,11 @@ double CalCardsValue(int iPlaOnHand[])
 			dSum = dSum + 6;	//2以下相邻五牌单顺加6分
 	}
 	return dSum; 
-}
+}*/
 
-/*Game ON*/
-int CalBid(struct ddz * dp)				//叫牌计算函数，如果有人叫了三分，则不叫。
+
+/*叫牌计算函数，如果有人叫了三分，则不叫。*/
+int CalBid(struct ddz * dp)				
 {
 	pokersort(dp->iOnHand);
 	int i,bid=1,Flag1=0,Flag2=0;  //初始化bid=1， 防止另外两家都不叫的情况下游戏无法进行
@@ -48,7 +50,11 @@ int CalBid(struct ddz * dp)				//叫牌计算函数，如果有人叫了三分，则不叫。
     return bid;
 }
 
-void CalPla(struct ddz * dp)			//出牌计算函数    计算要出的牌储存至 要出牌iToTable[]数组中
+
+/*出牌计算函数  
+	计算要出的牌储存至 要出牌iToTable[]数组中
+*/
+void CalPla(struct ddz * dp)			//
 {
 	struct PaiXing dd, * px=&dd;
 	int i,j,k=0,iOnTableW[4000],iToTableW[4000];
@@ -58,14 +64,14 @@ void CalPla(struct ddz * dp)			//出牌计算函数    计算要出的牌储存至 要出牌iToTab
 	for(i=dp->iOTmax-1;i>=0;i--)
 	{
 		for(j=0;dp->iOnTable[i][j]>=0;j++,k++)
-			iOnTableW[k]=dp->iOnTable[i][j];
-		iOnTableW[k]=-1;
+			iOnTableW[k]=dp->iOnTable[i][j];//二维数组转一维
+		iOnTableW[k]=-1;//-1表手数间隔
 		k++;
 	}
-	iOnTableW[k]=-2;
+	iOnTableW[k]=-2;//-2表结束
 
-	Calcu(iOnTableW,dp);    //计算另外两家手牌
-	pokersort(dp->iOnHand);
+	Calcu(iOnTableW,dp);    //计算另外两家手牌		【此处函数内容是否正确有待商榷】
+	pokersort(dp->iOnHand);//从小到大排序
 	GameInit(dp->iOnHand,px);     //初始化
 	Query(px);            	//手牌类方案初始化和分牌
 	AllHand(px);            //计算手数
@@ -76,7 +82,8 @@ void CalPla(struct ddz * dp)			//出牌计算函数    计算要出的牌储存至 要出牌iToTab
 }
 
 
-void GetBid(struct ddz * dp)					//处理叫牌信息
+/*处理叫牌信息*/
+void GetBid(struct ddz * dp)					
 {	
 	if(dp->sCommandIn[4]=='W')					//如果输入信息为BID WHAT
     {
@@ -96,7 +103,8 @@ void GetBid(struct ddz * dp)					//处理叫牌信息
 }
 
 
-void GetPla(struct ddz * dp)					//PLAY 指令处理函数
+/*PLAY 指令处理函数*/
+void GetPla(struct ddz * dp)					
 {
     int a,b,i,j;
 	if(dp->sCommandIn[5]=='W')					//接收信息为PLAY WHAT：应调用出牌计算函数计算出牌
@@ -151,12 +159,16 @@ void GetPla(struct ddz * dp)					//PLAY 指令处理函数
     dp->iOTmax++;
 }
 
-void AIInput(struct ddz * dp)					//输入指令
+
+/*输入指令*/
+void AIInput(struct ddz * dp)					
 {
 	cin.getline(dp->sCommandIn,80);
 }
 
-void AICal(struct ddz * dp)						//分析指令
+
+/*分析指令*/
+void AICal(struct ddz * dp)						
 {
 	char cShort[4];
 	for(int i=0;i<3;i++)
@@ -178,25 +190,40 @@ void AICal(struct ddz * dp)						//分析指令
 		GetGam(dp);
 }
 
-void AIOutput(struct ddz * dp)					//输出指令
+/*输出指令*/
+void AIOutput(struct ddz * dp)					
 {
 	cout<<dp->sCommandOut<<endl;
 }
 
-void CalOther(struct ddz * dp)					//指令空闲
+/*指令空闲*/
+void CalOther(struct ddz * dp)					
 {
 	dp->iVoid=0;
 }
 
-int main()										//主程序
+
+int main()										
 {
+
 	struct ddz d, * dp=&d;
+	
 	init(dp);
-	while(dp->iStatus!=0){
+	/*int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
+					0, 0, 0, 0, 0, 0, 0, 0, 9,-1,
+					0, 0, 0, 0, 0, 0, 0, 8,-1 ,
+					0, 0, 0, 0, 0, 0, 0, -1,-2 };
+	for (int i = 0; i < 2; i++)
+	{
+		Calcu(card, dp);
+	}*/
+	
+	while (1);
+	/*while(dp->iStatus!=0){
 		AIInput(dp);							//输入信息
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息
 		CalOther(dp);							//闲暇时间利用
 	}
-	return 0;
+	return 0;*/
 }
