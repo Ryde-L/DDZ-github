@@ -206,20 +206,46 @@ void CalOther(struct ddz * dp)
 int main()										
 {
 
-	struct ddz d, * dp=&d;
 	
+	/*
+	struct ddz d, * dp=&d;
+	struct PaiXing p, *px = &p;
 	init(dp);
-	/*int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
+	int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
 					0, 0, 0, 0, 0, 0, 0, 0, 9,-1,
 					0, 0, 0, 0, 0, 0, 0, 8,-1 ,
 					0, 0, 0, 0, 0, 0, 0, -1,-2 };
-	for (int i = 0; i < 2; i++)
+	px->ShouPai[0] = -1;
+	px->ShouPai[1] = 20;
+	px->ShouPai[2] = 20;
+	px->ShouPai[3] = 20;
+	px->ShouPai[4] = 25;
+	px->ShouPai[5] = 25;
+	px->ShouPai[6] = 25;
+	px->ShouPai[7] = -1;
+	px->ShouPai[8] = -1;
+	px->ShouPai[9] = -1;
+
+	ReSort(px->ShouPai);
+	pokersort(px->ShouPai);	
+
+	px->ZhaDan[0][0] = -2;
+	px->ZhaDan[1][0] = -2;
+	px->ZhaDan[2][0] = -2;
+	px->ZhaDan[3][0] = -2;
+	px->ZhaDan[4][0] = -2;
+	px->ZhaDan[5][0] = -2;
+	//cout << ThrP(3,px) << endl;
+	cout << ThirShun(5, px) << endl;
+	for (int i = 0; i < 10; i++)
 	{
-		Calcu(card, dp);
-	}*/
-	
-	while (1);
-	/*while(dp->iStatus!=0){
+		cout << px->ShouPai[i]<<endl;
+	}
+	while (1);*/
+	/*
+	init(dp);
+	struct ddz d, * dp=&d;
+	while(dp->iStatus!=0){
 		AIInput(dp);							//输入信息
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息

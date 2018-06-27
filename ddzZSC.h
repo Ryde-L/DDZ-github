@@ -85,17 +85,31 @@ bool Rocket(struct PaiXing *px)
 
 /*查询炸弹 例AAAA*/
 bool BomB(int index,struct PaiXing *px)
-{                           
-	int i,j,k=0,flag=0;
+{         
+	int poker = px->ShouPai[index];
+	//连续4张相同即为炸弹
+	if (index >= 3)
+		if (poker / 4 == px->ShouPai[index - 1] / 4 && poker / 4 == px->ShouPai[index - 2] / 4
+			&& poker / 4 == px->ShouPai[index - 3] / 4){
+			px->ShouPai[index] = -2;
+			px->ShouPai[index - 1] = -2;
+			px->ShouPai[index - 2] = -2;
+			px->ShouPai[index - 3] = -2;
+			return 1;
+		}
+	return 0;
+	/*int i,j,k=0,flag=0;
 	int PP=px->ShouPai[index];
 	for(i=0;i<5;i++) if(px->ZhaDan[i][0]==-2)
 	{                      //记录牌型类中 炸弹部分的空缺位置
 			j=i;
 			break;
 	}
-	for (i = 0; i<index; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
+	//原for (i = 0; i < index; i++)
+	for (i = 0; i<=index; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
 		flag++;            //判定条件
 	if(flag==4){
+		
 		for (i = 0; i <= index; i++) if (PP / 4 == px->ShouPai[i] / 4)
 		{
 			px->ZhaDan[j][k]=px->ShouPai[i];
@@ -105,7 +119,7 @@ bool BomB(int index,struct PaiXing *px)
 		return 1;
 	}
 	else 
-		return 0;
+		return 0;*/
 }
 
 
@@ -122,7 +136,9 @@ bool TwoP(int PP,struct PaiXing *px)
 } 
 
 
-/*是否足够三张等值牌*/
+/*是否足够三张等值牌
+	@param：int PP 传入的是px->ShouPai[index]/4;
+*/
 bool ThrP(int PP,struct PaiXing *px)
 {                               
 	int flag=0;
@@ -135,7 +151,10 @@ bool ThrP(int PP,struct PaiXing *px)
 }
 
 
-/*ThirdShun三顺*/
+/*ThirdShun三顺
+	@param ：index	ShouPai开始的下标
+	@return ：返回一共多少个牌或0
+*/
 int  ThirShun(int index,struct PaiXing *px)
 {                               
 	int i,sign=0,time=0;
@@ -330,7 +349,7 @@ void Query(struct PaiXing *px)
 			         piece-=2;
 			         continue;  
 		}
-		else if(BomB(px->ShouPai[piece],px)){
+		else if(BomB(piece,px)){
                                    //判定炸弹
 			piece-=4;             
 			continue;              
