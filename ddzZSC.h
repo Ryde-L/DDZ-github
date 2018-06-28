@@ -1,9 +1,9 @@
+ï»¿
 
-
-/*·ÇÆÀ¹ÀËÑË÷ĞÍ²ßÂÔ*/
+/*éè¯„ä¼°æœç´¢å‹ç­–ç•¥*/
 #include "ddzv100.h"
 
-/*½«ÓĞĞ§ÊÖÅÆµşÖÃÇ°·½ */
+/*å°†æœ‰æ•ˆæ‰‹ç‰Œå ç½®å‰æ–¹ */
 void ReSort(int cards[])
 {                        
     int i,j;
@@ -15,15 +15,15 @@ void ReSort(int cards[])
 }
 
 
-/*Ã¿´ÎÂÖµ½×Ô¼º³öÅÆÊ±³õÊ¼»¯ÊÖÅÆÀà£¬ÖØĞÂ¼ÆËã*/
+/*æ¯æ¬¡è½®åˆ°è‡ªå·±å‡ºç‰Œæ—¶åˆå§‹åŒ–æ‰‹ç‰Œç±»ï¼Œé‡æ–°è®¡ç®—*/
 void GameInit(int iOnHand[],struct PaiXing *px) 
 {
 	int i,j;
 		for(i=0;i<21;i++) px->ShouPai[i]=-2;
 	for(i=0;iOnHand[i]>=0;i++)
-		px->ShouPai[i]=iOnHand[i]; //ÊÖÅÆÂ¼Èë
+		px->ShouPai[i]=iOnHand[i]; //æ‰‹ç‰Œå½•å…¥
 	/***************************
-	 ÏÂÃæÎªÊÖÖĞ¸÷¸öÅÆĞÍµÄ³õÊ¼»¯
+	 ä¸‹é¢ä¸ºæ‰‹ä¸­å„ä¸ªç‰Œå‹çš„åˆå§‹åŒ–
 	***************************/
 	for(i=0;i<5;i++)
 		for(j=0;j<4;j++)
@@ -39,27 +39,27 @@ void GameInit(int iOnHand[],struct PaiXing *px)
 	for(i=0;i<4;i++)
 		for(j=0;j<15;j++)
 		{
-			if(j==0) px->DanShun[i][j]=0;     //µ¥Ë³µÄ³¤¶È³õÊ¼»¯Îª0
+			if(j==0) px->DanShun[i][j]=0;     //å•é¡ºçš„é•¿åº¦åˆå§‹åŒ–ä¸º0
 			else px->DanShun[i][j]=-2;
 		}
-	for(i=0;i<3;i++)                          //Ë«Ë³µÄ³¤¶È³õÊ¼»¯Îª0
+	for(i=0;i<3;i++)                          //åŒé¡ºçš„é•¿åº¦åˆå§‹åŒ–ä¸º0
 		for(j=0;j<21;j++)
 		{
 			if(j==0) px->ShS[i][j]=0;
 			else px->ShS[i][j]=-2;
 		}
-	for(i=0;i<2;i++)                          //ÈıË³µÄ³¤¶È³õÊ¼»¯Îª0
+	for(i=0;i<2;i++)                          //ä¸‰é¡ºçš„é•¿åº¦åˆå§‹åŒ–ä¸º0
 		for(j=0;j<19;j++)
 		{
 			if(j==0) px->SaS[i][j]=0;
 			else px->SaS[i][j]=-2;
 		}
-	px->Time=0;        //Ê£ÓàÊÖÊı
+	px->Time=0;        //å‰©ä½™æ‰‹æ•°
 }
 
 
-/*¸¨Öú²ßÂÔ
-//²éÑ¯ÊÇ·ñÓĞ»ğ¼ı*/
+/*è¾…åŠ©ç­–ç•¥
+//æŸ¥è¯¢æ˜¯å¦æœ‰ç«ç®­*/
 bool Rocket(struct PaiXing *px)
 {                              
 	int flag=0,JL[2];
@@ -71,9 +71,9 @@ bool Rocket(struct PaiXing *px)
 				j++;
 		}
 	}
-	if(flag==2){         //È·ÈÏ²éÑ¯µ½»ğ¼ı
+	if(flag==2){         //ç¡®è®¤æŸ¥è¯¢åˆ°ç«ç®­
 		px->Rocket=1;
-		px->ShouPai[JL[0]]=-2;//»ğ¼ıÎ»ÖÃµÄÊÖÅÆÖÃ-2
+		px->ShouPai[JL[0]]=-2;//ç«ç®­ä½ç½®çš„æ‰‹ç‰Œç½®-2
 		px->ShouPai[JL[1]]=-2;
 		return 1;
 	}
@@ -83,11 +83,11 @@ bool Rocket(struct PaiXing *px)
 }
 
 
-/*²éÑ¯Õ¨µ¯ ÀıAAAA*/
+/*æŸ¥è¯¢ç‚¸å¼¹ ä¾‹AAAA*/
 bool BomB(int index,struct PaiXing *px)
 {         
 	int poker = px->ShouPai[index];
-	//Á¬Ğø4ÕÅÏàÍ¬¼´ÎªÕ¨µ¯
+	//è¿ç»­4å¼ ç›¸åŒå³ä¸ºç‚¸å¼¹
 	if (index >= 3)
 		if (poker / 4 == px->ShouPai[index - 1] / 4 && poker / 4 == px->ShouPai[index - 2] / 4
 			&& poker / 4 == px->ShouPai[index - 3] / 4){
@@ -101,13 +101,13 @@ bool BomB(int index,struct PaiXing *px)
 	/*int i,j,k=0,flag=0;
 	int PP=px->ShouPai[index];
 	for(i=0;i<5;i++) if(px->ZhaDan[i][0]==-2)
-	{                      //¼ÇÂ¼ÅÆĞÍÀàÖĞ Õ¨µ¯²¿·ÖµÄ¿ÕÈ±Î»ÖÃ
+	{                      //è®°å½•ç‰Œå‹ç±»ä¸­ ç‚¸å¼¹éƒ¨åˆ†çš„ç©ºç¼ºä½ç½®
 			j=i;
 			break;
 	}
-	//Ô­for (i = 0; i < index; i++)
+	//åŸfor (i = 0; i < index; i++)
 	for (i = 0; i<=index; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
-		flag++;            //ÅĞ¶¨Ìõ¼ş
+		flag++;            //åˆ¤å®šæ¡ä»¶
 	if(flag==4){
 		
 		for (i = 0; i <= index; i++) if (PP / 4 == px->ShouPai[i] / 4)
@@ -123,7 +123,7 @@ bool BomB(int index,struct PaiXing *px)
 }
 
 
-/* ÊÇ·ñ×ã¹»Á½ÕÅµÈÖµÅÆ TwoPieces*/
+/* æ˜¯å¦è¶³å¤Ÿä¸¤å¼ ç­‰å€¼ç‰Œ TwoPieces*/
 bool TwoP(int PP,struct PaiXing *px)
 {                               
 	int flag=0;
@@ -136,8 +136,8 @@ bool TwoP(int PP,struct PaiXing *px)
 } 
 
 
-/*ÊÇ·ñ×ã¹»ÈıÕÅµÈÖµÅÆ
-	@param£ºint PP ´«ÈëµÄÊÇpx->ShouPai[index]/4;
+/*æ˜¯å¦è¶³å¤Ÿä¸‰å¼ ç­‰å€¼ç‰Œ
+	@paramï¼šint PP ä¼ å…¥çš„æ˜¯px->ShouPai[index]/4;
 */
 bool ThrP(int PP,struct PaiXing *px)
 {                               
@@ -151,21 +151,21 @@ bool ThrP(int PP,struct PaiXing *px)
 }
 
 
-/*ThirdShunÈıË³
-	@param £ºindex	ShouPai¿ªÊ¼µÄÏÂ±ê
-	@return £º·µ»ØÒ»¹²¶àÉÙ¸öÅÆ»ò0
+/*ThirdShunä¸‰é¡º
+	@param ï¼šindex	ShouPaiå¼€å§‹çš„ä¸‹æ ‡
+	@return ï¼šè¿”å›ä¸€å…±å¤šå°‘ä¸ªç‰Œæˆ–0
 */
 int  ThirShun(int index,struct PaiXing *px)
 {                               
 	int i,sign=0,time=0;
 	int PP=px->ShouPai[index];
 	for(i=0;i<2;i++) if(px->SaS[i][0]<0)
-	{                           //¿ÕÈ±Î»ÖÃ
+	{                           //ç©ºç¼ºä½ç½®
 			sign=i;
 			break;
 	}
 	while(1)
-	{                           //¶ÔÁ¬ĞøµÄÈıÕÅ½øĞĞÅĞ¶Ï
+	{                           //å¯¹è¿ç»­çš„ä¸‰å¼ è¿›è¡Œåˆ¤æ–­
 		if(ThrP(PP/4 - time,px)&&PP<48){
 			++time;
 		}
@@ -173,9 +173,9 @@ int  ThirShun(int index,struct PaiXing *px)
 			break;
 	}
 	if(time >=2)
-	{                           //°´ÉıĞò´¢´æ
-		int piece=0;            //¼ÇÂ¼ÕÅÊı
-		px->SaS[sign][0]=time;     //0Î»¼ÇÂ¼¶àÉÙ¸öAAA
+	{                           //æŒ‰å‡åºå‚¨å­˜
+		int piece=0;            //è®°å½•å¼ æ•°
+		px->SaS[sign][0]=time;     //0ä½è®°å½•å¤šå°‘ä¸ªAAA
 		while(piece<time*3)
 		{
 			int flag=0;
@@ -197,20 +197,20 @@ int  ThirShun(int index,struct PaiXing *px)
 }
 
 
-/*Ë«Ë³
-@return£º²éµ½ÁË¶àÉÙÕÅÅÆ ÀıAABBCCÎª6ÕÅ
+/*åŒé¡º
+@returnï¼šæŸ¥åˆ°äº†å¤šå°‘å¼ ç‰Œ ä¾‹AABBCCä¸º6å¼ 
 */
 int  TwoShun(int index,struct PaiXing *px) 
 {                               //
 	int i,sign=0,time=0;
 	int PP=px->ShouPai[index];
 	for(i=0;i<3;i++) if(px->ShS[i][0]<=0)
-	{                           //¿ÕÈ±Î»ÖÃ
+	{                           //ç©ºç¼ºä½ç½®
 			sign=i;
 			break;
 	}
 	while(1)
-	{                           //¶ÔÁ¬ĞøµÄ¶ÔÕÅ½øĞĞÅĞ¶Ï
+	{                           //å¯¹è¿ç»­çš„å¯¹å¼ è¿›è¡Œåˆ¤æ–­
 		if(TwoP(PP/4 - time,px)&&px->ShouPai[index]<48){
 			++time;
 		}
@@ -218,14 +218,14 @@ int  TwoShun(int index,struct PaiXing *px)
 			break;
 	}
 	if(time >=3)
-	{                           //°´ÉıĞò´¢´æ
-		int piece=0;            //¼ÇÂ¼ÕÅÊı
-		px->ShS[sign][0]=time;     //0Î»¼ÇÂ¼¶àÉÙ¶Ô
+	{                           //æŒ‰å‡åºå‚¨å­˜
+		int piece=0;            //è®°å½•å¼ æ•°
+		px->ShS[sign][0]=time;     //0ä½è®°å½•å¤šå°‘å¯¹
 		while(piece<time*2)
 		{ 
 			int flag=0;
 			for(i=0;i<=index&&flag!=2;i++)
-			{                   //Ã¿´Î³éµ½Ò»¶Ô½áÊøÑ­»·
+			{                   //æ¯æ¬¡æŠ½åˆ°ä¸€å¯¹ç»“æŸå¾ªç¯
 				if(PP/4 - time + 1 + piece/2 == px->ShouPai[i]/4)
 				{
 					px->ShS[sign][piece+1]=px->ShouPai[i];
@@ -235,26 +235,26 @@ int  TwoShun(int index,struct PaiXing *px)
 				}
 			}
 		}
-		return piece;  //·µ»ØÕÅÊı
+		return piece;  //è¿”å›å¼ æ•°
 	}
 	else 
 		return 0;
 }
 
 
-/* ²éÑ¯µ¥Ë³*/
+/* æŸ¥è¯¢å•é¡º*/
 int  DS(int index,struct PaiXing *px)
 {                              
 	int i,sign=0,time=0,flag=1;
 	int PP=px->ShouPai[index];
 	for(i=0;i<4;i++) if(px->DanShun[i][0]<5)
-	{                           //¿ÕÈ±Î»ÖÃ
+	{                           //ç©ºç¼ºä½ç½®
 			sign=i;
 			break;
 	}
 	
 	while(flag)
-	{                           //Ê×ÏÈÅĞ¶ÏÊÇ·ñ´óÓÚ5 ,46,40,39,32,29
+	{                           //é¦–å…ˆåˆ¤æ–­æ˜¯å¦å¤§äº5 ,46,40,39,32,29
 		flag=0;
 		for(i=0;i<=index;i++)
         {
@@ -289,22 +289,22 @@ int  DS(int index,struct PaiXing *px)
 }
 
 
-/*¸¨ÖúÅĞ¶Ï
-ÈıÕÅ
+/*è¾…åŠ©åˆ¤æ–­
+ä¸‰å¼ 
 */
 bool SZ(int index,struct PaiXing *px)
 {                                
 	int i,sign=0,flag=2;
 	int PP=px->ShouPai[index];
 	for(i=0;i<6;i++) if(px->SanZhang[i][0]<0)
-	{                           //¿ÕÈ±Î»ÖÃ
+	{                           //ç©ºç¼ºä½ç½®
 			sign=i;
 			break;
 	}
 	if(ThrP(PP/4,px))
 	{
 		for(i=0;i<=index&&flag>=0;i++) if(PP/4 == px->ShouPai[i]/4)
-		{                      //ÉıĞò
+		{                      //å‡åº
 			px->SanZhang[sign][flag--]=px->ShouPai[i];
 			px->ShouPai[i]=-2;
 		}
@@ -315,9 +315,9 @@ bool SZ(int index,struct PaiXing *px)
 }
 
 
-/*²ßÂÔ·½°¸
-°´ÏÂÁĞË³Ğò¹æÔò²éÑ¯ÊÖÉÏµÄÅÆĞÍ
-»ğ¼ı>Õ¨µ¯>ÈıË³>Ë«Ë³>µ¥Ë³>ÈıÕÅ>¶Ô×Ó>µ¥ÕÅ
+/*ç­–ç•¥æ–¹æ¡ˆ
+æŒ‰ä¸‹åˆ—é¡ºåºè§„åˆ™æŸ¥è¯¢æ‰‹ä¸Šçš„ç‰Œå‹
+ç«ç®­>ç‚¸å¼¹>ä¸‰é¡º>åŒé¡º>å•é¡º>ä¸‰å¼ >å¯¹å­>å•å¼ 
 */
 void Query(struct PaiXing *px)  
 {                               
@@ -326,11 +326,11 @@ void Query(struct PaiXing *px)
 	ReSort(px->ShouPai);
 	pokersort(px->ShouPai);
 	for(i=0;i<21;i++) if(px->ShouPai[i]>=0&&px->ShouPai[i]>px->ShouPai[piece])
-		piece=i;  //¼ÇÂ¼µ±Ç°²éÑ¯×î´óÅÆÖµµÄµ¥ÅÆÎ»ÖÃ£¬ÓÃÆäËÑË÷
+		piece=i;  //è®°å½•å½“å‰æŸ¥è¯¢æœ€å¤§ç‰Œå€¼çš„å•ç‰Œä½ç½®ï¼Œç”¨å…¶æœç´¢
 	
 	while(1)
 	{
-		key=0;   //ÓÃÓÚÏÂ·½µÄÊÖÅÆÅĞ¶¨
+		key=0;   //ç”¨äºä¸‹æ–¹çš„æ‰‹ç‰Œåˆ¤å®š
 	    ReSort(px->ShouPai);
 		pokersort(px->ShouPai);
 		for(i=0;i<21;i++)
@@ -339,46 +339,46 @@ void Query(struct PaiXing *px)
 				key=1;
 				break;
 			}
-		if(key==0) break;  //ÅĞ¶¨ÊÖÅÆÊÇ·ñ·ÖÍê
+		if(key==0) break;  //åˆ¤å®šæ‰‹ç‰Œæ˜¯å¦åˆ†å®Œ
 		
 		
 	///////////////////////////////////////////////////////////////
         int pp;
 		if(Rocket(px)){
-                                   //ÅĞ¶¨»ğ¼ı
+                                   //åˆ¤å®šç«ç®­
 			         piece-=2;
 			         continue;  
 		}
 		else if(BomB(piece,px)){
-                                   //ÅĞ¶¨Õ¨µ¯
-			piece-=4;             
+                                   //åˆ¤å®šç‚¸å¼¹
+			piece-=4;
 			continue;              
 		}
 	    if(pp=ThirShun(piece,px)){      
-			                       //ÈıË³
+			                       //ä¸‰é¡º
 			piece-=pp;
 			continue;
 		}
         if(pp=TwoShun(piece,px)){      
-			                       //Ë«Ë³
+			                       //åŒé¡º
 			piece-=pp;
 			continue;
 		}
         if(pp=DS(piece,px)){       
-			                       //µ¥Ë³
+			                       //å•é¡º
 			piece-=pp;
 			continue;
 		}
-		if(SZ(piece,px)){          //ÈıÕÅ
+		if(SZ(piece,px)){          //ä¸‰å¼ 
 			piece-=3;    
 			continue;
 		}
 		else if(TwoP(px->ShouPai[piece]/4,px))
-		{                          //¶ÔÅÆ
+		{                          //å¯¹ç‰Œ
 			int sign,flag=0;      
 			int PP=px->ShouPai[piece];
 			for(i=0;i<10;i++) if(px->DuiPai[i][0]<0)
-			{                           //¿ÕÈ±Î»ÖÃ
+			{                           //ç©ºç¼ºä½ç½®
 				sign=i;
 				break;
 			}
@@ -395,7 +395,7 @@ void Query(struct PaiXing *px)
 			continue;
 		}
 		else
-		{                              //µ¥ÅÅ´¦Àí
+		{                              //å•æ’å¤„ç†
 			int j=0;
 			for(i=0;i<21;i++) if(px->DanPai[i]==-2)
 			{
@@ -407,9 +407,9 @@ void Query(struct PaiXing *px)
 			piece--;
 		}
 	}
-	pokersort(px->DanPai);  //µ¥ÅÆÅÅÉıĞò;
+	pokersort(px->DanPai);  //å•ç‰Œæ’å‡åº;
 
-	int j,temp1,temp2;      //¶ÔÅÆÅÅÉıĞò
+	int j,temp1,temp2;      //å¯¹ç‰Œæ’å‡åº
 	for(i=0;px->DuiPai[i][0]>=0;i++)         
 		for(j=i+1;px->DuiPai[j][0]>=0;j++)
 			if(px->DuiPai[i][0]>px->DuiPai[j][0])
@@ -424,7 +424,7 @@ void Query(struct PaiXing *px)
 }
 
 
-/*ÅÆ×À²ßÂÔ*/
+/*ç‰Œæ¡Œç­–ç•¥*/
 void AllHand(struct PaiXing *px)
 {
 	int i;
@@ -442,41 +442,40 @@ void AllHand(struct PaiXing *px)
 
 
 /*
-ÁíÍâÁ½¼ÒÊÖÅÆ¼ÆËã
-	@param£ºint cards[] ×ÀÉÏÅÆ
+å¦å¤–ä¸¤å®¶æ‰‹ç‰Œè®¡ç®—
+	@paramï¼šint cards[] æ¡Œä¸Šç‰Œ
 
 	=========================
-	ÒÉÎÊ£ºÖ»ÄÜËãiOnTable[0]ºÍiOnTable[1]µÄÅÆÊı£¿
+	ç–‘é—®ï¼šåªèƒ½ç®—iOnTable[0]å’ŒiOnTable[1]çš„ç‰Œæ•°ï¼Ÿ
 */
 void Calcu(int cards[],struct ddz *dp)
 {                         
 	int k=0,key=2;
-	for(int i=0;key;i++)//´Î´óÑ­»·
+	for(int i=0;key;i++)//2æ¬¡å¤§å¾ªç¯
 	{
-		if(cards[i]==-1)//¼´iOnTable»»ĞĞ
+		if(cards[i]==-1)//å³iOnTableæ¢è¡Œ
 		{
 			key--;
 			k++;			
 		}
 		else 
-			dp->HandCard[k]--;//ÆäËûÍæ¼ÒkµÄÅÆÊı¼õÒ»
-	}
-	//cout << dp->HandCard[0] << " ,"<<dp->HandCard[1] << endl;
+			dp->HandCard[k]--;//å…¶ä»–ç©å®¶kçš„ç‰Œæ•°å‡ä¸€
+	}	
 }
 
 
-/*  È·¶¨µØÖ÷Ïà¶Ô×Ô¼ºµÄÎ»ÖÃ
-	1.¡¾Å© AI Å©¡¿ 2.¡¾ÓÑ AI µØ¡¿ 3.¡¾µØ AI ÓÑ¡¿
+/*  ç¡®å®šåœ°ä¸»ç›¸å¯¹è‡ªå·±çš„ä½ç½®
+	1.ã€å†œ AI å†œã€‘ 2.ã€å‹ AI åœ°ã€‘ 3.ã€åœ° AI å‹ã€‘
 */
 void Lineup(struct ddz *dp)
 {                           
-    //ÎÒµÄÎ»ÖÃ cDir µØÖ÷µÄÎ»ÖÃ cLandlord
+    //æˆ‘çš„ä½ç½® cDir åœ°ä¸»çš„ä½ç½® cLandlord
 	int i;
 
 	if(dp->cDir==dp->cLandlord)     
-		dp->WarLine=1; //µØÖ÷
+		dp->WarLine=1; //åœ°ä¸»
 	else if(dp->cDir<dp->cLandlord||(dp->cDir=='C'&&dp->cLandlord=='A'))         
-	    dp->WarLine=2; //µØÖ÷ÔÚ×Ô¼ººóÊÖAB BC CA 
+	    dp->WarLine=2; //åœ°ä¸»åœ¨è‡ªå·±åæ‰‹AB BC CA 
 	else if(dp->cDir>dp->cLandlord||(dp->cDir=='A'&&dp->cLandlord=='C'))            
-		dp->WarLine=3; //µØÖ÷ÔÚ×Ô¼ºÏÈÊÖCA AB BC
+		dp->WarLine=3; //åœ°ä¸»åœ¨è‡ªå·±å…ˆæ‰‹CA AB BC
 }

@@ -1,4 +1,4 @@
-#include <stdio.h> //8.17ÇÃ¶¨°æ
+ï»¿#include <stdio.h> //8.17æ•²å®šç‰ˆ
 #include <string.h>
 #include <iostream>
 #define _CRT_SECURE_NO_WARNINGS
@@ -7,58 +7,59 @@ using namespace std;
 
 struct ddz
 {
-	int  iStatus;				//ÒıÇæ×´Ì¬-1´íÎó,0½áÊø,1¿ªÊ¼
-	char sCommandIn[80];		//Í¨ĞÅÊäÈëÄÚÈİ
-	char sCommandOut[80];		//Í¨ĞÅÊä³öÄÚÈİ
-	int iOnHand[21];            //ÊÖÖĞÅÆ£¨ËùÓĞÖµ³õÊ¼»¯Îª-1£©
-	int iOnTable[162][21];      //ÒÔ³öÅÆÊı×é£¨ËùÓĞÖµ³õÊ¼»¯Îª-2£©Ã¿ĞĞÊÇÒ»ÊÖÅÆ£¬ÒÔ-1½áÎ²£¬Pass¼ÇÎª-1
-	int iToTable[21];           //Òª³öµÄÅÆ
+	int  iStatus;				//å¼•æ“çŠ¶æ€-1é”™è¯¯,0ç»“æŸ,1å¼€å§‹
+	char sCommandIn[80];		//é€šä¿¡è¾“å…¥å†…å®¹
+	char sCommandOut[80];		//é€šä¿¡è¾“å‡ºå†…å®¹
+	int iOnHand[21];            //æ‰‹ä¸­ç‰Œï¼ˆæ‰€æœ‰å€¼åˆå§‹åŒ–ä¸º-1ï¼‰
+	int iOnTable[162][21];      //ä»¥å‡ºç‰Œæ•°ç»„ï¼ˆæ‰€æœ‰å€¼åˆå§‹åŒ–ä¸º-2ï¼‰æ¯è¡Œæ˜¯ä¸€æ‰‹ç‰Œï¼Œä»¥-1ç»“å°¾ï¼ŒPassè®°ä¸º-1
+	int iToTable[21];           //è¦å‡ºçš„ç‰Œ
 
-	char sVer[80];			    //Ğ­Òé°æ±¾ºÅ
-	char sName[80];		        //²ÎÈüÑ¡ÊÖ³Æºô
-	char cDir;			        //Íæ¼Ò·½Î»±àºÅ
-	char cLandlord;	            //µØÖ÷Íæ¼Ò·½Î»±àºÅ
-	char cWinner;	            //Ê¤ÀûÕß·½Î»±àºÅ
-	int iBid[3];                //½ĞÅÆ¹ı³Ì
-	int iBmax;                  //µ±Ç°½ĞÅÆÊı£¬ÖµÓò{0,1,2,3}
-	int iOTmax;                 //×ÀÃæÅÆÊÖÊı
-	int iRoundNow;              //µ±Ç°¾Ö´Î
-	int iRoundTotal;            //ºÍ×Ü¾ÖÊı
-	int iLevelUp;	            //½ú¼¶Ñ¡ÊÖÊı
-	int iScoreMax;	            //×ª»»µÃ·Ö½çÏŞ
-	int iVoid;			        //ÏĞÏ¾²¢ĞĞ¼ÆËã²ÎÊı
-	int iTurnNow;               //µ±Ç°ÂÖ´Î
-	int iTurnTotal;             //×ÜÂÖÊı
+	char sVer[80];			    //åè®®ç‰ˆæœ¬å·
+	char sName[80];		        //å‚èµ›é€‰æ‰‹ç§°å‘¼
+	char cDir;			        //ç©å®¶æ–¹ä½ç¼–å·
+	char cLandlord;	            //åœ°ä¸»ç©å®¶æ–¹ä½ç¼–å·
+	char cWinner;	            //èƒœåˆ©è€…æ–¹ä½ç¼–å·
+	int iBid[3];                //å«ç‰Œè¿‡ç¨‹
+	int iBmax;                  //å½“å‰å«ç‰Œæ•°ï¼Œå€¼åŸŸ{0,1,2,3}
+	int iOTmax;                 //æ¡Œé¢ç‰Œæ‰‹æ•°
+	int iRoundNow;              //å½“å‰å±€æ¬¡
+	int iRoundTotal;            //å’Œæ€»å±€æ•°
+	int iLevelUp;	            //æ™‹çº§é€‰æ‰‹æ•°
+	int iScoreMax;	            //è½¬æ¢å¾—åˆ†ç•Œé™
+	int iVoid;			        //é—²æš‡å¹¶è¡Œè®¡ç®—å‚æ•°
+	int iTurnNow;               //å½“å‰è½®æ¬¡
+	int iTurnTotal;             //æ€»è½®æ•°
 
-	int HandCard[2];            //ÁíÍâÁ½¼ÒÊÖÖĞµÄÊ£ÓàÅÆÊı
-	int WarLine;                //ÕóÈİÈ·¶¨ 1.¡¾Å© AI Å©¡¿ 2.¡¾ÓÑ AI µØ¡¿ 3.¡¾µØ AI ÓÑ¡¿
+	int HandCard[2];            //å¦å¤–ä¸¤å®¶æ‰‹ä¸­çš„å‰©ä½™ç‰Œæ•°
+	int iRestHandCard[3];		//å‰©ä½™æ‰‹ç‰Œ
+	int WarLine;                //é˜µå®¹ç¡®å®š 1.ã€å†œ AI å†œã€‘ 2.ã€å‹ AI åœ°ã€‘ 3.ã€åœ° AI å‹ã€‘
 };
 
 
 struct PaiXing{
-	int ShouPai[21];       //Ôİ´æÊÖÅÆ 
-	bool Rocket;             //ÓĞÎŞ»ğ¼ı 1  52 53
-	int ZhaDan[5][4];      //´¢´æÕ¨µ¯ 2
-	int DanPai[21];        //µ¥ÕÅ 3
-	int DuiPai[10][2];     //¶ÔÅÆ 4
-	int SanZhang[6][3];    //ÈıÕÅ 5
-	                       //Èı´øÒ» Èı´ø¶ş  6 
-	int DanShun[4][15];    //´¢´æµ¥Ë³  0Î»Îª¸ÃË³ÓĞ¶àÉÙÕÅ 7
-	int ShS[3][21]; //Ë«Ë³ 0Îª¶àÉÙ¶Ô 8
-	int SaS[2][19]; //ÈıË³ ´ÓÈıÕÅÀïÃæ²éÑ¯Á¬ĞøµÄÈıÕÅ 9   
-	// ÈıË³´øÅÆ 0ÎªÕÅÊı 10
-	// ËÄ´ø2 ËÄ´ø1 ÅĞ¶¨ 11  
-	int Time;    //Ê£ÓàÊÖÊı
+	int ShouPai[21];       //æš‚å­˜æ‰‹ç‰Œ 
+	bool Rocket;             //æœ‰æ— ç«ç®­ 1  52 53
+	int ZhaDan[5][4];      //å‚¨å­˜ç‚¸å¼¹ 2
+	int DanPai[21];        //å•å¼  3
+	int DuiPai[10][2];     //å¯¹ç‰Œ 4
+	int SanZhang[6][3];    //ä¸‰å¼  5
+	                       //ä¸‰å¸¦ä¸€ ä¸‰å¸¦äºŒ  6 
+	int DanShun[4][15];    //å‚¨å­˜å•é¡º  0ä½ä¸ºè¯¥é¡ºæœ‰å¤šå°‘å¼  7
+	int ShS[3][21]; //åŒé¡º 0ä¸ºå¤šå°‘å¯¹ 8
+	int SaS[2][19]; //ä¸‰é¡º ä»ä¸‰å¼ é‡Œé¢æŸ¥è¯¢è¿ç»­çš„ä¸‰å¼  9   
+	// ä¸‰é¡ºå¸¦ç‰Œ 0ä¸ºå¼ æ•° 10
+	// å››å¸¦2 å››å¸¦1 åˆ¤å®š 11  
+	int Time;    //å‰©ä½™æ‰‹æ•°
 };
 
 
-/*ÈÎÒâÊÖ³öÅÆÊ± ÈıË³>Ë«Ë³>µ¥Ë³>ÈıÕÅ>¶Ô×Ó>µ¥ÕÅ */
+/*ä»»æ„æ‰‹å‡ºç‰Œæ—¶ ä¸‰é¡º>åŒé¡º>å•é¡º>ä¸‰å¼ >å¯¹å­>å•å¼  */
 void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[]) 
 {                         
 	int i,sign=0,cmp;
 	if(px->SaS[0][0]>0)
 	{
-		cmp=px->SaS[0][1]/4;     //´ÓĞ¡ÅÆ³öÊÖ
+		cmp=px->SaS[0][1]/4;     //ä»å°ç‰Œå‡ºæ‰‹
 		for(i=0;px->SaS[i][0]>0;i++)
 		{
 			if( cmp > px->SaS[i][1]/4 ){                                 
@@ -67,11 +68,11 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 			}
 		}
 		if(px->SaS[sign][px->SaS[sign][0]*3]<40||px->SaS[sign][0]>=4)
-		{                              //×îºóÒ»ÕÅÅÆĞèÒªĞ¡ÓÚK »òÕßĞÎÈç AAABBBCCCDDD
-			int count=0;//¼ÆÊı£¬ÅĞ¶Ï´øÅÆ
+		{                              //æœ€åä¸€å¼ ç‰Œéœ€è¦å°äºK æˆ–è€…å½¢å¦‚ AAABBBCCCDDD
+			int count=0;//è®¡æ•°ï¼Œåˆ¤æ–­å¸¦ç‰Œ
 			for(i=0;px->DanPai[i]>=0;i++) count++;	
 			if(count>=px->SaS[sign][0])
-			{                               //ÏÈ´¦Àí´øÅÆ,ÓĞ¶àÉÙ´ø¶àÉÙ£¬²»ÄÜ´øµÄ²ğ¿ªÁôÏÂÀ´
+			{                               //å…ˆå¤„ç†å¸¦ç‰Œ,æœ‰å¤šå°‘å¸¦å¤šå°‘ï¼Œä¸èƒ½å¸¦çš„æ‹†å¼€ç•™ä¸‹æ¥
 				for(i=0;i<count;i++)
 					ToTable[Num++]=px->DanPai[i];
 				for(i=1;px->SaS[sign][i]>=0;i++)
@@ -103,7 +104,7 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 			}
 		}
 		if(px->ShS[sign][px->ShS[sign][0]*2]<44||px->ShS[sign][0]>=5)
-		{                            //×îºóÒ»ÕÅÅÆĞ¡ÓÚA »òÕßĞÎÈç AABBCCDDEE
+		{                            //æœ€åä¸€å¼ ç‰Œå°äºA æˆ–è€…å½¢å¦‚ AABBCCDDEE
 			for(i=1;px->ShS[sign][i]>=0;i++)
 				ToTable[Num++]=px->ShS[sign][i];
 			ToTable[Num++]=-1;
@@ -113,18 +114,18 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 	if(px->DanShun[0][0]>0)
 	{
 		sign=0;
-		cmp=px->DanShun[0][1]/4;   //´ÓĞ¡ÅÆ³öÊÖ
+		cmp=px->DanShun[0][1]/4;   //ä»å°ç‰Œå‡ºæ‰‹
 		for(i=0;px->DanShun[i][0]>0;i++)
 		{
 			if((cmp > px->DanShun[i][1]/4)||
 				(cmp == px->DanShun[i][1]/4 && px->DanShun[sign][0]/4 < px->DanShun[i][0]/4))
-			{//×îĞ¡ÅÆ¸üĞ¡ »ò ×îĞ¡ÅÆÏàÍ¬&&ÕÅÊı¶à µÄÓÅÏÈ                                  
+			{//æœ€å°ç‰Œæ›´å° æˆ– æœ€å°ç‰Œç›¸åŒ&&å¼ æ•°å¤š çš„ä¼˜å…ˆ                                  
 				cmp=px->DanShun[i][1]/4;
 				sign=i;
 			}
 		}
 		if(px->DanShun[sign][px->DanShun[sign][0]]<44||px->DanShun[sign][0]>=7 || px->Time<=3)
-		{                             //×îºóÒ»ÕÅÅÆĞ¡ÓÚA »òÕßĞÎÈç 3456789 »òÊÖÊıĞ¡ÓÚ3
+		{                             //æœ€åä¸€å¼ ç‰Œå°äºA æˆ–è€…å½¢å¦‚ 3456789 æˆ–æ‰‹æ•°å°äº3
 			for(i=1;px->DanShun[sign][i]>=0;i++)
 				ToTable[Num++]=px->DanShun[sign][i];
 			ToTable[Num++]=-1;
@@ -142,10 +143,10 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 		}
 		if(px->SanZhang[sign][0] <40||
 			(px->Time<=3&&(px->DanPai[0]>=0||px->DuiPai[0][0]>=0)) )
-		{                                       //KKK AAA 222 ²»³ö 
+		{                                       //KKK AAA 222 ä¸å‡º 
 			for(i=0;px->SanZhang[sign][i]>=0;i++)
 				ToTable[Num++]=px->SanZhang[sign][i];
-			//Èç¹ûÓĞµ¥ÅÆºÍ¶ÔÅÆ ÄÄÑù¶à³öÄÄÑù AA22  A 2²»´ø
+			//å¦‚æœæœ‰å•ç‰Œå’Œå¯¹ç‰Œ å“ªæ ·å¤šå‡ºå“ªæ · AA22  A 2ä¸å¸¦
 			int count1=0,count2=0;
 			for(i=0;px->DanPai[i]>=0&&(px->DanPai[i]<44||px->Time<4);i++) count1++;
 			for(i=0;px->DuiPai[i][0]>=0&&(px->DuiPai[i][0]<44||px->Time<4);i++) count2++;
@@ -159,11 +160,11 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 		}
 	}
 	if(px->DuiPai[0][0]>=0 && (px->DuiPai[0][0]< 44||px->Time<=2))
-	{  //´ó¹ıKµÄ¶ÔÅÆÔİ²»¿¼ÂÇ £¨AA 22£©
+	{  //å¤§è¿‡Kçš„å¯¹ç‰Œæš‚ä¸è€ƒè™‘ ï¼ˆAA 22ï¼‰
 		int count1=0,count2=0;
 		for(i=0;px->DanPai[i]>=0;i++) count1++;
 		for(i=0;px->DuiPai[i][0]>=0;i++) count2++;
-		if(count2<count1&&px->DuiPai[0][0]/4 - px->DanPai[0]/4 <=4)  // ¶ÔÅÆ±È½ÏÉÙµÄÊ±ºòÏÈ³ö
+		if(count2<count1&&px->DuiPai[0][0]/4 - px->DanPai[0]/4 <=4)  // å¯¹ç‰Œæ¯”è¾ƒå°‘çš„æ—¶å€™å…ˆå‡º
 		{
 			if(px->SanZhang[0][0]>=0&&px->SanZhang[0][0]<48)
 				sign=1;
@@ -187,11 +188,11 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 		ToTable[Num++]=px->DanPai[0];
 		ToTable[Num++]=-1;
 	}
-///////////////////////////ÒÔÏÂÎªÉÏÃæµÄÅÆĞÍ½Ô²»Âú×ãÌõ¼şÊ±Ê±¿¼ÂÇ²ßÂÔ/////////////////////////////////////////
+///////////////////////////ä»¥ä¸‹ä¸ºä¸Šé¢çš„ç‰Œå‹çš†ä¸æ»¡è¶³æ¡ä»¶æ—¶æ—¶è€ƒè™‘ç­–ç•¥/////////////////////////////////////////
 
 	if(px->SaS[0][0]>0)
-	{                                          //ÈıË³
-		cmp=px->SaS[0][1]/4;     //´ÓĞ¡ÅÆ³öÊÖ
+	{                                          //ä¸‰é¡º
+		cmp=px->SaS[0][1]/4;     //ä»å°ç‰Œå‡ºæ‰‹
 		for(i=0;px->SaS[i][0]>0;i++)
 		{
 			if( cmp > px->SaS[i][1]/4 ){                                 
@@ -199,10 +200,10 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 				sign=i;
 			}
 		}
-		int count=0;//¼ÆÊı£¬ÅĞ¶Ï´øÅÆ
+		int count=0;//è®¡æ•°ï¼Œåˆ¤æ–­å¸¦ç‰Œ
 		for(i=0;px->DanPai[i]>=0;i++) count++;  
 		if(count>=px->SaS[sign][0])
-		{                               //ÏÈ´¦Àí´øÅÆ,ÓĞ¶àÉÙ´ø¶àÉÙ
+		{                               //å…ˆå¤„ç†å¸¦ç‰Œ,æœ‰å¤šå°‘å¸¦å¤šå°‘
 			for(i=0;i<count;i++)
 				ToTable[Num++]=px->DanPai[i];
 			for(i=1;px->SaS[sign][i]>=0;i++)
@@ -222,9 +223,9 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 	}
 
 	if(px->ShS[0][0]>0)
-	{                                 //Ë«Ë³
+	{                                 //åŒé¡º
 		sign=0;
-		cmp=px->ShS[0][1]/4;        //´ÓĞ¡ÅÆ³öÊÖ
+		cmp=px->ShS[0][1]/4;        //ä»å°ç‰Œå‡ºæ‰‹
 		for(i=0;px->ShS[i][0]>0;i++)
 		{
 			if( cmp > px->ShS[i][1]/4 ){                                 
@@ -238,14 +239,14 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 	}
 
 	if(px->DanShun[0][0]>0)
-	{                                 //µ¥Ë³
+	{                                 //å•é¡º
 		sign=0;
-		cmp=px->DanShun[0][1]/4;   //´ÓĞ¡ÅÆ³öÊÖ
+		cmp=px->DanShun[0][1]/4;   //ä»å°ç‰Œå‡ºæ‰‹
 		for(i=0;px->DanShun[i][0]>0;i++)
 		{
 			if((cmp > px->DanShun[i][1]/4)||
 				(cmp == px->DanShun[i][1]/4 && px->DanShun[sign][0]/4 < px->DanShun[i][0]/4))
-			{//×îĞ¡ÅÆ¸üĞ¡ »ò ×îĞ¡ÅÆÏàÍ¬&&ÕÅÊı¶à µÄÓÅÏÈ                                  
+			{//æœ€å°ç‰Œæ›´å° æˆ– æœ€å°ç‰Œç›¸åŒ&&å¼ æ•°å¤š çš„ä¼˜å…ˆ                                  
 				cmp=px->DanShun[i][1]/4;
 				sign=i;
 			}
@@ -255,7 +256,7 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 		ToTable[Num++]=-1;
 	}
 
-	if(px->SanZhang[0][0]>=0){                     //ÈıÕÅ
+	if(px->SanZhang[0][0]>=0){                     //ä¸‰å¼ 
 		sign=0;                
 		cmp=px->SanZhang[0][0];
 		for(i=0;px->SanZhang[i][0]>=0;i++) if(cmp > px->SanZhang[i][0])
@@ -290,12 +291,12 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 		ToTable[Num++]=-1;
 	}
 
-	if(px->DuiPai[0][0]>=0){  //¶ÔÅÆ
+	if(px->DuiPai[0][0]>=0){  //å¯¹ç‰Œ
 		ToTable[Num++]=px->DuiPai[0][0];
 		ToTable[Num++]=px->DuiPai[0][1];
 		ToTable[Num++]=-1;
 	}
-	if(px->DanPai[0]>=0){  //¶ÔÅÆ
+	if(px->DanPai[0]>=0){  //å¯¹ç‰Œ
 		ToTable[Num++]=px->DanPai[0];
 		ToTable[Num++]=-1;
 	}	
@@ -304,7 +305,7 @@ void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[])
 }
 
 
-/*¼ÆËãÓĞĞ§ÅÆÊı*/
+/*è®¡ç®—æœ‰æ•ˆç‰Œæ•°*/
 int  count(int cards[])
 {
 	int iCount=0;
@@ -314,7 +315,7 @@ int  count(int cards[])
 }
 
 
-/*¸´ÖÆÅÆ*/
+/*å¤åˆ¶ç‰Œ*/
 void copycards(int arrOnHandCopy[], int arrOnHand[])
 {
 	int i=0;
@@ -324,22 +325,22 @@ void copycards(int arrOnHandCopy[], int arrOnHand[])
 }
 
 
-/*½«totableÒ»ËÄÕÅ£¬ÈıÕÅ£¬Á½ÕÅ£¬Ò»ÕÅÅÅĞò£¬·½±ãÈ·¶¨³öÅÆÀàĞÍ£¬²¢±È½Ï´óĞ¡*/
+/*å°†totableä¸€å››å¼ ï¼Œä¸‰å¼ ï¼Œä¸¤å¼ ï¼Œä¸€å¼ æ’åºï¼Œæ–¹ä¾¿ç¡®å®šå‡ºç‰Œç±»å‹ï¼Œå¹¶æ¯”è¾ƒå¤§å°*/
 void mainsort(int cards[])
 {
-	int card_num = 0;/*ÅÆµÄÊıÁ¿*/
+	int card_num = 0;/*ç‰Œçš„æ•°é‡*/
 	int i,j,k=0,l;  
 	int sorted=0;  
-	int fitcount = 0;//ÓÃÀ´¼ÇÂ¼³ÌĞòÔËĞĞµÄ´ÎÊı  
+	int fitcount = 0;//ç”¨æ¥è®°å½•ç¨‹åºè¿è¡Œçš„æ¬¡æ•°  
 	int sortcards[100];
 	int jilu[20]={-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4};
 	int JL=0;
 	int JLX=0;
 
-	for (i=0;cards[i]>-1;i++)//²éÑ¯Ëù³öÅÆµÄÕÅÊı
+	for (i=0;cards[i]>-1;i++)//æŸ¥è¯¢æ‰€å‡ºç‰Œçš„å¼ æ•°
 		card_num++;
 
-	for(i=4;i>0;i--)//ÏÈÕÒ³öÒ»ÑùµÄËÄÕÅÅÆ£¬ÈôÓĞÔòĞ´Èësortcards¡¾¡¿ÖĞ£¬È»ºóÔÙÑ°ÕÒÈıÕÅµÄ£¬Ò»´ÎÀàÍÆ	  
+	for(i=4;i>0;i--)//å…ˆæ‰¾å‡ºä¸€æ ·çš„å››å¼ ç‰Œï¼Œè‹¥æœ‰åˆ™å†™å…¥sortcardsã€ã€‘ä¸­ï¼Œç„¶åå†å¯»æ‰¾ä¸‰å¼ çš„ï¼Œä¸€æ¬¡ç±»æ¨	  
 	{
 		fitcount = 1;  
 		for(j=0;j<card_num;j++)
@@ -375,25 +376,25 @@ void mainsort(int cards[])
 					{  
 						sortcards[sorted++]=cards[j-i+1+k];
 					} 
-					jilu[JL++]=sortcards[sorted-1];//·ÀÖ¹ÒÑ¾­ÅÅÁĞ¹ıÈıÕÅµÄÅÆ£¬ÔÙ²Î¼Ó¶şÕÅµÄÅÅÁĞ
+					jilu[JL++]=sortcards[sorted-1];//é˜²æ­¢å·²ç»æ’åˆ—è¿‡ä¸‰å¼ çš„ç‰Œï¼Œå†å‚åŠ äºŒå¼ çš„æ’åˆ—
 					fitcount=1;  
 				}       
 			}  
 		}
 	}
 	sortcards[card_num]=-1;
-	for (l=0;l<=card_num;l++)//½«ÅÅÁĞºÃµÄÅÆ£¬¸²¸ÇÔÚÔ­À´µÄÅÆÉÏÃæ	
+	for (l=0;l<=card_num;l++)//å°†æ’åˆ—å¥½çš„ç‰Œï¼Œè¦†ç›–åœ¨åŸæ¥çš„ç‰Œä¸Šé¢	
 		cards[l]=sortcards[l];
 } 
 
 
-/*½«´«ÈëµÄÊı×é´ÓĞ¡µ½´óÅÅĞò
-	@param£ºint cards[] ´«ÈëµÄÊı×é
+/*å°†ä¼ å…¥çš„æ•°ç»„ä»å°åˆ°å¤§æ’åº
+	@paramï¼šint cards[] ä¼ å…¥çš„æ•°ç»„
 */
 void pokersort(int cards[])
 {
 	int i,j;
-	int temp;//½»»»ÖµµÄÖĞ¼ä±äÁ¿
+	int temp;//äº¤æ¢å€¼çš„ä¸­é—´å˜é‡
 
 	for(i=0;cards[i]>=0;i++)
 	{
@@ -408,6 +409,10 @@ void pokersort(int cards[])
 }
 
 
+/*
+	ç¡®å®šåœ°ä¸»æ‰€å‡ºç‰Œå‹
+	@paraï¼šint nCardsArr[] å·²å‡ºç‰Œæ•°ç»„
+*/
 int  cardtype(int nCardsArr[])
 {
 	int i = 0;
@@ -417,70 +422,70 @@ int  cardtype(int nCardsArr[])
 	pokersort(nCardsArr);
 	mainsort(nCardsArr);
 	
-	for (i=0;nCardsArr[i]>-1;i++)//²éÑ¯Ëù³öÅÆµÄÕÅÊı
+	for (i=0;nCardsArr[i]>-1;i++)//æŸ¥è¯¢æ‰€å‡ºç‰Œçš„å¼ æ•°
 		nLength++;
 	//cout<<"cards"<<nCardsArr[0]<<" "<<nCardsArr[1]<<" "<<nCardsArr[2];
-	//³öµÄÅÆÕÅÊıÎªÁã
+	//å‡ºçš„ç‰Œå¼ æ•°ä¸ºé›¶
 	if (nLength == 0)
 		return 0;
 
-	//»ğ¼ı
-	if (nLength == 2 && nCardsArr[0] == 52 && nCardsArr[1] == 53)//ÅÆµÄÕÅÊıÎª¶şÇÒÅÆÎª´óÍõºÍĞ¡Íõ
+	//ç«ç®­
+	if (nLength == 2 && nCardsArr[0] == 52 && nCardsArr[1] == 53)//ç‰Œçš„å¼ æ•°ä¸ºäºŒä¸”ç‰Œä¸ºå¤§ç‹å’Œå°ç‹
 		return 1;
 
-	//Õ¨µ¯
-	if (nLength == 4 	//ÅÆµÄÕÅÊıÎªËÄÇĞËÄÕÅÅÆµÄµãÊıÏàµÈ
+	//ç‚¸å¼¹
+	if (nLength == 4 	//ç‰Œçš„å¼ æ•°ä¸ºå››åˆ‡å››å¼ ç‰Œçš„ç‚¹æ•°ç›¸ç­‰
 		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4 && nCardsArr[2]/4 == nCardsArr[3]/4)
 		return 2;
 	/************************************************************************/
-	/* Èç¹ûĞèÒªÔÊĞíÈç33334444ÅÆĞÍ¿ÉÒÔ½«ÏÂÁĞ×¢ÊÍÈ¥µô                                                                     */
+	/* å¦‚æœéœ€è¦å…è®¸å¦‚33334444ç‰Œå‹å¯ä»¥å°†ä¸‹åˆ—æ³¨é‡Šå»æ‰                                                                     */
 	/************************************************************************/
 // 	if (nLength == 8
 // 		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4 && nCardsArr[2]/4 == nCardsArr[3]/4
-// 		&& nCardsArr[3]/4+1 == nCardsArr[4]/4	&& nCardsArr[7]/4 != 12//µÚËÄÕÅÅÆÓëµÚÎåÕÅÅÆµãÊıÏà²îÒ»ÇÒ×î´óµÄÅÆ²»Îª¶ş
+// 		&& nCardsArr[3]/4+1 == nCardsArr[4]/4	&& nCardsArr[7]/4 != 12//ç¬¬å››å¼ ç‰Œä¸ç¬¬äº”å¼ ç‰Œç‚¹æ•°ç›¸å·®ä¸€ä¸”æœ€å¤§çš„ç‰Œä¸ä¸ºäºŒ
 // 		&& nCardsArr[4]/4 == nCardsArr[5]/4 && nCardsArr[5]/4 == nCardsArr[6]/4 && nCardsArr[6]/4 == nCardsArr[7]/4)
 // 		return 2;
 // 	if (nLength == 12
 // 		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4 && nCardsArr[2]/4 == nCardsArr[3]/4
-// 		&& nCardsArr[3]/4+1 == nCardsArr[4]/4 && nCardsArr[11]/4 != 12	//µÚËÄÕÅÅÆÓëµÚÎåÕÅÅÆµãÊıÏà²îÒ»ÇÒ×î´óµÄÅÆ²»Îª¶ş
+// 		&& nCardsArr[3]/4+1 == nCardsArr[4]/4 && nCardsArr[11]/4 != 12	//ç¬¬å››å¼ ç‰Œä¸ç¬¬äº”å¼ ç‰Œç‚¹æ•°ç›¸å·®ä¸€ä¸”æœ€å¤§çš„ç‰Œä¸ä¸ºäºŒ
 // 		&& nCardsArr[4]/4 == nCardsArr[5]/4 && nCardsArr[5]/4 == nCardsArr[6]/4 && nCardsArr[6]/4 == nCardsArr[7]/4
 // 		&& nCardsArr[7]/4+1 == nCardsArr[8]/4
 // 		&& nCardsArr[8]/4 == nCardsArr[9]/4 && nCardsArr[9]/4 == nCardsArr[10]/4 && nCardsArr[10]/4 == nCardsArr[11]/4)
 // 		return 2;
 
-	//µ¥ÅÆ
-	if (nLength == 1)	//ÅÆµÄÕÅÊıÎªÒ»
+	//å•ç‰Œ
+	if (nLength == 1)	//ç‰Œçš„å¼ æ•°ä¸ºä¸€
 		return 3;
 
-	//¶ÔÅÆ
-	if (nLength == 2										//ÅÆµÄÕÅÊıÎª¶ş 
-		&& nCardsArr[0]/4 == nCardsArr[1]/4)	//Á½ÕÅÅÆµãÊıÏàÍ¬ 
+	//å¯¹ç‰Œ
+	if (nLength == 2										//ç‰Œçš„å¼ æ•°ä¸ºäºŒ 
+		&& nCardsArr[0]/4 == nCardsArr[1]/4)	//ä¸¤å¼ ç‰Œç‚¹æ•°ç›¸åŒ 
 		return 4;
 
-	//ÈıÁ¬
-	if(nLength == 3																							    //ÅÆµÄÕÅÊıÎªÈı
-		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4)	//ÈıÕÅÅÆµãÊıÏàÍ¬ 
+	//ä¸‰è¿
+	if(nLength == 3																							    //ç‰Œçš„å¼ æ•°ä¸ºä¸‰
+		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4)	//ä¸‰å¼ ç‰Œç‚¹æ•°ç›¸åŒ 
 		return 5;
 
-	//Èı´øÒ»
-	if (nLength == 4																								//ÅÆµÄÕÅÊıÎªËÄ
-		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4	//Ç°ÈıÕÅÅÆµãÊıÏàÍ¬ 
-		&& nCardsArr[3]/4!=nCardsArr[1]/4)															    //µÚËÄÕÅÅÆÓëÇ°ÈıÕÅÅÆ²»Í¬µã	
+	//ä¸‰å¸¦ä¸€
+	if (nLength == 4																								//ç‰Œçš„å¼ æ•°ä¸ºå››
+		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4	//å‰ä¸‰å¼ ç‰Œç‚¹æ•°ç›¸åŒ 
+		&& nCardsArr[3]/4!=nCardsArr[1]/4)															    //ç¬¬å››å¼ ç‰Œä¸å‰ä¸‰å¼ ç‰Œä¸åŒç‚¹	
 		return 6;
 
-	//Èı´ø¶ş
+	//ä¸‰å¸¦äºŒ
 	if (nLength == 5 
-		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4	//Ç°ÈıÕÅÅÆµãÊıÏàÍ¬ 
-		&& nCardsArr[3]/4 == nCardsArr[4]/4	)															//ºóÁ½ÕÅÅÆµãÊıÏàÍ¬
+		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4	//å‰ä¸‰å¼ ç‰Œç‚¹æ•°ç›¸åŒ 
+		&& nCardsArr[3]/4 == nCardsArr[4]/4	)															//åä¸¤å¼ ç‰Œç‚¹æ•°ç›¸åŒ
 		return 6;
 
-	//µ¥Ë³
+	//å•é¡º
 	int nFlagOfSingleShun = 1;
 	for (i=0;i<nLength-1;i++)
 	{
-		if (nCardsArr[i]/4 == nCardsArr[i+1]/4-1	//Ç°Ò»ÕÅÅÆÓëºóÒ»ÕÅÅÆµãÊıÏà²îÒ»
-			&& nLength>=5								//ÅÆµÄ³¤¶ÈĞè´óÓÚµÈÓÚÎå
-			&& nCardsArr[nLength-1]<48)			//ÅÆµÄ×î´óµãÊı²»ÄÜ³¬¹ıA£¨¼´²»ÄÜÎª¶ş£¬Ğ¡Íõ£¬´óÍõ£©														
+		if (nCardsArr[i]/4 == nCardsArr[i+1]/4-1	//å‰ä¸€å¼ ç‰Œä¸åä¸€å¼ ç‰Œç‚¹æ•°ç›¸å·®ä¸€
+			&& nLength>=5								//ç‰Œçš„é•¿åº¦éœ€å¤§äºç­‰äºäº”
+			&& nCardsArr[nLength-1]<48)			//ç‰Œçš„æœ€å¤§ç‚¹æ•°ä¸èƒ½è¶…è¿‡Aï¼ˆå³ä¸èƒ½ä¸ºäºŒï¼Œå°ç‹ï¼Œå¤§ç‹ï¼‰														
 			continue;
 		else
 		{
@@ -491,19 +496,19 @@ int  cardtype(int nCardsArr[])
 	if (nFlagOfSingleShun)
 		return 7;
 
-	//Ë«Ë³
+	//åŒé¡º
 	nFlag = 0;
-	//ÅÆµÄÕÅÊıĞè´óÓÚµÈÓÚÁùÇÒÎªÅ¼Êı£¬×îºóÒ»ÕÅÅÆµÄ´óĞ¡ĞèĞ¡ÓÚ¶ş
+	//ç‰Œçš„å¼ æ•°éœ€å¤§äºç­‰äºå…­ä¸”ä¸ºå¶æ•°ï¼Œæœ€åä¸€å¼ ç‰Œçš„å¤§å°éœ€å°äºäºŒ
 	if (nLength>=6 && nLength%2 == 0 && nCardsArr[nLength-1]<48)   
 		for (i=0;i<nLength/2;i++)
 		{ 
-			if (nCardsArr[2*i]/4 == nCardsArr[2*i+1]/4)//Á¬ĞøÁ½ÕÅµãÊıÏàÍ¬
+			if (nCardsArr[2*i]/4 == nCardsArr[2*i+1]/4)//è¿ç»­ä¸¤å¼ ç‚¹æ•°ç›¸åŒ
 				nFlag++;
 			else
 				break;
-			if (i!=nLength/2-1 && nCardsArr[2*i]/4 == nCardsArr[2*(i+1)]/4-1)//Ïà¸ôÒ»ÕÅÅÆµÄÁ½ÅÆµãÊıÏà²îÒ»
+			if (i!=nLength/2-1 && nCardsArr[2*i]/4 == nCardsArr[2*(i+1)]/4-1)//ç›¸éš”ä¸€å¼ ç‰Œçš„ä¸¤ç‰Œç‚¹æ•°ç›¸å·®ä¸€
 				nFlag++;
-			else//Èç¹ûÊÇ×îºóÁ½ÕÅÅÆ£¬ÔòÎŞĞèÔÙÊ¹ÆäÓëÏÂÁ½ÕÅÅÆÏà²îÒ»£¬×ÔÉíÎª¶ÔÅÆ¼´¿É
+			else//å¦‚æœæ˜¯æœ€åä¸¤å¼ ç‰Œï¼Œåˆ™æ— éœ€å†ä½¿å…¶ä¸ä¸‹ä¸¤å¼ ç‰Œç›¸å·®ä¸€ï¼Œè‡ªèº«ä¸ºå¯¹ç‰Œå³å¯
 				if (i == nLength/2-1)
 					nFlag++;
 				else
@@ -512,16 +517,16 @@ int  cardtype(int nCardsArr[])
 	if (nFlag == nLength)
 		return 8;
 
-	//ÈıË³
+	//ä¸‰é¡º
 	nFlag = 0;	
-	if (nLength>=6 && nLength%3 == 0)							//ÅÆµÄÕÅÊıĞè´óÓÚÁù,ÇÒÎªÈıµÄ±¶Êı
+	if (nLength>=6 && nLength%3 == 0)							//ç‰Œçš„å¼ æ•°éœ€å¤§äºå…­,ä¸”ä¸ºä¸‰çš„å€æ•°
 		for (i=0;i<nLength/3;i++)
-		{																				//Á¬ĞøµÄÈıÕÅÅÆÏàµÈ
+		{																				//è¿ç»­çš„ä¸‰å¼ ç‰Œç›¸ç­‰
 			if (nCardsArr[i*3]/4 == nCardsArr[i*3+1]/4 && nCardsArr[i*3+1]/4 == nCardsArr[i*3+2]/4)
 				nFlag++;
 			else 
 				break;
-			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//Ïà¸ôÁ½ÕÅÅÆµÄÁ½ÅÆµãÊıÏà²îÒ»,ÇÒ²»Îª×îºóÁ½ÕÅÅÆ
+			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//ç›¸éš”ä¸¤å¼ ç‰Œçš„ä¸¤ç‰Œç‚¹æ•°ç›¸å·®ä¸€,ä¸”ä¸ä¸ºæœ€åä¸¤å¼ ç‰Œ
 				nFlag += 2;  
 			else
 				if (i == nLength/3-1)
@@ -532,16 +537,16 @@ int  cardtype(int nCardsArr[])
 	if (nFlag == nLength)
 		return 9;
 
-	//·É»ú´øµ¥
+	//é£æœºå¸¦å•
 	nFlag = 0;	
-	if (nLength>=8 && nLength%4 == 0)								//ÅÆµÄÕÅÊıĞè´óÓÚ°Ë£¬ÇÒÎªËÄµÄ±¶Êı
-		for (i=0;i<nLength/4;i++)											//³¤¶È³ıÒÔËÄ¼´Îª¹¹³ÉÈıË³µÄÅÆµÄÕÅÊı
-		{																				//Á¬ĞøµÄÈıÕÅÅÆÏàµÈ
+	if (nLength>=8 && nLength%4 == 0)								//ç‰Œçš„å¼ æ•°éœ€å¤§äºå…«ï¼Œä¸”ä¸ºå››çš„å€æ•°
+		for (i=0;i<nLength/4;i++)											//é•¿åº¦é™¤ä»¥å››å³ä¸ºæ„æˆä¸‰é¡ºçš„ç‰Œçš„å¼ æ•°
+		{																				//è¿ç»­çš„ä¸‰å¼ ç‰Œç›¸ç­‰
 			if (nCardsArr[i*3]/4 == nCardsArr[i*3+1]/4 && nCardsArr[i*3+1]/4 == nCardsArr[i*3+2]/4)
 				nFlag++;
 			else 
 				break;
-			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//Ïà¸ôÁ½ÕÅÅÆµÄÁ½ÅÆµãÊıÏà²îÒ»,ÇÒ²»Îª×îºóÁ½ÕÅÅÆ
+			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//ç›¸éš”ä¸¤å¼ ç‰Œçš„ä¸¤ç‰Œç‚¹æ•°ç›¸å·®ä¸€,ä¸”ä¸ä¸ºæœ€åä¸¤å¼ ç‰Œ
 				nFlag += 2;  
 			else
 				if (i == nLength/4-1)
@@ -549,21 +554,21 @@ int  cardtype(int nCardsArr[])
 				else 
 					break;
 		}			 
-	if ((nLength-nFlag) == nFlag/3)//ÈıË³ÅÆµÄ²»Í¬µãÊı¸öÊıÓëµ¥ÅÆÊıÄ¿ÏàÍ¬
+	if ((nLength-nFlag) == nFlag/3)//ä¸‰é¡ºç‰Œçš„ä¸åŒç‚¹æ•°ä¸ªæ•°ä¸å•ç‰Œæ•°ç›®ç›¸åŒ
 		return 10;
 
-	//·É»ú´øË«	
+	//é£æœºå¸¦åŒ	
 	nFlag = 0;	
 	int temp = 0;
 
-	if (nLength>=10 && nLength%5 == 0)							//ÅÆµÄÕÅÊıĞè´óÓÚÊ®,ÇÒÎªÎåµÄ±¶Êı
+	if (nLength>=10 && nLength%5 == 0)							//ç‰Œçš„å¼ æ•°éœ€å¤§äºå,ä¸”ä¸ºäº”çš„å€æ•°
 		for (i=0;i<nLength/5;i++)
-		{																				//Á¬ĞøµÄÈıÕÅÅÆÏàµÈ
+		{																				//è¿ç»­çš„ä¸‰å¼ ç‰Œç›¸ç­‰
 			if (nCardsArr[i*3]/4 == nCardsArr[i*3+1]/4 && nCardsArr[i*3+1]/4 == nCardsArr[i*3+2]/4)
 				nFlag++;
 			else 
 				break;
-			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//Ïà¸ôÁ½ÕÅÅÆµÄÁ½ÅÆµãÊıÏà²îÒ»,ÇÒ²»Îª×îºóÁ½ÕÅÅÆ
+			if (nCardsArr[i*3]/4 == nCardsArr[3*(i+1)]/4-1)	//ç›¸éš”ä¸¤å¼ ç‰Œçš„ä¸¤ç‰Œç‚¹æ•°ç›¸å·®ä¸€,ä¸”ä¸ä¸ºæœ€åä¸¤å¼ ç‰Œ
 				nFlag += 2;  
 			else
 				if (i == nLength/5-1)
@@ -571,10 +576,10 @@ int  cardtype(int nCardsArr[])
 				else 
 					break;
 		}			 
-	if ((nLength-nFlag)%2 == 0 && (nLength-nFlag)/2 == nFlag/3)//¶ÔÊıµÄ¸öÊıÓëÈıÕÅÅÆÏàÍ¬µÄµãÊıµÄ¸öÊıÏàµÈ
+	if ((nLength-nFlag)%2 == 0 && (nLength-nFlag)/2 == nFlag/3)//å¯¹æ•°çš„ä¸ªæ•°ä¸ä¸‰å¼ ç‰Œç›¸åŒçš„ç‚¹æ•°çš„ä¸ªæ•°ç›¸ç­‰
 	{  
-		temp = nFlag;//¼ÇÂ¼ÏÂÈıÕÅÅÆÏàÍ¬µÄ×ÜÅÆÊı
-		for (i=0;i<temp/3;i++)//ÈıÕÅÅÆÏàÍ¬µÄµãÊıµÄ¸öÊı¼´ÎªËùĞè¶ÔÊıµÄ¸öÊı
+		temp = nFlag;//è®°å½•ä¸‹ä¸‰å¼ ç‰Œç›¸åŒçš„æ€»ç‰Œæ•°
+		for (i=0;i<temp/3;i++)//ä¸‰å¼ ç‰Œç›¸åŒçš„ç‚¹æ•°çš„ä¸ªæ•°å³ä¸ºæ‰€éœ€å¯¹æ•°çš„ä¸ªæ•°
 		{
 			if (nCardsArr[2*i+temp]/4 == nCardsArr[2*i+1+temp]/4)
 				nFlag+=2;
@@ -583,49 +588,52 @@ int  cardtype(int nCardsArr[])
 	if (nFlag == nLength)
 		return 10;
 
-	//ËÄ´øÁ½µ¥
-	if (nLength == 6					//ÅÆµÄÕÅÊıÎªÁù
-		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4 && nCardsArr[2]/4 == nCardsArr[3]/4  //Ç°ËÄÕÅÅÆÏàµÈ
-		&& nCardsArr[4]/4 != nCardsArr[5]/4)//ºóÁ½ÕÅ²»ÄÜÎª¶ÔÅÆ
+	//å››å¸¦ä¸¤å•
+	if (nLength == 6					//ç‰Œçš„å¼ æ•°ä¸ºå…­
+		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4 && nCardsArr[2]/4 == nCardsArr[3]/4  //å‰å››å¼ ç‰Œç›¸ç­‰
+		&& nCardsArr[4]/4 != nCardsArr[5]/4)//åä¸¤å¼ ä¸èƒ½ä¸ºå¯¹ç‰Œ
 		return 11;
 
-	//ËÄ´øÁ½Ë«
-	if (nLength == 8					//ÅÆµÄÕÅÊıÎª°Ë
-		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4&& nCardsArr[2]/4 == nCardsArr[3]/4 //Ç°ËÄÕÅÅÆÏàµÈ
+	//å››å¸¦ä¸¤åŒ
+	if (nLength == 8					//ç‰Œçš„å¼ æ•°ä¸ºå…«
+		&& nCardsArr[0]/4 == nCardsArr[1]/4 && nCardsArr[1]/4 == nCardsArr[2]/4&& nCardsArr[2]/4 == nCardsArr[3]/4 //å‰å››å¼ ç‰Œç›¸ç­‰
 		&& nCardsArr[4]/4 == nCardsArr[5]/4 && nCardsArr[6]/4 == nCardsArr[7]/4
-		&& nCardsArr[7]!=53		 //×îºóÁ½ÕÅ²»ÄÜÎªÍõÕ¨
+		&& nCardsArr[7]!=53		 //æœ€åä¸¤å¼ ä¸èƒ½ä¸ºç‹ç‚¸
 		)
 		return 11;
 	return -1;
 }
 
-/*Êı¾İ³õÊ¼»¯*/
+/*æ•°æ®åˆå§‹åŒ–*/
 void init(struct ddz * dp)					
 {
 	int i,j;
-	dp->iStatus=1;							//³õÊ¼
-	dp->iBmax=0;							//½ĞÅÆ·ÖÊı
-	dp->iOTmax=0;							//×ÀÃæÅÆÊÖÊı
+	dp->iStatus=1;							//åˆå§‹
+	dp->iBmax=0;							//å«ç‰Œåˆ†æ•°
+	dp->iOTmax=0;							//æ¡Œé¢ç‰Œæ‰‹æ•°
 
 	dp->iBid[0] = 0;
 	dp->iBid[1] = 0;
 	dp->iBid[2] = 0;
-	for(i=0;i<162;i++)						//³õÊ¼»¯×ÀÃæÅÆ
+	for(i=0;i<162;i++)						//åˆå§‹åŒ–æ¡Œé¢ç‰Œ
         	for(j=0;j<21;j++)
 			dp->iOnTable[i][j]=-2;
-	for(i=0;i<21;i++)						//³õÊ¼»¯ÊÖÅÆ
+	for(i=0;i<21;i++)						//åˆå§‹åŒ–æ‰‹ç‰Œ
 		dp->iOnHand[i]=-2;
 
-	dp->HandCard[0]=17;    //³õÊ¼»¯ÊÖÅÆÊı
+	dp->HandCard[0]=17;    //åˆå§‹åŒ–æ‰‹ç‰Œæ•°
 	dp->HandCard[1]=17;
+	dp->iRestHandCard[0] = 17;
+	dp->iRestHandCard[1] = 17;
+	dp->iRestHandCard[2] = 17;
 }
 
 /*
-½«iToTable[]ÖĞµÄÊı×Ö×ª»¯ÎªsCommandOut[]×Ö·û´®
-@param£ºiToTable
-@param£ºsCommandOut
+å°†iToTable[]ä¸­çš„æ•°å­—è½¬åŒ–ä¸ºsCommandOut[]å­—ç¬¦ä¸²
+@paramï¼šiToTable
+@paramï¼šsCommandOut
 */
-void iTos(int iToTable[],char sCommandOut[])	//
+void iTos(int iToTable[], char sCommandOut[], struct ddz *dp)	
 {
 	int i;
 	char t[4];
@@ -653,6 +661,7 @@ void iTos(int iToTable[],char sCommandOut[])	//
                 t[1]=',';
                 t[2]='\0';
             }
+			dp->iRestHandCard[dp->cDir - 'A'];//ç©å®¶å‰©ä½™æ‰‹ç‰Œ--
             strcat(sCommandOut,t);
         }
     }
@@ -661,9 +670,9 @@ void iTos(int iToTable[],char sCommandOut[])	//
 }
 
 
-/*½«iToTable[]ÖĞµÄÅÆ´ÓiOnHand[]ÖĞÌŞ³ı
-	@param£ºint iOnHand[]
-	@param£ºint iToTable[]
+/*å°†iToTable[]ä¸­çš„ç‰Œä»iOnHand[]ä¸­å‰”é™¤
+	@paramï¼šint iOnHand[]
+	@paramï¼šint iToTable[]
 */
 void TakeOff(int iOnHand[],int iToTable[])	
 {
@@ -679,7 +688,7 @@ void TakeOff(int iOnHand[],int iToTable[])
 }
 
 
-/*°æ±¾ĞÅÏ¢*/
+/*ç‰ˆæœ¬ä¿¡æ¯*/
 void GetDou(struct ddz * dp)					
 {
 	int i;
@@ -690,34 +699,34 @@ void GetDou(struct ddz * dp)
 }
 
 
-/*ÂÖ´ÎĞÅÏ¢´¦Àíº¯Êı:
-	ÊäÈëINFO 1/4 1/9 9 2450 
-	Êä³öOK INFO
+/*è½®æ¬¡ä¿¡æ¯å¤„ç†å‡½æ•°:
+	è¾“å…¥INFO 1/4 1/9 9 2450 
+	è¾“å‡ºOK INFO
 */
 void GetInf(struct ddz * dp)					
 {
 	int a,b,c,d;
-	dp->iTurnNow    =dp->sCommandIn[ 5]-'0';	//µ±Ç°ÂÖ´Î
-	dp->iTurnTotal  =dp->sCommandIn[ 7]-'0';	//×ÜÂÖÊı
-	dp->iRoundNow   =dp->sCommandIn[ 9]-'0';	//µ±Ç°¾Ö´Î
-	dp->iRoundTotal =dp->sCommandIn[11]-'0';	//×Ü¾ÖÊı
-	dp->iLevelUp    =dp->sCommandIn[13]-'0';	//½ú¼¶Ñ¡ÊÖÊı
+	dp->iTurnNow    =dp->sCommandIn[ 5]-'0';	//å½“å‰è½®æ¬¡
+	dp->iTurnTotal  =dp->sCommandIn[ 7]-'0';	//æ€»è½®æ•°
+	dp->iRoundNow   =dp->sCommandIn[ 9]-'0';	//å½“å‰å±€æ¬¡
+	dp->iRoundTotal =dp->sCommandIn[11]-'0';	//æ€»å±€æ•°
+	dp->iLevelUp    =dp->sCommandIn[13]-'0';	//æ™‹çº§é€‰æ‰‹æ•°
 	a = dp->sCommandIn[15]-'0';
 	b = dp->sCommandIn[16]-'0';
 	c = dp->sCommandIn[17]-'0';
 	d = dp->sCommandIn[18]-'0';
-	dp->iScoreMax = a*1000+b*100+c*10+d;	//µÃ·Ö½çÏŞ
+	dp->iScoreMax = a*1000+b*100+c*10+d;	//å¾—åˆ†ç•Œé™
 	strcpy(dp->sCommandOut,"OK INFO");
 }
 
 
-/*µ×ÅÆĞÅÏ¢*/
+/*åº•ç‰Œä¿¡æ¯*/
 void GetDea(struct ddz * dp)		
 {
 	int i,j=0,t;
-	dp->cDir=dp->sCommandIn[5];     //»ñÈ¡±¾¼ÒAI·½Î»±àºÅ
+	dp->cDir=dp->sCommandIn[5];     //è·å–æœ¬å®¶AIæ–¹ä½ç¼–å·
 
-	//½«DEAL A0,4,5,¡­51,53ÖĞµÄÅÆÕûÀíµ½ ÊÖÖĞÅÆiOnHand[]ÖĞ
+	//å°†DEAL A0,4,5,â€¦51,53ä¸­çš„ç‰Œæ•´ç†åˆ° æ‰‹ä¸­ç‰ŒiOnHand[]ä¸­
 	dp->iOnHand[0]=0;
 	dp->iOnHand[1]=-1;
 	for(i=6;dp->sCommandIn[i]!='\0';i++)
@@ -737,20 +746,21 @@ void GetDea(struct ddz * dp)
 		dp->iOnHand[i]=dp->iOnHand[16-i];
 		dp->iOnHand[16-i]=t;
 	}
-	strcpy(dp->sCommandOut,"OK DEAL");  //»Ø¸´ĞÅÏ¢
-    pokersort(dp->iOnHand);  //iOnHand[]´ÓĞ¡µ½´óÅÅĞò
+	strcpy(dp->sCommandOut,"OK DEAL");  //å›å¤ä¿¡æ¯
+    pokersort(dp->iOnHand);  //iOnHand[]ä»å°åˆ°å¤§æ’åº
 
 }
 
 
-/*´¦Àíµ×ÅÆĞÅÏ¢*/
+/*å¤„ç†åº•ç‰Œä¿¡æ¯*/
 void GetLef(struct ddz * dp)			 
 {
+	int test = 0;//test
     int i,j=17;
-    dp->cLandlord=dp->sCommandIn[9];     //È·¶¨µØÖ÷·½
-	
+    dp->cLandlord=dp->sCommandIn[9];     //ç¡®å®šåœ°ä¸»æ–¹
+	dp->iRestHandCard[dp->cLandlord - 'A'] += 3;//åœ°ä¸»+3ç‰Œ
 	if(dp->sCommandIn[9]==dp->cDir)
-    {
+    {			
 		for(j=21;j>=1;j--)
 			dp->iOnHand[j]=dp->iOnHand[j-1];
 		dp->iOnHand[0]=0;
@@ -768,62 +778,67 @@ void GetLef(struct ddz * dp)
 	}
 	else 
 	{
-		int cmp = dp->cLandlord - dp->cDir;  //µØÖ÷ºÍ×Ô¼ºµÄÏà¶ÔÎ»ÖÃ£¬×óÊÖ0 ÓÒÊÖ1
-		if(cmp==-1||cmp==2)
-			dp->HandCard[0]+=3;  
-		else if(cmp==1||cmp==-2)
-			dp->HandCard[1]+=3;         //  ÊÖÅÆ¼ÆÊı+=3
+		
+		int cmp = dp->cLandlord - dp->cDir;  //åœ°ä¸»å’Œè‡ªå·±çš„ç›¸å¯¹ä½ç½®ï¼Œå·¦æ‰‹0 å³æ‰‹1
+		if (cmp == -1 || cmp == 2){
+			dp->HandCard[0]+=3;  			
+		}
+		else if (cmp == 1 || cmp == -2){
+			dp->HandCard[1]+=3;         //  æ‰‹ç‰Œè®¡æ•°+=3			
+		}
+		
 	}
+	//cout <<"åœ°ä¸»ï¼š"<<dp->cDir<<"ï¼›tset:"<<test<<"ï¼›"<< dp->iRestHandCard[0] << " ," << dp->iRestHandCard[1] << " ," << dp->iRestHandCard[2] << endl;
 	strcpy(dp->sCommandOut,"OK LEFTOVER");
-	pokersort(dp->iOnHand);					//iOnHand[]´ÓĞ¡µ½´óÅÅĞò
+	pokersort(dp->iOnHand);					//iOnHand[]ä»å°åˆ°å¤§æ’åº
 }
 
 
-/*GAMEOVER Ö¸Áî´¦Àí*/
+/*GAMEOVER æŒ‡ä»¤å¤„ç†*/
 void GetGam(struct ddz * dp)				
 {
-    dp->cWinner=dp->sCommandIn[9];			//Ê¤ÀûÕß·½Î»±àºÅ
+    dp->cWinner=dp->sCommandIn[9];			//èƒœåˆ©è€…æ–¹ä½ç¼–å·
 	strcpy(dp->sCommandOut,"OK GAMEOVER");
 	//cout<<dp->sCommandOut<<endl;
-	if(dp->iRoundNow==dp->iRoundTotal)		//µ±Ç°¾ÖÊıÓëÃ¿ÂÖ¾ÖÏàµÈÊ±
-		dp->iStatus=0;						//ÒıÇæ×´Ì¬±äÁ¿ÉèÎª½áÊø
-	else									//·ñÔò
-		init(dp);							//ÒıÇæ×´Ì¬±äÁ¿ÉèÎªÖØĞÂ¿ªÊ¼
+	if(dp->iRoundNow==dp->iRoundTotal)		//å½“å‰å±€æ•°ä¸æ¯è½®å±€ç›¸ç­‰æ—¶
+		dp->iStatus=0;						//å¼•æ“çŠ¶æ€å˜é‡è®¾ä¸ºç»“æŸ
+	else									//å¦åˆ™
+		init(dp);							//å¼•æ“çŠ¶æ€å˜é‡è®¾ä¸ºé‡æ–°å¼€å§‹
 }
 
 
-/*ÔÚarrToTableÖĞ·µ»ØËùÓĞ¿ÉĞĞĞòÁĞ -1¼ä¸ô,-2½áÊø
-	@param£ºint arrOnHand[]
-	@param£ºint arrOnTable[]
-	@param£ºint arrToTable[]
-	@param£ºint Hands[]
-	@param£ºstruct PaiXing *px
-	@param£ºint Line			ÕóÈİ
+/*åœ¨arrToTableä¸­è¿”å›æ‰€æœ‰å¯è¡Œåºåˆ— -1é—´éš”,-2ç»“æŸ
+	@paramï¼šint arrOnHand[]		æ‰‹ä¸­ç‰Œ
+	@paramï¼šint arrOnTable[]	å·²å‡ºç‰Œæ•°ç»„
+	@paramï¼šint arrToTable[]	ä¿å­˜è¦å‡ºçš„ç‰Œ
+	@paramï¼šint Hands[]			å¦å¤–ä¸¤å®¶çš„å‰©ä½™ç‰Œ
+	@paramï¼šstruct PaiXing *px
+	@paramï¼šint Line			é˜µå®¹1.ã€å†œ AI å†œã€‘ 2.ã€å‹ AI åœ°ã€‘ 3.ã€åœ° AI å‹ã€‘
 */
 void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct PaiXing *px,int Line)
 {
-	int nCardToPlay;//È·¶¨µØÖ÷Ëù³öµÄÅÆĞÍ
-	int nInsertCards = 0;//ÔÚarrToTableÖĞ²åÈë¿ÉÒÔ³öµÄÅÆ
-	int nNumToCompare;//¶Ô·½³öµÄÅÆµÄµÚÒ»ÕÅ£¬ÓÃÒÔ±È½Ï´óĞ¡
-	int nToTableCardsNum = 0;//´ò³öÈ¥µÄ³¤¶È
+	int nCardToPlay;//ç¡®å®šåœ°ä¸»æ‰€å‡ºçš„ç‰Œå‹ 1.ç«ç®­2.ç‚¸å¼¹3.å•ç‰Œ4.å¯¹ç‰Œ5.ä¸‰å¼ ç­–ç•¥6.ä¸‰å¸¦X 7.è¿ç»­å•é¡ºç­–ç•¥8.è¿ç»­åŒé¡ºç­–ç•¥9.è¿ç»­ä¸‰é¡ºç­–ç•¥10ä¸‰å¸¦ä¸€å•ç­–ç•¥11.å››å¸¦äºŒ12.æ”¾å¼ƒ
+	int nInsertCards = 0;//åœ¨arrToTableä¸­æ’å…¥å¯ä»¥å‡ºçš„ç‰Œ
+	int nNumToCompare;//å¯¹æ–¹å‡ºçš„ç‰Œçš„ç¬¬ä¸€å¼ ï¼Œç”¨ä»¥æ¯”è¾ƒå¤§å°
+	int nToTableCardsNum = 0;//æ‰“å‡ºå»çš„é•¿åº¦
 	int i = 0;
 	int j = 0;
-	if (arrOnTable[0]==-1 && arrOnTable[1]==-1 || arrOnTable[0]==-2)//Á½¼Ò·ÅÆú£¬µØÖ÷ËæÒâ
+	if (arrOnTable[0]==-1 && arrOnTable[1]==-1 || arrOnTable[0]==-2)//ä¸¤å®¶æ”¾å¼ƒï¼Œåœ°ä¸»éšæ„
 	{
 		nCardToPlay = 0;	
 	}
-	else  //LineÕóÈİÈ·¶¨ 1.¡¾Å© AI Å©¡¿ 2.¡¾ÓÑ AI µØ¡¿ 3.¡¾µØ AI ÓÑ¡¿
-		if(arrOnTable[0] == -1)//Ò»¼Ò·ÅÆú£¬ÅÆĞÍ¸ù¾İÓÒÊÖ¼ÒÅĞ¶¨
+	else  //Lineé˜µå®¹ç¡®å®š
+		if(arrOnTable[0] == -1)//ä¸€å®¶æ”¾å¼ƒï¼Œç‰Œå‹æ ¹æ®å³æ‰‹å®¶åˆ¤å®š
 		{
 			//cout<<arrOnTable[0]<<" "<<arrOnTable[1]<<" "<<arrOnTable[2]<<endl;
-			if(arrOnTable[1]>=0 && arrOnTable[1]<4 && arrOnTable[2]<0)
+			if(arrOnTable[1]>=0 && arrOnTable[1]<4 && arrOnTable[2]<0)//å¯¹æ–¹å‡º4ï¼Ÿ
 			{
-				nCardToPlay=3;  //mainsort¶ÑÕ»³öÎÊÌâ£¬¿Õ¼ä²»×ã±»¸´ÓÃ£¬ÔİÊ±°Ñ´Ë¶ÎÌØÊâ»¯
+				nCardToPlay=3;  //mainsortå †æ ˆå‡ºé—®é¢˜ï¼Œç©ºé—´ä¸è¶³è¢«å¤ç”¨ï¼Œæš‚æ—¶æŠŠæ­¤æ®µç‰¹æ®ŠåŒ–
 				nNumToCompare=0;
 			}
-			else if(Line==3&& (px->Time>3 ||(Hands[0]==1&& px->DanPai[1]<48 && px->DanPai[i]>=0) )) 
+			else if(Line==3&& (px->Time>3 ||(Hands[0]==1&& px->DanPai[1]<48 && px->DanPai[i]>=0) ))//æ‰‹æ•°>3æˆ–è€…(å·¦è¾¹åœ°ä¸»æŠ¥å•å¹¶ä¸”********** 
 			{
-				nCardToPlay=12;  //Èç¹ûµØÖ÷²»Òª
+				nCardToPlay=12;  //å¦‚æœåœ°ä¸»ä¸è¦
 			}
 			else
 			{
@@ -836,7 +851,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 					nNumToCompare = nNumToCompare/4;
 			}
 		}
-		else//ÅÆĞÍ¸ù¾İ×óÊÖ¼ÒÅĞ¶¨
+		else//ç‰Œå‹æ ¹æ®å·¦æ‰‹å®¶åˆ¤å®š
 		{
 			if(Line==2 && Hands[0]<=6 && Hands[1]>2) nCardToPlay=12;
 			else
@@ -852,8 +867,8 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 		bool over=0;
 		int arrOnHandCopy[22];
 		int n = 0;
-		int nDelCards = 0;//É¾³ıÊÖÅÆÖĞÖØ¸´µÄÅÆ£¬Ö»ÁôÏÂÆäÖĞµÄÒ»¸ö
-		int nCardsLength = 0;//¿´ÒÑÖªÁ¬ĞøµÄÅÆµÄÕÅÊıÊÇ·ñÓëÏ£ÍûµÄµ¥Ë³³¤¶ÈÏàÍ¬
+		int nDelCards = 0;//åˆ é™¤æ‰‹ç‰Œä¸­é‡å¤çš„ç‰Œï¼Œåªç•™ä¸‹å…¶ä¸­çš„ä¸€ä¸ª
+		int nCardsLength = 0;//çœ‹å·²çŸ¥è¿ç»­çš„ç‰Œçš„å¼ æ•°æ˜¯å¦ä¸å¸Œæœ›çš„å•é¡ºé•¿åº¦ç›¸åŒ
 		int nCanInsert = 0;
 		
 		switch(nCardToPlay)
@@ -862,10 +877,10 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			FreeToTable(px,arrToTable,nInsertCards,Line,Hands);
 			break;
 
-		case 1://»ğ¼ı			
+		case 1://ç«ç®­			
 			break;
 
-		case 2://Õ¨µ¯
+		case 2://ç‚¸å¼¹
 			if(px->ZhaDan[0][0]>=0)
 			{
 				int sign=0,cmp=55;
@@ -882,9 +897,9 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			}
 			break;
 
-		case 3://µ¥ÅÆ       £¨Ôİ´æÔÚÇ¿ÖÆ²ğÅÆÎÊÌâ  ¿¼ÂÇÒ»ÏÂÌ×Â·   ´ı¸Äing************************************************************
+		case 3://å•ç‰Œ       ï¼ˆæš‚å­˜åœ¨å¼ºåˆ¶æ‹†ç‰Œé—®é¢˜  è€ƒè™‘ä¸€ä¸‹å¥—è·¯   å¾…æ”¹ing************************************************************
 			if(px->DanPai[0]>=0 || px->DuiPai[0][0]>=0 || px->SanZhang[0][0]>=0)
-			{                  //¿¼ÂÇ²ğÅÆ
+			{                  //è€ƒè™‘æ‹†ç‰Œ
 				bool key=0;
 				for(i=0;px->DanPai[i]>=0;i++) if( px->DanPai[i]/4 > nNumToCompare && px->DanPai[i]/4-nNumToCompare<=4)
 				{
@@ -892,14 +907,14 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 					arrToTable[nInsertCards++] = -1;    
 					key=1;
 				}
-				//ÔÚLineÏÂÈ·¶¨ÊÇ·ñ±ØĞë³öÅÆ ´ó¹ıAµÄÈıÕÅ¿ÉÒÔ²ğ
+				//åœ¨Lineä¸‹ç¡®å®šæ˜¯å¦å¿…é¡»å‡ºç‰Œ å¤§è¿‡Açš„ä¸‰å¼ å¯ä»¥æ‹†
 				if(!key&&px->DanPai[0]<0&& (px->SanZhang[0][0]>=44&&px->Time<=3||
 				  (
 				    ((Line==1&&(Hands[0]<=2||Hands[1]<=2)) ||
 					 (Line==2&&Hands[1]<=2)||
 					 (Line==3&&Hands[0]<=2)) )  ))
 				{
-					key=0;  //ÖØÖÃÈ·ÈÏ»ñÈ¡¿É³öÅÆ
+					key=0;  //é‡ç½®ç¡®è®¤è·å–å¯å‡ºç‰Œ
 					for(i=0;px->SanZhang[i][0]>=0;i++) if( px->SanZhang[i][0]/4 > nNumToCompare )
 					{
 						arrToTable[nInsertCards++] = px->SanZhang[i][0];  
@@ -908,7 +923,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 						break;
 					}
 				}
-				//´ó¹ı2µÄ¶ÔÅÆ¿ÉÒÔ²ğ
+				//å¤§è¿‡2çš„å¯¹ç‰Œå¯ä»¥æ‹†
 				if(!key &&px->DanPai[0]<0&&( px->DuiPai[0][0]>=48 &&px->Time<=3||
 					((Line==1&&(Hands[0]<=2||Hands[1]<=2)) ||
 					 (Line==2&&Hands[1]<=2)||
@@ -924,8 +939,8 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			}
 			break;
 
-		case 4://¶ÔÅÆ   £¨Ôİ´æÔÚÇ¿ÖÆ²ğÅÆÎÊÌâ  ¿¼ÂÇÒ»ÏÂÌ×Â·   ´ı¸Äing************************************************************
-			if( nNumToCompare<12) // ×ÀÉÏµÄÅÆĞ¡ÓÚ¶Ô2
+		case 4://å¯¹ç‰Œ   ï¼ˆæš‚å­˜åœ¨å¼ºåˆ¶æ‹†ç‰Œé—®é¢˜  è€ƒè™‘ä¸€ä¸‹å¥—è·¯   å¾…æ”¹ing************************************************************
+			if( nNumToCompare<12) // æ¡Œä¸Šçš„ç‰Œå°äºå¯¹2
 			{
 				bool key=0;
 				for(i=0;px->DuiPai[i][0]>=0;i++) if(px->DuiPai[i][0]/4 > nNumToCompare &&
@@ -950,17 +965,17 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 						arrToTable[nInsertCards++] = -1;   
 						key=1;
 						break;
-					} //RECORD  (  ´ı¸Ä****************************************************************************************************8
+					} //RECORD  (  å¾…æ”¹****************************************************************************************************8
 				}
 			}
 			break;
 
-		case 5://ÈıÕÅ²ßÂÔ
+		case 5://ä¸‰å¼ ç­–ç•¥
 			if(px->SanZhang[0][0]>=0)
 			{
-				int Test[3]={55,-1,-1},key=0;   //key²é¿´ÊÇ·ñÄÜ³öÅÆ
+				int Test[3]={55,-1,-1},key=0;   //keyæŸ¥çœ‹æ˜¯å¦èƒ½å‡ºç‰Œ
 				for(i=0;px->SanZhang[i][0]>=0;i++)
-				{                                      //²ßÂÔ ´ÓËÑË÷ÅÆĞÍÖĞÑ°ÕÒ×îĞ¡¿É´òÅÆ
+				{                                      //ç­–ç•¥ ä»æœç´¢ç‰Œå‹ä¸­å¯»æ‰¾æœ€å°å¯æ‰“ç‰Œ
 					if(px->SanZhang[i][0]/4 > nNumToCompare && px->SanZhang[i][0]<Test[0])
 					{
 						Test[0] = px->SanZhang[i][0];
@@ -981,7 +996,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			}
 			break;
 
-		case 6: //Èı´øµ¥ Èı´ø¶Ô
+		case 6: //ä¸‰å¸¦å• ä¸‰å¸¦å¯¹
 			if(px->SanZhang[0][0]>=0 && (px->DuiPai[0][0]>=0 && px->DanPai[0]>=0))
 			{
 				int Test[3]={55,-1,-1},key=0;
@@ -1016,12 +1031,12 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			break;
 
 		case 7:
-			if(px->DanShun[0][0]>0)//Á¬Ğøµ¥Ë³²ßÂÔ
+			if(px->DanShun[0][0]>0)//7.è¿ç»­å•é¡ºç­–ç•¥
 			{
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
 				//nToTableCardsNum = count(arrOnTable);
 				for(i=0;px->DanShun[i][0]>0;i++)
-				{                                 //³¤¶ÈÏàµÈ ÅÆÖµĞ¡µÄÓÅÏÈ
+				{                                 //é•¿åº¦ç›¸ç­‰ ç‰Œå€¼å°çš„ä¼˜å…ˆ
 					if(px->DanShun[i][0]==nToTableCardsNum && 
 						px->DanShun[i][1]/4 > nNumToCompare && px->DanShun[i][1]/4 < cmp/4)
 					{
@@ -1031,10 +1046,10 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 					}
 				}
 				if(!key1)
-				{                  //Èç¹ûÃ»ÕÒµ½³¤¶ÈÏàµÈµÄ
+				{                  //å¦‚æœæ²¡æ‰¾åˆ°é•¿åº¦ç›¸ç­‰çš„
 					for(i=0;px->DanShun[i][0]>0;i++)
-					{                                 //³¤¶ÈÏàµÈ ÅÆÖµĞ¡µÄÓÅÏÈ
-						if(px->DanShun[i][0] > nToTableCardsNum )   //¿¼ÂÇ²ğÅÆ
+					{                                 //é•¿åº¦ç›¸ç­‰ ç‰Œå€¼å°çš„ä¼˜å…ˆ
+						if(px->DanShun[i][0] > nToTableCardsNum )   //è€ƒè™‘æ‹†ç‰Œ
 							for(j=1; j<= px->DanShun[i][0]-nToTableCardsNum + 1 ;j++)
 							{   //1~5 = 2~6 = 6-5+1
 								if(px->DanShun[i][j]/4 > nNumToCompare && 
@@ -1063,7 +1078,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			break;
 
 		case 8:
-			if(px->ShS[0][0]>0)//Á¬ĞøË«Ë³²ßÂÔ
+			if(px->ShS[0][0]>0)//è¿ç»­åŒé¡ºç­–ç•¥
 			{
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
 				nToTableCardsNum = count(arrOnTable);
@@ -1110,7 +1125,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			break;
 
 		case 9:
-			if(px->SaS[0][0]>0)//Á¬ĞøÈıË³²ßÂÔ
+			if(px->SaS[0][0]>0)//è¿ç»­ä¸‰é¡ºç­–ç•¥
 			{
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
 				nToTableCardsNum = count(arrOnTable);
@@ -1158,12 +1173,12 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			break;
 
 		case 10:
-			if(px->SaS[0][0]>0&&(px->DanPai[0]>=0||px->DuiPai[0][0]>=0))//Èı´øÒ»µ¥²ßÂÔ
+			if(px->SaS[0][0]>0&&(px->DanPai[0]>=0||px->DuiPai[0][0]>=0))//ä¸‰å¸¦ä¸€å•ç­–ç•¥
 			{
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
-				nToTableCardsNum = nToTableCardsNum / 4 * 3;  //¼ÇÂ¼ÈıÕÅµÄÊıÁ¿count(arrOnTable)
+				nToTableCardsNum = nToTableCardsNum / 4 * 3;  //è®°å½•ä¸‰å¼ çš„æ•°é‡count(arrOnTable)
 				if(px->DanPai[ nToTableCardsNum/3 -1 ]>=0 ||
-					px->DuiPai[ nToTableCardsNum/3 -1][0]>=0)  //È·¶¨ÄÜ¹»´ò³ö·ûºÏÌõ¼şµÄÅÆ
+					px->DuiPai[ nToTableCardsNum/3 -1][0]>=0)  //ç¡®å®šèƒ½å¤Ÿæ‰“å‡ºç¬¦åˆæ¡ä»¶çš„ç‰Œ
 				{
 					for(i=0;px->SaS[i][0]>0;i++)
 					{
@@ -1203,7 +1218,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 							arrToTable[nInsertCards++]=px->SaS[sign][i];
 					}	
 					if(key1||key2)
-					{  //µ¥ÕÅºÍ¶ÔÅÆË­µÄÊıÁ¿¶àÓÅÏÈ±»³ö£¬ÏàÍ¬¶Ô×ÓÏÈ
+					{  //å•å¼ å’Œå¯¹ç‰Œè°çš„æ•°é‡å¤šä¼˜å…ˆè¢«å‡ºï¼Œç›¸åŒå¯¹å­å…ˆ
 						int count1=0,count2=0;
 						for(i=0;px->DanPai[i]>=0;i++) count1++;
 						for(i=0;px->DuiPai[i][0]>=0;i++) count2++;
@@ -1225,7 +1240,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 
 			break;
 
-		case 11://ËÄ´ø¶ş
+		case 11://å››å¸¦äºŒ
 			if(px->ZhaDan[0][0]>=0&&(px->DanPai[1]>=0||px->DuiPai[1][0]>=0))
 			{
 				int sign=0,key=0,cmp=55;
@@ -1261,7 +1276,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 
 			}
 			break;
-		case 12:  //Õ½ÂÔĞÔ·ÅÆú
+		case 12:  //æˆ˜ç•¥æ€§æ”¾å¼ƒ
 			break;
 		}
 		arrToTable[nInsertCards++] = -1;

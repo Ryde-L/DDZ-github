@@ -1,37 +1,38 @@
-//#include "ddzv100.h"   2014 CAAI »ù´¡²ßÂÔ
+ï»¿//#include "ddzv100.h"   2014 CAAI åŸºç¡€ç­–ç•¥
 #include "ddzZSC.h"  
 #include<iostream>
+#include<fstream>
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
-//ÆÀ¹ÀĞÍ²ßÂÔ - £¨Î´ÓÃ£©  
-//Ë¼Â·¸¨Öú
+//è¯„ä¼°å‹ç­–ç•¥ - ï¼ˆæœªç”¨ï¼‰  
+//æ€è·¯è¾…åŠ©
 /*double CalCardsValue(int iPlaOnHand[])	
 {
 	int i;
-	double dSum = 100;			//¹ÀÖµ
+	double dSum = 100;			//ä¼°å€¼
 	for(i=0;iPlaOnHand[i]>=0;i++)
 	{
-		dSum=dSum-5;			//ÊÖÅÆÔ½ÉÙÔ½ºÃÃ»¶àÒ»ÕÅÅÆÓÅÊÆ¼õ5·Ö
+		dSum=dSum-5;			//æ‰‹ç‰Œè¶Šå°‘è¶Šå¥½æ²¡å¤šä¸€å¼ ç‰Œä¼˜åŠ¿å‡5åˆ†
 		if (i >= 1 && iPlaOnHand[i - 1] / 4 == iPlaOnHand[i] / 4)
-			dSum = dSum + 2;	//ÏàÁÚÁ½ÅÆÍ¬µã¼Ó2·Ö
+			dSum = dSum + 2;	//ç›¸é‚»ä¸¤ç‰ŒåŒç‚¹åŠ 2åˆ†
 		if (i >= 4 && iPlaOnHand[i - 4] / 4 <=7
 			&&iPlaOnHand[i - 4] / 4 + 1 ==iPlaOnHand[i - 3] / 4 
 			&&iPlaOnHand[i - 3] / 4 + 1 ==iPlaOnHand[i - 2] / 4
 			&&iPlaOnHand[i - 2] / 4 + 1 ==iPlaOnHand[i - 1] / 4 
 			&&iPlaOnHand[i - 1] / 4 + 1 ==iPlaOnHand[i] / 4)
-			dSum = dSum + 6;	//2ÒÔÏÂÏàÁÚÎåÅÆµ¥Ë³¼Ó6·Ö
+			dSum = dSum + 6;	//2ä»¥ä¸‹ç›¸é‚»äº”ç‰Œå•é¡ºåŠ 6åˆ†
 	}
 	return dSum; 
 }*/
 
 
-/*½ĞÅÆ¼ÆËãº¯Êı£¬Èç¹ûÓĞÈË½ĞÁËÈı·Ö£¬Ôò²»½Ğ¡£*/
+/*å«ç‰Œè®¡ç®—å‡½æ•°ï¼Œå¦‚æœæœ‰äººå«äº†ä¸‰åˆ†ï¼Œåˆ™ä¸å«ã€‚*/
 int CalBid(struct ddz * dp)				
 {
 	pokersort(dp->iOnHand);
-	int i,bid=1,Flag1=0,Flag2=0;  //³õÊ¼»¯bid=1£¬ ·ÀÖ¹ÁíÍâÁ½¼Ò¶¼²»½ĞµÄÇé¿öÏÂÓÎÏ·ÎŞ·¨½øĞĞ
-	int sign=dp->cDir-'A';        //¼ÇÂ¼Î»ÖÃ
+	int i,bid=1,Flag1=0,Flag2=0;  //åˆå§‹åŒ–bid=1ï¼Œ é˜²æ­¢å¦å¤–ä¸¤å®¶éƒ½ä¸å«çš„æƒ…å†µä¸‹æ¸¸æˆæ— æ³•è¿›è¡Œ
+	int sign=dp->cDir-'A';        //è®°å½•ä½ç½®
 	     
 	for(i=0;dp->iOnHand[i]>=0;i++)
 	{
@@ -39,91 +40,95 @@ int CalBid(struct ddz * dp)
 		else if(dp->iOnHand[i]==52||dp->iOnHand[i]==53) Flag2++;
 	}
 	if(Flag1==4||Flag2==2||(Flag1>=3&&Flag2==1))
-		bid=3;  //¶ÔÍõ »ò ËÄ¸ö2 »ò µ¥Íõ´øÈı¸öÒÔÉÏµÄ2 ½Ğ3·Ö
+		bid=3;  //å¯¹ç‹ æˆ– å››ä¸ª2 æˆ– å•ç‹å¸¦ä¸‰ä¸ªä»¥ä¸Šçš„2 å«3åˆ†
 	else if((Flag1>=3&&Flag1==0)||(Flag1==2&&Flag2==1))
-		bid=2;  //Èı¸öÒÔÉÏµÄ2 »ò µ¥Íõ´øÁ½¸ö2 ½Ğ2·Ö
+		bid=2;  //ä¸‰ä¸ªä»¥ä¸Šçš„2 æˆ– å•ç‹å¸¦ä¸¤ä¸ª2 å«2åˆ†
 	else if((Flag1==1&&Flag2==1)||(Flag1==2&&Flag2==0))
-		bid=1;  //µ¥Íõ´øÒ»¸ö2 »ò ¶Ô2 ½Ğ1·Ö
+		bid=1;  //å•ç‹å¸¦ä¸€ä¸ª2 æˆ– å¯¹2 å«1åˆ†
 	for(i=0;i<3;i++)
 		if(dp->iBid[i]>=3||(dp->iBid[i]==bid&&i!=sign))
-			bid=0;  //·ÀÖ¹½ĞÖØ·Ö
+			bid=0;  //é˜²æ­¢å«é‡åˆ†
     return bid;
 }
 
 
-/*³öÅÆ¼ÆËãº¯Êı  
-	¼ÆËãÒª³öµÄÅÆ´¢´æÖÁ Òª³öÅÆiToTable[]Êı×éÖĞ
+/*å‡ºç‰Œè®¡ç®—å‡½æ•°  
+	è®¡ç®—è¦å‡ºçš„ç‰Œå‚¨å­˜è‡³ è¦å‡ºç‰ŒiToTable[]æ•°ç»„ä¸­
 */
 void CalPla(struct ddz * dp)			//
 {
 	struct PaiXing dd, * px=&dd;
 	int i,j,k=0,iOnTableW[4000],iToTableW[4000];
 	
-	Lineup(dp); //ÕóÈİÈ·¶¨
+	Lineup(dp); //é˜µå®¹ç¡®å®š
 
 	for(i=dp->iOTmax-1;i>=0;i--)
 	{
 		for(j=0;dp->iOnTable[i][j]>=0;j++,k++)
-			iOnTableW[k]=dp->iOnTable[i][j];//¶şÎ¬Êı×é×ªÒ»Î¬
-		iOnTableW[k]=-1;//-1±íÊÖÊı¼ä¸ô
+			iOnTableW[k]=dp->iOnTable[i][j];//äºŒç»´æ•°ç»„è½¬ä¸€ç»´
+		iOnTableW[k]=-1;//-1è¡¨æ‰‹æ•°é—´éš”
 		k++;
 	}
-	iOnTableW[k]=-2;//-2±í½áÊø
+	iOnTableW[k]=-2;//-2è¡¨ç»“æŸ
 
-	Calcu(iOnTableW,dp);    //¼ÆËãÁíÍâÁ½¼ÒÊÖÅÆ		¡¾´Ë´¦º¯ÊıÄÚÈİÊÇ·ñÕıÈ·ÓĞ´ıÉÌÈ¶¡¿
-	pokersort(dp->iOnHand);//´ÓĞ¡µ½´óÅÅĞò
-	GameInit(dp->iOnHand,px);     //³õÊ¼»¯
-	Query(px);            	//ÊÖÅÆÀà·½°¸³õÊ¼»¯ºÍ·ÖÅÆ
-	AllHand(px);            //¼ÆËãÊÖÊı
-	helpdz(dp->iOnHand,iOnTableW,iToTableW,dp->HandCard,px,dp->WarLine);
+	Calcu(iOnTableW,dp);    //è®¡ç®—å¦å¤–ä¸¤å®¶æ‰‹ç‰Œ		ã€æ­¤å¤„å‡½æ•°å†…å®¹æ˜¯å¦æ­£ç¡®æœ‰å¾…å•†æ¦·ã€‘
+	pokersort(dp->iOnHand);//ä»å°åˆ°å¤§æ’åº
+	GameInit(dp->iOnHand,px);     //åˆå§‹åŒ–
+	Query(px);            	//æ‰‹ç‰Œç±»æ–¹æ¡ˆåˆå§‹åŒ–å’Œåˆ†ç‰Œ
+	AllHand(px);            //è®¡ç®—æ‰‹æ•°
+	//åŸhelpdz(dp->iOnHand,iOnTableW,iToTableW,dp->HandCard,px,dp->WarLine);
+	helpdz(dp->iOnHand, iOnTableW, iToTableW, dp->HandCard, px, dp->WarLine);
 	for(i=0;iToTableW[i]>=0;i++)
 		dp->iToTable[i]=iToTableW[i];
 	dp->iToTable[i]=-1;
 }
 
 
-/*´¦Àí½ĞÅÆĞÅÏ¢*/
+/*å¤„ç†å«ç‰Œä¿¡æ¯*/
 void GetBid(struct ddz * dp)					
 {	
-	if(dp->sCommandIn[4]=='W')					//Èç¹ûÊäÈëĞÅÏ¢ÎªBID WHAT
+	if(dp->sCommandIn[4]=='W')					//å¦‚æœè¾“å…¥ä¿¡æ¯ä¸ºBID WHAT
     {
         strcpy(dp->sCommandOut,"BID _0");
 		dp->sCommandOut[4]=dp->cDir;
 		dp->iBid[dp->cDir-'A']=CalBid(dp);
-		dp->sCommandOut[5]=dp->iBid[dp->cDir-'A']+'0';		//µ÷ÓÃ½ĞÅÆº¯Êı
+		dp->sCommandOut[5]=dp->iBid[dp->cDir-'A']+'0';		//è°ƒç”¨å«ç‰Œå‡½æ•°
 		dp->sCommandOut[6]='\0';
 	}
-	if(dp->sCommandIn[4]>='A'&&dp->sCommandIn[4]<='C')  //ÊäÈëĞÅÏ¢ÎªBID **
+	if(dp->sCommandIn[4]>='A'&&dp->sCommandIn[4]<='C')  //è¾“å…¥ä¿¡æ¯ä¸ºBID **
     {
 		dp->iBid[dp->sCommandIn[4]-'A']=dp->sCommandIn[5]-'0';
         strcpy(dp->sCommandOut,"OK BID");
-        //¿ÉÔÚ´Ë´¦Ôö¼ÓÊÕ¼¯½ĞÅÆĞÅÏ¢µÄÊı×é±ãÓÚ¼ÆËãÊ¹ÓÃ
+        //å¯åœ¨æ­¤å¤„å¢åŠ æ”¶é›†å«ç‰Œä¿¡æ¯çš„æ•°ç»„ä¾¿äºè®¡ç®—ä½¿ç”¨
     }
 
 }
 
 
-/*PLAY Ö¸Áî´¦Àíº¯Êı*/
+/*PLAY æŒ‡ä»¤å¤„ç†å‡½æ•°*/
 void GetPla(struct ddz * dp)					
 {
-    int a,b,i,j;
-	if(dp->sCommandIn[5]=='W')					//½ÓÊÕĞÅÏ¢ÎªPLAY WHAT£ºÓ¦µ÷ÓÃ³öÅÆ¼ÆËãº¯Êı¼ÆËã³öÅÆ
+	int iGeWei;//ä¸ªä½
+	int iShiWei;//åä½
+	int i, j;
+	if(dp->sCommandIn[5]=='W')					//æ¥æ”¶ä¿¡æ¯ä¸ºPLAY WHATï¼šåº”è°ƒç”¨å‡ºç‰Œè®¡ç®—å‡½æ•°è®¡ç®—å‡ºç‰Œ
     {
-        CalPla(dp);								//µ÷ÓÃ³öÅÆ¼ÆËãº¯Êı¼ÆËã³öÅÆ
+        CalPla(dp);								//è°ƒç”¨å‡ºç‰Œè®¡ç®—å‡½æ•°è®¡ç®—å‡ºç‰Œ
         strcpy(dp->sCommandOut,"PLAY _");
-		dp->sCommandOut[5]=dp->cDir;			//Êä³öÃüÁîµÄÔ¤±¸ĞÅÏ¢×¼±¸µ½sCommandOutÊı×é
-        iTos(dp->iToTable,dp->sCommandOut);		//Òª³öÅÆÊı×éiToTable[]ÖĞµÄÊı×Ö×ª»¯Îª×Ö·û²¢Á¬½Óµ½sCommandOutÖĞ
-        TakeOff(dp->iOnHand,dp->iToTable);		//°Ñ´ò³öµÄÅÆiToTable[] ´Ó ÊÖÖĞµÄÅÆiOnHand[] ÖĞÌŞ³ı
-        for(i=0;dp->iToTable[i]>=0;i++)			//°Ñ´ò³öµÄÅÆiToTable[] ´¢´æµ½ iOnTable[][]
+		dp->sCommandOut[5]=dp->cDir;			//è¾“å‡ºå‘½ä»¤çš„é¢„å¤‡ä¿¡æ¯å‡†å¤‡åˆ°sCommandOutæ•°ç»„
+        iTos(dp->iToTable,dp->sCommandOut,dp);		//è¦å‡ºç‰Œæ•°ç»„iToTable[]ä¸­çš„æ•°å­—è½¬åŒ–ä¸ºå­—ç¬¦å¹¶è¿æ¥åˆ°sCommandOutä¸­
+        TakeOff(dp->iOnHand,dp->iToTable);		//æŠŠæ‰“å‡ºçš„ç‰ŒiToTable[] ä» æ‰‹ä¸­çš„ç‰ŒiOnHand[] ä¸­å‰”é™¤
+        for(i=0;dp->iToTable[i]>=0;i++)			//æŠŠæ‰“å‡ºçš„ç‰ŒiToTable[] å‚¨å­˜åˆ° iOnTable[][]
         {
             dp->iOnTable[dp->iOTmax][i]=dp->iToTable[i];
         }
         dp->iOnTable[dp->iOTmax][i]=-1;
     }
-    else										//·ñÔòÊÕµ½ĞÅÏ¢ÎªÆäËüÍæ¼Ò³öÅÆ
+    else										//å¦åˆ™æ”¶åˆ°ä¿¡æ¯ä¸ºå…¶å®ƒç©å®¶å‡ºç‰Œ
     {
         
-        a=-1;   b=-1;   j=0;					//½«ÁíÍâÁ½·½Ëù³öµÄÅÆ´¢´æµ½iOnTableÊı×éÖĞ
+		iShiWei = -1;   iGeWei= -1;   j = 0;					//å°†å¦å¤–ä¸¤æ–¹æ‰€å‡ºçš„ç‰Œå‚¨å­˜åˆ°iOnTableæ•°ç»„ä¸­
+		//eg:PLAY C1,2,33,50
         if(dp->sCommandIn[6]=='-')
         {
             dp->iOnTable[dp->iOTmax][0]=-1;
@@ -133,70 +138,72 @@ void GetPla(struct ddz * dp)
             for(i=6;dp->sCommandIn[i-1]!='\0';i++)
             {
                 if(dp->sCommandIn[i]!=',' && dp->sCommandIn[i]!='\0')
-                {
-                    if(a==-1)
-                        a = dp->sCommandIn[i]-'0';
+                {//å‡ç‰Œæ·»åŠ åœ¨è¿™é‡Œ
+                    if(iShiWei==-1)
+                        iShiWei= dp->sCommandIn[i]-'0';
                     else
-                        b = dp->sCommandIn[i]-'0';
+                        iGeWei= dp->sCommandIn[i]-'0';
                 }
                 else
                 {
-                    if(b==-1)
-                        dp->iOnTable[dp->iOTmax][j] = a;
-                    else
-                        dp->iOnTable[dp->iOTmax][j] = a*10+b;
-
-                    a=-1;   b=-1;
+					
+                    if(iGeWei==-1)
+                        dp->iOnTable[dp->iOTmax][j] =iShiWei;
+					else											
+						dp->iOnTable[dp->iOTmax][j] = iShiWei * 10 + iGeWei;
+					
+					dp->iRestHandCard[dp->sCommandIn[5] - 'A']--;//å‰©ä½™æ‰‹ç‰Œæ•°-1
+                    iShiWei=-1;   iGeWei=-1;
                     j++;
                 }
             }
             dp->iOnTable[dp->iOTmax][j]=-1;
         }
-       //»Ø¸´ÊÕµ½
+       //å›å¤æ”¶åˆ°
 		strcpy(dp->sCommandOut,"OK PLAY");
     }
-    //µ±Ç°ÊÖÊı¼Ó1
+    //å½“å‰æ‰‹æ•°åŠ 1
     dp->iOTmax++;
 }
 
 
-/*ÊäÈëÖ¸Áî*/
+/*è¾“å…¥æŒ‡ä»¤*/
 void AIInput(struct ddz * dp)					
 {
 	cin.getline(dp->sCommandIn,80);
 }
 
 
-/*·ÖÎöÖ¸Áî*/
+/*åˆ†ææŒ‡ä»¤*/
 void AICal(struct ddz * dp)						
 {
 	char cShort[4];
 	for(int i=0;i<3;i++)
 		cShort[i]=dp->sCommandIn[i];
 	cShort[3]='\0';
-	if(strcmp(cShort,"DOU")==0)					//°æ±¾ĞÅÏ¢
+	if(strcmp(cShort,"DOU")==0)					//ç‰ˆæœ¬ä¿¡æ¯
 		GetDou(dp);
-	if(strcmp(cShort,"INF")==0)					//ÂÖ¾ÖĞÅÏ¢
+	if(strcmp(cShort,"INF")==0)					//è½®å±€ä¿¡æ¯
 		GetInf(dp);
-	if(strcmp(cShort,"DEA")==0)					//ÅÆÌ×ĞÅÏ¢
+	if(strcmp(cShort,"DEA")==0)					//ç‰Œå¥—ä¿¡æ¯
 		GetDea(dp);
-	if(strcmp(cShort,"BID")==0)					//½ĞÅÆ¹ı³Ì
+	if(strcmp(cShort,"BID")==0)					//å«ç‰Œè¿‡ç¨‹
 		GetBid(dp);
-	if(strcmp(cShort,"LEF")==0)					//µ×ÅÆĞÅÏ¢
+	if(strcmp(cShort,"LEF")==0)					//åº•ç‰Œä¿¡æ¯
 		GetLef(dp);
-	if(strcmp(cShort,"PLA")==0)					//³öÅÆ¹ı³Ì
+	if(strcmp(cShort,"PLA")==0)					//å‡ºç‰Œè¿‡ç¨‹
 		GetPla(dp);
-	if(strcmp(cShort,"GAM")==0)					//Ê¤¸ºĞÅÏ¢
+	if(strcmp(cShort,"GAM")==0)					//èƒœè´Ÿä¿¡æ¯
 		GetGam(dp);
 }
 
-/*Êä³öÖ¸Áî*/
+/*è¾“å‡ºæŒ‡ä»¤*/
 void AIOutput(struct ddz * dp)					
 {
 	cout<<dp->sCommandOut<<endl;
 }
 
-/*Ö¸Áî¿ÕÏĞ*/
+/*æŒ‡ä»¤ç©ºé—²*/
 void CalOther(struct ddz * dp)					
 {
 	dp->iVoid=0;
@@ -207,11 +214,11 @@ int main()
 {
 
 	
-	/*
-	struct ddz d, * dp=&d;
+	
+	/*struct ddz d, * dp=&d;
 	struct PaiXing p, *px = &p;
 	init(dp);
-	int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
+	/*int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
 					0, 0, 0, 0, 0, 0, 0, 0, 9,-1,
 					0, 0, 0, 0, 0, 0, 0, 8,-1 ,
 					0, 0, 0, 0, 0, 0, 0, -1,-2 };
@@ -225,10 +232,10 @@ int main()
 	px->ShouPai[7] = -1;
 	px->ShouPai[8] = -1;
 	px->ShouPai[9] = -1;
-
+	
 	ReSort(px->ShouPai);
 	pokersort(px->ShouPai);	
-
+	//===============================================test end
 	px->ZhaDan[0][0] = -2;
 	px->ZhaDan[1][0] = -2;
 	px->ZhaDan[2][0] = -2;
@@ -241,15 +248,59 @@ int main()
 	{
 		cout << px->ShouPai[i]<<endl;
 	}
-	while (1);*/
-	/*
-	init(dp);
-	struct ddz d, * dp=&d;
-	while(dp->iStatus!=0){
-		AIInput(dp);							//ÊäÈëĞÅÏ¢
-		AICal(dp);								//·ÖÎö²¢¼ÆËã
-		AIOutput(dp);							//Êä³öĞÅÏ¢
-		CalOther(dp);							//ÏĞÏ¾Ê±¼äÀûÓÃ
+	//===============================================test end
+	//A111,22 Bpass,66 Cpass,99
+	int i, j, k = 0, iOnTableW[4000], iToTableW[4000];
+	dp->iOnTable[0][0] = 1;
+	dp->iOnTable[0][1] = 1;
+	dp->iOnTable[0][2] = 1;
+	dp->iOnTable[0][3] = -1;
+	dp->iOnTable[1][0] = -1;
+	
+	dp->iOTmax = 2;
+	for (i = dp->iOTmax - 1; i >= 0; i--)
+	{
+		for (j = 0; dp->iOnTable[i][j] >= 0; j++, k++)
+			iOnTableW[k] = dp->iOnTable[i][j];//äºŒç»´æ•°ç»„è½¬ä¸€ç»´
+		iOnTableW[k] = -1;//-1è¡¨æ‰‹æ•°é—´éš”
+		k++;
 	}
-	return 0;*/
+	iOnTableW[k] = -2;//-2è¡¨ç»“æŸ
+	Calcu(iOnTableW, dp);    //è®¡ç®—å¦å¤–ä¸¤å®¶æ‰‹ç‰Œ		ã€æ­¤å¤„å‡½æ•°å†…å®¹æ˜¯å¦æ­£ç¡®æœ‰å¾…å•†æ¦·ã€‘
+
+	dp->iOnTable[2][0] = -1;
+	dp->iOnTable[3][0] = 2;
+	dp->iOnTable[3][1] = 2;
+	dp->iOnTable[3][2] = -1;
+	dp->iOnTable[4][0] = 6;
+	dp->iOnTable[4][1] = 6;
+	dp->iOnTable[4][2] = -1;
+	
+	dp->iOTmax = 5;
+	for (i = dp->iOTmax - 1; i >= 0; i--)
+	{
+		for (j = 0; dp->iOnTable[i][j] >= 0; j++, k++)
+			iOnTableW[k] = dp->iOnTable[i][j];//äºŒç»´æ•°ç»„è½¬ä¸€ç»´
+		iOnTableW[k] = -1;//-1è¡¨æ‰‹æ•°é—´éš”
+		k++;
+	}
+	iOnTableW[k] = -2;//-2è¡¨ç»“æŸ
+	Calcu(iOnTableW, dp);    //è®¡ç®—å¦å¤–ä¸¤å®¶æ‰‹ç‰Œ		ã€æ­¤å¤„å‡½æ•°å†…å®¹æ˜¯å¦æ­£ç¡®æœ‰å¾…å•†æ¦·ã€‘
+	
+	dp->iOnTable[6][0] = 9;
+	dp->iOnTable[6][1] = 9;
+	dp->iOnTable[6][2] = -1;
+	
+	
+	while (1);*/
+
+	struct ddz d, *dp = &d;
+	init(dp);		
+	while(dp->iStatus!=0){
+		AIInput(dp);							//è¾“å…¥ä¿¡æ¯
+		AICal(dp);								//åˆ†æå¹¶è®¡ç®—
+		AIOutput(dp);							//è¾“å‡ºä¿¡æ¯
+		CalOther(dp);							//é—²æš‡æ—¶é—´åˆ©ç”¨
+	}
+	return 0;
 }
