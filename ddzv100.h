@@ -1,6 +1,7 @@
 ﻿#include <stdio.h> //8.17敲定版
 #include <string.h>
 #include <iostream>
+#include <fstream>
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 using namespace std;
@@ -36,6 +37,7 @@ struct ddz
 };
 
 
+
 struct PaiXing{
 	int ShouPai[21];       //暂存手牌 
 	bool Rocket;             //有无火箭 1  52 53
@@ -52,6 +54,21 @@ struct PaiXing{
 	int Time;    //剩余手数
 };
 
+void log(char* s)
+{
+	ofstream fout;
+	fout.open("log.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	fout << s << endl;
+	fout.close();
+}
+void log(char* title, int s)
+{
+	ofstream fout;
+	fout.open("log.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	fout << title;
+	fout << s;
+	fout.close();
+}
 
 /*任意手出牌时 三顺>双顺>单顺>三张>对子>单张 */
 void FreeToTable(struct PaiXing *px,int ToTable[],int &Num,int Line,int Hands[]) 
@@ -412,6 +429,7 @@ void pokersort(int cards[])
 /*
 	确定地主所出牌型
 	@para：int nCardsArr[] 已出牌数组
+	@return：出牌类型
 */
 int  cardtype(int nCardsArr[])
 {
@@ -509,7 +527,7 @@ int  cardtype(int nCardsArr[])
 			if (i!=nLength/2-1 && nCardsArr[2*i]/4 == nCardsArr[2*(i+1)]/4-1)//相隔一张牌的两牌点数相差一
 				nFlag++;
 			else//如果是最后两张牌，则无需再使其与下两张牌相差一，自身为对牌即可
-				if (i == nLength/2-1)
+				if (i == nLength/2-1)//【************这个条件太简单，万一对方出错出成3344JJ，我方也出错**************】
 					nFlag++;
 				else
 					break;
@@ -661,11 +679,10 @@ void iTos(int iToTable[], char sCommandOut[], struct ddz *dp)
                 t[1]=',';
                 t[2]='\0';
             }
-			dp->iRestHandCard[dp->cDir - 'A'];//玩家剩余手牌--
+			dp->iRestHandCard[dp->cDir - 'A']--;//玩家剩余手牌--
             strcat(sCommandOut,t);
         }
     }
-
 	sCommandOut[strlen(sCommandOut)-1]='\0';
 }
 
@@ -815,12 +832,13 @@ void GetGam(struct ddz * dp)
 	@param：struct PaiXing *px
 	@param：int Line			阵容1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
 */
-void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct PaiXing *px,int Line)
+void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], int Line,struct PaiXing *px,struct ddz * dp )
 {
 	int nCardToPlay;//确定地主所出的牌型 1.火箭2.炸弹3.单牌4.对牌5.三张策略6.三带X 7.连续单顺策略8.连续双顺策略9.连续三顺策略10三带一单策略11.四带二12.放弃
 	int nInsertCards = 0;//在arrToTable中插入可以出的牌
 	int nNumToCompare;//对方出的牌的第一张，用以比较大小
-	int nToTableCardsNum = 0;//打出去的长度
+	int nToTableCardsNum = 0;//打出去的长度	
+	int anotherHands[2] = { Hands[(dp->cDir - 'A' - 1) % 3], Hands[(dp->cDir - 'A' + 1) % 3] };//左边玩家剩余手牌，右边玩家剩余手牌
 	int i = 0;
 	int j = 0;
 	if (arrOnTable[0]==-1 && arrOnTable[1]==-1 || arrOnTable[0]==-2)//两家放弃，地主随意
@@ -836,7 +854,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 				nCardToPlay=3;  //mainsort堆栈出问题，空间不足被复用，暂时把此段特殊化
 				nNumToCompare=0;
 			}
-			else if(Line==3&& (px->Time>3 ||(Hands[0]==1&& px->DanPai[1]<48 && px->DanPai[i]>=0) ))//手数>3或者(左边地主报单并且********** 
+			else if (Line == 3 && (px->Time>3 || (anotherHands[0] == 1 && px->DanPai[1]<48 && px->DanPai[i] >= 0)))//手数>3或者(左边地主报单并且********** 			
 			{
 				nCardToPlay=12;  //如果地主不要
 			}
@@ -844,28 +862,28 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			{
 				//pokersort(arrOnTable+1);
 				//mainsort(arrOnTable+1);
-				nCardToPlay = cardtype(arrOnTable+1);
-				nNumToCompare = arrOnTable[1];
-				nToTableCardsNum = count(arrOnTable+1);
+				nCardToPlay = cardtype(arrOnTable+1);//地主牌类型
+				nNumToCompare = arrOnTable[1];//右边玩家的第一张牌
+				nToTableCardsNum = count(arrOnTable+1);//计算打出多少牌
 				if (nNumToCompare < 52)
 					nNumToCompare = nNumToCompare/4;
 			}
-		}
+		}//左手放弃End
 		else//牌型根据左手家判定
 		{
-			if(Line==2 && Hands[0]<=6 && Hands[1]>2) nCardToPlay=12;
+			if (Line == 2 && anotherHands[0] <= 6 && anotherHands[1]>2) nCardToPlay = 12;//让友军，放弃出牌
 			else
 			{
-				nCardToPlay = cardtype(arrOnTable);
-				nNumToCompare = arrOnTable[0];
-				nToTableCardsNum = count(arrOnTable);
+				nCardToPlay = cardtype(arrOnTable);//地主牌类型
+				nNumToCompare = arrOnTable[0];//左边友军玩家的第一张牌
+				nToTableCardsNum = count(arrOnTable);//计算打出多少牌
 				if (nNumToCompare < 52)
 					nNumToCompare = nNumToCompare/4;
 			}
 		}
 
 		bool over=0;
-		int arrOnHandCopy[22];
+		//[未用]int arrOnHandCopy[22];
 		int n = 0;
 		int nDelCards = 0;//删除手牌中重复的牌，只留下其中的一个
 		int nCardsLength = 0;//看已知连续的牌的张数是否与希望的单顺长度相同
@@ -874,45 +892,47 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 		switch(nCardToPlay)
 		{
 		case 0:
-			FreeToTable(px,arrToTable,nInsertCards,Line,Hands);
+			FreeToTable(px, arrToTable, nInsertCards, Line, anotherHands);
 			break;
 
 		case 1://火箭			
 			break;
 
-		case 2://炸弹
-			if(px->ZhaDan[0][0]>=0)
+		case 2://炸弹【只有在对方出炸弹才出？】
+			if(px->ZhaDan[0][0]>=0)//自己有炸
 			{
 				int sign=0,cmp=55;
 				for(i=0;px->ZhaDan[i][0]>=0;i++) 
-					if(px->ZhaDan[i][0]>nNumToCompare &&
-						px->ZhaDan[i][0]<cmp)
+					if(px->ZhaDan[i][0]>nNumToCompare &&px->ZhaDan[i][0]<cmp)//选最小的炸
 					{
-						sign=i;
+						sign=i;//index
 						cmp=px->ZhaDan[i][0];
 					}
 				for(i=0;i<4;i++)
-					arrToTable[nInsertCards++] = px->ZhaDan[sign][i];  
+					arrToTable[nInsertCards++] = px->ZhaDan[sign][i]; //出牌 
 				arrToTable[nInsertCards++] = -1;   
 			}
 			break;
 
 		case 3://单牌       （暂存在强制拆牌问题  考虑一下套路   待改ing************************************************************
-			if(px->DanPai[0]>=0 || px->DuiPai[0][0]>=0 || px->SanZhang[0][0]>=0)
+			//【对方报警的时候牌应该从大到小打吧。。。】
+			if(px->DanPai[0]>=0 || px->DuiPai[0][0]>=0 || px->SanZhang[0][0]>=0)//若有有单，对或三张
 			{                  //考虑拆牌
-				bool key=0;
-				for(i=0;px->DanPai[i]>=0;i++) if( px->DanPai[i]/4 > nNumToCompare && px->DanPai[i]/4-nNumToCompare<=4)
+				bool key=0;//0拆牌 1可不用拆
+				for(i=0;px->DanPai[i]>=0;i++) if( px->DanPai[i]/4 > nNumToCompare && px->DanPai[i]/4-nNumToCompare<=4)//有单牌比对手牌<=4的出。死命不出牌的原因<=4
 				{
 					arrToTable[nInsertCards++] = px->DanPai[i];  
 					arrToTable[nInsertCards++] = -1;    
 					key=1;
 				}
-				//在Line下确定是否必须出牌 大过A的三张可以拆
+				//A或以上的三张可以拆******************************
+				//key=0 且 无单张 且 (三张大过A 且 自身手数3以下 或 ( 敌人报警) )
 				if(!key&&px->DanPai[0]<0&& (px->SanZhang[0][0]>=44&&px->Time<=3||
 				  (
-				    ((Line==1&&(Hands[0]<=2||Hands[1]<=2)) ||
-					 (Line==2&&Hands[1]<=2)||
-					 (Line==3&&Hands[0]<=2)) )  ))
+				    ((Line==1&&(anotherHands[0]<=2||anotherHands[1]<=2)) ||//自己是地主，对方有人报警
+					 (Line==2&&anotherHands[1]<=2)||//右边的地主报警
+					 (Line==3&&anotherHands[0]<=2)//左边地主报警
+					 ))))
 				{
 					key=0;  //重置确认获取可出牌
 					for(i=0;px->SanZhang[i][0]>=0;i++) if( px->SanZhang[i][0]/4 > nNumToCompare )
@@ -923,13 +943,13 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 						break;
 					}
 				}
-				//大过2的对牌可以拆
+				//2或以上的对牌可以拆
 				if(!key &&px->DanPai[0]<0&&( px->DuiPai[0][0]>=48 &&px->Time<=3||
-					((Line==1&&(Hands[0]<=2||Hands[1]<=2)) ||
-					 (Line==2&&Hands[1]<=2)||
-					 (Line==3&&Hands[0]<=2)) ))
+					((Line==1&&(anotherHands[0]<=2||anotherHands[1]<=2)) ||
+					 (Line==2&&anotherHands[1]<=2)||
+					 (Line==3&&anotherHands[0]<=2)) ))
 				{
-					for(i=0;px->DuiPai[i][0]>=0;i++) if( px->DuiPai[i][0]/4 > nNumToCompare && px->DuiPai[i][0]>47 )
+					for(i=0;px->DuiPai[i][0]>=0;i++) if( px->DuiPai[i][0]/4 > nNumToCompare && px->DuiPai[i][0]>47 )//48 2
 					{
 						arrToTable[nInsertCards++] = px->DuiPai[i][0];  
 						arrToTable[nInsertCards++] = -1;   
@@ -944,21 +964,22 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			{
 				bool key=0;
 				for(i=0;px->DuiPai[i][0]>=0;i++) if(px->DuiPai[i][0]/4 > nNumToCompare &&
-					px->DuiPai[i][0]/4 - nNumToCompare <=4)
+					px->DuiPai[i][0]/4 - nNumToCompare <=4)//对牌相差在4以内可以出
 				{
 					arrToTable[nInsertCards++] = px->DuiPai[i][0]; 
 					arrToTable[nInsertCards++] = px->DuiPai[i][1]; 
 					arrToTable[nInsertCards++] = -1; 
 					key=1;
 					break;
-				}
+				}//end for
+				//剩余三手以下可拆三张A或以上
 				if(!key && px->DuiPai[0][0]<0&&(px->SanZhang[0][0]>=44&&px->Time<=3||
 				  (
-				    ((Line==1&&(Hands[0]<=2||Hands[1]<=2)) ||
-					 (Line==2&&Hands[1]<=2)||
-					 (Line==3&&Hands[0]<=2)) )  ))
+				    ((Line==1&&(anotherHands[0]<=2||anotherHands[1]<=2)) ||
+					 (Line==2&&anotherHands[1]<=2)||
+					 (Line==3&&anotherHands[0]<=2)) )  ))
 				{
-					for(i=0;px->SanZhang[i][0]>=0;i++) if( px->SanZhang[i][0]/4 > nNumToCompare && px->SanZhang[i][0]>=44 )
+					for(i=0;px->SanZhang[i][0]>=0;i++) if( px->SanZhang[i][0]/4 > nNumToCompare && px->SanZhang[i][0]>=44 )//44 A
 					{
 						arrToTable[nInsertCards++] = px->SanZhang[i][0]; 
 						arrToTable[nInsertCards++] = px->SanZhang[i][1]; 
@@ -966,13 +987,14 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 						key=1;
 						break;
 					} //RECORD  (  待改****************************************************************************************************8
-				}
-			}
+				}//end if
+			}//end 
 			break;
 
 		case 5://三张策略
 			if(px->SanZhang[0][0]>=0)
 			{
+				log("only three",dp->iOTmax);
 				int Test[3]={55,-1,-1},key=0;   //key查看是否能出牌
 				for(i=0;px->SanZhang[i][0]>=0;i++)
 				{                                      //策略 从搜索牌型中寻找最小可打牌
@@ -996,9 +1018,10 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			}
 			break;
 
-		case 6: //三带单 三带对
-			if(px->SanZhang[0][0]>=0 && (px->DuiPai[0][0]>=0 && px->DanPai[0]>=0))
+		case 6: //三带单 三带对			
+			if(px->SanZhang[0][0]>=0 && (px->DuiPai[0][0]>=0 || px->DanPai[0]>=0))
 			{
+				log("case6牌数：", nToTableCardsNum);
 				int Test[3]={55,-1,-1},key=0;
 				for(i=0;px->SanZhang[i][0]>=0;i++)
 				{                                     
@@ -1012,18 +1035,33 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 						key=1;
 					}
 
+
 				}
+				log("case6 key值：", key);
 				if(key)
 				{     
-					arrToTable[nInsertCards++] = Test[0];
-					arrToTable[nInsertCards++] = Test[1];
-					arrToTable[nInsertCards++] = Test[2];
+
+					
+					
+					log("case6 DuiPai[0][0]值：", px->DuiPai[0][0]);
+					log("case6 px->DanPai[0]值：", px->DanPai[0]);
 					if(px->DuiPai[0][0]>=0 && nToTableCardsNum==5)
 					{
+						arrToTable[nInsertCards++] = Test[0];
+						arrToTable[nInsertCards++] = Test[1];
+						arrToTable[nInsertCards++] = Test[2];
 						arrToTable[nInsertCards++]=px->DuiPai[0][0];
 						arrToTable[nInsertCards++]=px->DuiPai[0][1];
+						log("three and two", dp->iOTmax);
 					}
-					else if(px->DanPai[0]>=0 && nToTableCardsNum==4) arrToTable[nInsertCards++]=px->DanPai[0];
+					else if (px->DanPai[0] >= 0 && nToTableCardsNum == 4)
+					{
+						arrToTable[nInsertCards++] = Test[0];
+						arrToTable[nInsertCards++] = Test[1];
+						arrToTable[nInsertCards++] = Test[2];
+						arrToTable[nInsertCards++] = px->DanPai[0];
+						log("three and one", dp->iOTmax);
+					}
 					arrToTable[nInsertCards++] = -1;
 				}
 			}
@@ -1038,7 +1076,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 				for(i=0;px->DanShun[i][0]>0;i++)
 				{                                 //长度相等 牌值小的优先
 					if(px->DanShun[i][0]==nToTableCardsNum && 
-						px->DanShun[i][1]/4 > nNumToCompare && px->DanShun[i][1]/4 < cmp/4)
+						px->DanShun[i][1]/4 > nNumToCompare && px->DanShun[i][1]/4 < cmp/4)//选最小的顺
 					{
 						sign=i;
 						cmp=px->DanShun[i][1];
@@ -1050,7 +1088,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 					for(i=0;px->DanShun[i][0]>0;i++)
 					{                                 //长度相等 牌值小的优先
 						if(px->DanShun[i][0] > nToTableCardsNum )   //考虑拆牌
-							for(j=1; j<= px->DanShun[i][0]-nToTableCardsNum + 1 ;j++)
+							for(j=1; j<= px->DanShun[i][0]-nToTableCardsNum + 1 ;j++)//每位检索直到找到大于目标
 							{   //1~5 = 2~6 = 6-5+1
 								if(px->DanShun[i][j]/4 > nNumToCompare && 
 									px->DanShun[i][j]/4 < cmp/4)
@@ -1064,12 +1102,12 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 							}
 					}
 				}
-				if(key1){
+				if(key1){//直接找到
 					for(i=1;i<=nToTableCardsNum;i++)
 						arrToTable[nInsertCards++] = px->DanShun[sign][i];
 					arrToTable[nInsertCards++]=-1;
 				}
-				else if(key2){          // 5 = 2~6 < 2+5
+				else if(key2){          //拆牌找到， 5 = 2~6 < 2+5
 					for(i=Num;i< nToTableCardsNum + Num ;i++)
 						arrToTable[nInsertCards++] = px->DanShun[sign][i];
 					arrToTable[nInsertCards++]=-1;
@@ -1080,19 +1118,20 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 		case 8:
 			if(px->ShS[0][0]>0)//连续双顺策略
 			{
+				log("双顺\n");
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
 				nToTableCardsNum = count(arrOnTable);
 				for(i=0;px->ShS[i][0]>0;i++)
 				{
 					if(px->ShS[i][0]*2==nToTableCardsNum &&
-						px->ShS[i][1]/4 > nNumToCompare && px->ShS[i][1]/4 < cmp/4)
+						px->ShS[i][1]/4 > nNumToCompare && px->ShS[i][1]/4 < cmp/4)//找最小的双顺
 					{
 						sign=i;
 						cmp=px->ShS[i][1];
 						key1=1;
 					}
 				}
-				if(!key1)
+				if(!key1)//没找到等长双顺，拆更长的双顺
 				{
 					for(i=0;px->ShS[i][0]>0;i++)
 					{  //1~6 = 3~8  = 8-6 + 1 = 5~10 = 10-6 +1
@@ -1132,14 +1171,14 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 				for(i=0;px->SaS[i][0]>0;i++)
 				{
 					if(px->SaS[i][0]*3==nToTableCardsNum &&
-						px->SaS[i][1]/4 > nNumToCompare && px->SaS[i][1]/4 < cmp/4)
+						px->SaS[i][1]/4 > nNumToCompare && px->SaS[i][1]/4 < cmp/4)//最小三顺
 					{
 						sign=i;
 						cmp=px->SaS[i][1];
 						key1=1;
 					}
 				}
-				if(!key1)
+				if(!key1)//没找到等长三顺，拆更长的三顺
 				{
 					for(i=0;px->SaS[i][0]>0;i++)
 					{  // 1~6=4~9=9-6+1=7~12=12-6+1 
@@ -1173,14 +1212,14 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 			break;
 
 		case 10:
-			if(px->SaS[0][0]>0&&(px->DanPai[0]>=0||px->DuiPai[0][0]>=0))//三带一单策略
+			if(px->SaS[0][0]>0&&(px->DanPai[0]>=0||px->DuiPai[0][0]>=0))//三带一单 策略，即飞机	
 			{
 				int key1=0,key2=0,sign=0,cmp=55,Num=1;
 				nToTableCardsNum = nToTableCardsNum / 4 * 3;  //记录三张的数量count(arrOnTable)
 				if(px->DanPai[ nToTableCardsNum/3 -1 ]>=0 ||
 					px->DuiPai[ nToTableCardsNum/3 -1][0]>=0)  //确定能够打出符合条件的牌
 				{
-					for(i=0;px->SaS[i][0]>0;i++)
+					for(i=0;px->SaS[i][0]>0;i++)//最小三顺
 					{
 						if(px->SaS[i][0]*3==nToTableCardsNum &&
 							px->SaS[i][1]/4 > nNumToCompare && px->SaS[i][1]/4 < cmp/4)
@@ -1190,7 +1229,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 							key1=1;
 						}
 					}
-					if(!key1)
+					if(!key1)//没找到，拆更长的三顺
 					{
 						for(i=0;px->SaS[i][0]>0;i++)
 						{  // 1~6=4~9=9-6+1=7~12=12-6+1 
@@ -1218,7 +1257,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 							arrToTable[nInsertCards++]=px->SaS[sign][i];
 					}	
 					if(key1||key2)
-					{  //单张和对牌谁的数量多优先被出，相同对子先
+					{  //单张和对牌谁的数量多优先被出，相同对子先		【对方带单或带对没判断？？】
 						int count1=0,count2=0;
 						for(i=0;px->DanPai[i]>=0;i++) count1++;
 						for(i=0;px->DuiPai[i][0]>=0;i++) count2++;
@@ -1246,7 +1285,7 @@ void helpdz(int arrOnHand[],int arrOnTable[],int arrToTable[],int Hands[],struct
 				int sign=0,key=0,cmp=55;
 				for(i=0;px->ZhaDan[i][0]>=0;i++)
 				{
-					if(px->ZhaDan[i][0]/4 > nNumToCompare && px->ZhaDan[i][0]<cmp)
+					if(px->ZhaDan[i][0]/4 > nNumToCompare && px->ZhaDan[i][0]<cmp)//最小炸弹
 					{
 						key=1;
 						cmp=px->ZhaDan[i][0];

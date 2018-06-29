@@ -470,7 +470,6 @@ void Calcu(int cards[],struct ddz *dp)
 void Lineup(struct ddz *dp)
 {                           
     //我的位置 cDir 地主的位置 cLandlord
-	int i;
 
 	if(dp->cDir==dp->cLandlord)     
 		dp->WarLine=1; //地主

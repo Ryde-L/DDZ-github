@@ -26,6 +26,29 @@
 	return dSum; 
 }*/
 
+void Log(char* s)
+{
+	ofstream fout;
+	fout.open("log.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	fout << s << endl;
+	fout.close();
+}
+void Log(char* title, char* s)
+{
+	ofstream fout;
+	fout.open("log.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+	fout << title << ":" << s << endl;
+	fout.close();
+}
+
+void Log(char* title, int s)
+{	
+		ofstream fout;
+		fout.open("log.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+		fout << title;
+		fout << s << endl;;
+		fout.close();	
+}
 
 /*叫牌计算函数，如果有人叫了三分，则不叫。*/
 int CalBid(struct ddz * dp)				
@@ -77,7 +100,7 @@ void CalPla(struct ddz * dp)			//
 	Query(px);            	//手牌类方案初始化和分牌
 	AllHand(px);            //计算手数
 	//原helpdz(dp->iOnHand,iOnTableW,iToTableW,dp->HandCard,px,dp->WarLine);
-	helpdz(dp->iOnHand, iOnTableW, iToTableW, dp->HandCard, px, dp->WarLine);
+	helpdz(dp->iOnHand, iOnTableW, iToTableW, dp->iRestHandCard, dp->WarLine, px, dp);
 	for(i=0;iToTableW[i]>=0;i++)
 		dp->iToTable[i]=iToTableW[i];
 	dp->iToTable[i]=-1;
@@ -211,96 +234,18 @@ void CalOther(struct ddz * dp)
 
 
 int main()										
-{
-
-	
-	
-	/*struct ddz d, * dp=&d;
-	struct PaiXing p, *px = &p;
-	init(dp);
-	/*int card[100] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10,-1,
-					0, 0, 0, 0, 0, 0, 0, 0, 9,-1,
-					0, 0, 0, 0, 0, 0, 0, 8,-1 ,
-					0, 0, 0, 0, 0, 0, 0, -1,-2 };
-	px->ShouPai[0] = -1;
-	px->ShouPai[1] = 20;
-	px->ShouPai[2] = 20;
-	px->ShouPai[3] = 20;
-	px->ShouPai[4] = 25;
-	px->ShouPai[5] = 25;
-	px->ShouPai[6] = 25;
-	px->ShouPai[7] = -1;
-	px->ShouPai[8] = -1;
-	px->ShouPai[9] = -1;
-	
-	ReSort(px->ShouPai);
-	pokersort(px->ShouPai);	
-	//===============================================test end
-	px->ZhaDan[0][0] = -2;
-	px->ZhaDan[1][0] = -2;
-	px->ZhaDan[2][0] = -2;
-	px->ZhaDan[3][0] = -2;
-	px->ZhaDan[4][0] = -2;
-	px->ZhaDan[5][0] = -2;
-	//cout << ThrP(3,px) << endl;
-	cout << ThirShun(5, px) << endl;
-	for (int i = 0; i < 10; i++)
-	{
-		cout << px->ShouPai[i]<<endl;
-	}
-	//===============================================test end
-	//A111,22 Bpass,66 Cpass,99
-	int i, j, k = 0, iOnTableW[4000], iToTableW[4000];
-	dp->iOnTable[0][0] = 1;
-	dp->iOnTable[0][1] = 1;
-	dp->iOnTable[0][2] = 1;
-	dp->iOnTable[0][3] = -1;
-	dp->iOnTable[1][0] = -1;
-	
-	dp->iOTmax = 2;
-	for (i = dp->iOTmax - 1; i >= 0; i--)
-	{
-		for (j = 0; dp->iOnTable[i][j] >= 0; j++, k++)
-			iOnTableW[k] = dp->iOnTable[i][j];//二维数组转一维
-		iOnTableW[k] = -1;//-1表手数间隔
-		k++;
-	}
-	iOnTableW[k] = -2;//-2表结束
-	Calcu(iOnTableW, dp);    //计算另外两家手牌		【此处函数内容是否正确有待商榷】
-
-	dp->iOnTable[2][0] = -1;
-	dp->iOnTable[3][0] = 2;
-	dp->iOnTable[3][1] = 2;
-	dp->iOnTable[3][2] = -1;
-	dp->iOnTable[4][0] = 6;
-	dp->iOnTable[4][1] = 6;
-	dp->iOnTable[4][2] = -1;
-	
-	dp->iOTmax = 5;
-	for (i = dp->iOTmax - 1; i >= 0; i--)
-	{
-		for (j = 0; dp->iOnTable[i][j] >= 0; j++, k++)
-			iOnTableW[k] = dp->iOnTable[i][j];//二维数组转一维
-		iOnTableW[k] = -1;//-1表手数间隔
-		k++;
-	}
-	iOnTableW[k] = -2;//-2表结束
-	Calcu(iOnTableW, dp);    //计算另外两家手牌		【此处函数内容是否正确有待商榷】
-	
-	dp->iOnTable[6][0] = 9;
-	dp->iOnTable[6][1] = 9;
-	dp->iOnTable[6][2] = -1;
-	
-	
-	while (1);*/
-
+{	
 	struct ddz d, *dp = &d;
 	init(dp);		
 	while(dp->iStatus!=0){
+		
 		AIInput(dp);							//输入信息
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息
 		CalOther(dp);							//闲暇时间利用
+		Log("左边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'-1]);
+		Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
+		Log("右边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'+1]);
 	}
 	return 0;
 }
