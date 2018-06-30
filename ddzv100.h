@@ -31,8 +31,7 @@ struct ddz
 	int iTurnNow;               //当前轮次
 	int iTurnTotal;             //总轮数
 
-	int HandCard[2];            //另外两家手中的剩余牌数
-	int iRestHandCard[3];		//剩余手牌
+	int iRestHandCard[3];		//三家的剩余手牌
 	int WarLine;                //阵容确定 1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
 };
 
@@ -639,8 +638,7 @@ void init(struct ddz * dp)
 	for(i=0;i<21;i++)						//初始化手牌
 		dp->iOnHand[i]=-2;
 
-	dp->HandCard[0]=17;    //初始化手牌数
-	dp->HandCard[1]=17;
+											//初始化手牌数
 	dp->iRestHandCard[0] = 17;
 	dp->iRestHandCard[1] = 17;
 	dp->iRestHandCard[2] = 17;
@@ -712,7 +710,7 @@ void GetDou(struct ddz * dp)
 	for(i=0; dp->sCommandIn[i]!='\0'; i++)
 		dp->sVer[i]=dp->sCommandIn[i];
 	dp->sVer[i]='\0';
-	strcpy(dp->sCommandOut,"ZSC_DDZ");
+	strcpy(dp->sCommandOut,"AuroraStudio_DDZ");
 }
 
 
@@ -737,7 +735,7 @@ void GetInf(struct ddz * dp)
 }
 
 
-/*底牌信息*/
+/*发牌信息*/
 void GetDea(struct ddz * dp)		
 {
 	int i,j=0,t;
@@ -765,7 +763,8 @@ void GetDea(struct ddz * dp)
 	}
 	strcpy(dp->sCommandOut,"OK DEAL");  //回复信息
     pokersort(dp->iOnHand);  //iOnHand[]从小到大排序
-
+	for (int i = 0; i < 21; i++)
+		log("\n牌：", dp->iOnHand[i]);
 }
 
 
@@ -791,21 +790,8 @@ void GetLef(struct ddz * dp)
 					dp->iOnHand[j]=dp->iOnHand[j-1];
 				dp->iOnHand[0]=0;
 			}
-		}
+		}		
 	}
-	else 
-	{
-		
-		int cmp = dp->cLandlord - dp->cDir;  //地主和自己的相对位置，左手0 右手1
-		if (cmp == -1 || cmp == 2){
-			dp->HandCard[0]+=3;  			
-		}
-		else if (cmp == 1 || cmp == -2){
-			dp->HandCard[1]+=3;         //  手牌计数+=3			
-		}
-		
-	}
-	//cout <<"地主："<<dp->cDir<<"；tset:"<<test<<"；"<< dp->iRestHandCard[0] << " ," << dp->iRestHandCard[1] << " ," << dp->iRestHandCard[2] << endl;
 	strcpy(dp->sCommandOut,"OK LEFTOVER");
 	pokersort(dp->iOnHand);					//iOnHand[]从小到大排序
 }
@@ -828,7 +814,7 @@ void GetGam(struct ddz * dp)
 	@param：int arrOnHand[]		手中牌
 	@param：int arrOnTable[]	已出牌数组
 	@param：int arrToTable[]	保存要出的牌
-	@param：int Hands[]			另外两家的剩余牌
+	@param：int Hands[]			三家剩余的剩余牌
 	@param：struct PaiXing *px
 	@param：int Line			阵容1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
 */

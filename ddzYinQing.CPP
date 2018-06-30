@@ -50,7 +50,7 @@ void Log(char* title, int s)
 		fout.close();	
 }
 
-/*叫牌计算函数，如果有人叫了三分，则不叫。*/
+/*叫牌计算函数，如果有人叫了三分，则不叫。****************有BUG***********************/
 int CalBid(struct ddz * dp)				
 {
 	pokersort(dp->iOnHand);
@@ -94,12 +94,10 @@ void CalPla(struct ddz * dp)			//
 	}
 	iOnTableW[k]=-2;//-2表结束
 
-	Calcu(iOnTableW,dp);    //计算另外两家手牌		【此处函数内容是否正确有待商榷】
 	pokersort(dp->iOnHand);//从小到大排序
 	GameInit(dp->iOnHand,px);     //初始化
 	Query(px);            	//手牌类方案初始化和分牌
 	AllHand(px);            //计算手数
-	//原helpdz(dp->iOnHand,iOnTableW,iToTableW,dp->HandCard,px,dp->WarLine);
 	helpdz(dp->iOnHand, iOnTableW, iToTableW, dp->iRestHandCard, dp->WarLine, px, dp);
 	for(i=0;iToTableW[i]>=0;i++)
 		dp->iToTable[i]=iToTableW[i];
@@ -114,8 +112,8 @@ void GetBid(struct ddz * dp)
     {
         strcpy(dp->sCommandOut,"BID _0");
 		dp->sCommandOut[4]=dp->cDir;
-		dp->iBid[dp->cDir-'A']=CalBid(dp);
-		dp->sCommandOut[5]=dp->iBid[dp->cDir-'A']+'0';		//调用叫牌函数
+		dp->iBid[dp->cDir-'A']=CalBid(dp);		//调用叫牌函数
+		dp->sCommandOut[5]=dp->iBid[dp->cDir-'A']+'0';		
 		dp->sCommandOut[6]='\0';
 	}
 	if(dp->sCommandIn[4]>='A'&&dp->sCommandIn[4]<='C')  //输入信息为BID **
@@ -232,7 +230,6 @@ void CalOther(struct ddz * dp)
 	dp->iVoid=0;
 }
 
-
 int main()										
 {	
 	struct ddz d, *dp = &d;
@@ -243,9 +240,9 @@ int main()
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息
 		CalOther(dp);							//闲暇时间利用
-		Log("左边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'-1]);
+		Log("左边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A'-1)%3]);
 		Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
-		Log("右边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'+1]);
+		Log("右边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A'+1)%3]);
 	}
 	return 0;
 }
