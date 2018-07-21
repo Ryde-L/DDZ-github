@@ -863,7 +863,7 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 		}//左手放弃End
 		else//牌型根据左手家判定
 		{
-			if (Line == 2 && anotherHands[0] <= 6 && anotherHands[1] > 2 && arrOnTable[0] >= 40) nCardToPlay = 12;//让友军，放弃出牌
+			if (Line == 2 && (anotherHands[0] <= 6 && anotherHands[1] > 2 || arrOnTable[0] >= 40 || cardtype(arrOnTable) == 2)) nCardToPlay = 12;//让友军，放弃出牌
 			else
 			{
 				nCardToPlay = cardtype(arrOnTable);//地主牌类型
@@ -921,9 +921,9 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 			//key=0 且 无单张 且 (三张大过A 且 自身手数3以下 或 ( 敌人报警) )
 			if (!key&&px->DanPai[0]<0 && (px->SanZhang[0][0] >= 44 && px->Time <= 3 ||
 				(
-				((Line == 1 && (anotherHands[0] <= 2 || anotherHands[1] <= 2)) ||//自己是地主，对方有人报警
-					(Line == 2 && anotherHands[1] <= 2) ||//右边的地主报警
-					(Line == 3 && anotherHands[0] <= 2)//左边地主报警
+				((Line == 1 && (anotherHands[0] <= 3 || anotherHands[1] <= 3)) ||//自己是地主，对方有人报警
+					(Line == 2 && anotherHands[1] <= 3) ||//右边的地主报警
+					(Line == 3 && anotherHands[0] <= 3)//左边地主报警
 					))))
 			{
 				key = 0;  //重置确认获取可出牌
@@ -937,9 +937,9 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 			}
 			//2或以上的对牌可以拆
 			if (!key &&px->DanPai[0]<0 && (px->DuiPai[0][0] >= 48 && px->Time <= 3 ||
-				((Line == 1 && (anotherHands[0] <= 2 || anotherHands[1] <= 2)) ||
-				(Line == 2 && anotherHands[1] <= 2) ||
-					(Line == 3 && anotherHands[0] <= 2))))
+				((Line == 1 && (anotherHands[0] <= 3 || anotherHands[1] <= 3)) ||
+				(Line == 2 && anotherHands[1] <= 3) ||
+					(Line == 3 && anotherHands[0] <= 3))))
 			{
 				for (i = 0; px->DuiPai[i][0] >= 0; i++) if (px->DuiPai[i][0] / 4 > nNumToCompare && px->DuiPai[i][0]>47)//48 2
 				{
@@ -967,9 +967,9 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 			 //剩余三手以下可拆三张A或以上
 			if (!key && px->DuiPai[0][0]<0 && (px->SanZhang[0][0] >= 44 && px->Time <= 3 ||
 				(
-				((Line == 1 && (anotherHands[0] <= 2 || anotherHands[1] <= 2)) ||
-					(Line == 2 && anotherHands[1] <= 2) ||
-					(Line == 3 && anotherHands[0] <= 2)))))
+				((Line == 1 && (anotherHands[0] <= 3 || anotherHands[1] <= 3)) ||
+					(Line == 2 && anotherHands[1] <= 3) ||
+					(Line == 3 && anotherHands[0] <= 3)))))
 			{
 				for (i = 0; px->SanZhang[i][0] >= 0; i++) if (px->SanZhang[i][0] / 4 > nNumToCompare && px->SanZhang[i][0] >= 44)//44 A
 				{
