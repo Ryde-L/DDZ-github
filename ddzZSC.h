@@ -84,20 +84,31 @@ bool Rocket(struct PaiXing *px)
 
 
 /*查询炸弹 例AAAA*/
-bool BomB(int index, struct PaiXing *px)
-{
-	int poker = px->ShouPai[index];
-	//连续4张相同即为炸弹
-	if (index >= 3)
-		if (poker / 4 == px->ShouPai[index - 1] / 4 && poker / 4 == px->ShouPai[index - 2] / 4
-			&& poker / 4 == px->ShouPai[index - 3] / 4) {
-			px->ShouPai[index] = -2;
-			px->ShouPai[index - 1] = -2;
-			px->ShouPai[index - 2] = -2;
-			px->ShouPai[index - 3] = -2;
-			return 1;
+
+bool BomB(int a, struct PaiXing *px)     //a为最大牌（相同牌的最后一张）的位置  判断依据可根据三顺判定可得
+{                           //查询炸弹 例AAAA
+	int i, j, k = 0, flag = 0;
+	int PP = px->ShouPai[a];
+	for (i = 0; i<5; i++) if (px->ZhaDan[i][0] == -2)
+	{                      //记录牌型类中 炸弹部分的空缺位置
+		j = i;
+		break;
+	}
+	for (i = 0; i <= a; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
+		flag++;            //判定条件
+	if (flag == 4) {
+		for (i = 0; i <= a; i++) if (PP / 4 == px->ShouPai[i] / 4)
+		{
+			px->ZhaDan[j][k] = px->ShouPai[i];
+			px->ShouPai[i] = -2;
+			k++;
 		}
-	return 0;
+		log("有炸弹");
+		return 1;
+
+	}
+	else
+		return 0;
 }
 
 
@@ -330,6 +341,7 @@ void Query(struct PaiXing *px)
 		else if (BomB(piece, px)) {
 			//判定炸弹
 			piece -= 4;
+			//log("有炸弹");
 			continue;
 		}
 		if (pp = ThirShun(piece, px)) {

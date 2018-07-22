@@ -241,9 +241,9 @@ int main()
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息
 		CalOther(dp);							//闲暇时间利用
-		Log("左边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' + 2) % 3]);
-		Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
-		Log("右边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' + 1) % 3]);
+												//Log("左边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' +2) % 3]);
+												//Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
+												//Log("右边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' + 1) % 3]);
 	}
 	return 0;
 }
