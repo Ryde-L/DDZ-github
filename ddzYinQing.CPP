@@ -51,8 +51,13 @@ void Log(char* title, int s)
 	fout.close();
 }
 
+<<<<<<< HEAD
 /*叫牌计算函数，如果前面的人叫的分数大于等于我要叫的分数，我就叫0分，等于不叫*/
 int CalBid(struct ddz * dp)
+=======
+/*叫牌计算函数，如果有人叫了三分，则不叫。*/
+int CalBid(struct ddz * dp)				
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 {
 	pokersort(dp->iOnHand);
 	int i, bid = 1, Flag1 = 0, Flag2 = 0;  //初始化bid=1， 防止另外两家都不叫的情况下游戏无法进行
@@ -95,10 +100,12 @@ void CalPla(struct ddz * dp)			//
 	}
 	iOnTableW[k] = -2;//-2表结束
 
+	Calcu(iOnTableW,dp);    //计算另外两家手牌		【此处函数内容是否正确有待商榷】
 	pokersort(dp->iOnHand);//从小到大排序
 	GameInit(dp->iOnHand, px);     //初始化
 	Query(px);            	//手牌类方案初始化和分牌
 	AllHand(px);            //计算手数
+	//原helpdz(dp->iOnHand,iOnTableW,iToTableW,dp->HandCard,px,dp->WarLine);
 	helpdz(dp->iOnHand, iOnTableW, iToTableW, dp->iRestHandCard, dp->WarLine, px, dp);
 	for (i = 0; iToTableW[i] >= 0; i++)
 		dp->iToTable[i] = iToTableW[i];
@@ -107,6 +114,7 @@ void CalPla(struct ddz * dp)			//
 
 
 /*处理叫牌信息*/
+<<<<<<< HEAD
 void GetBid(struct ddz * dp)
 {
 	if (dp->sCommandIn[4] == 'W')					//如果输入信息为BID WHAT
@@ -122,6 +130,17 @@ void GetBid(struct ddz * dp)
 		dp->iBid[dp->sCommandIn[4] - 'A'] = dp->sCommandIn[5] - '0';
 		strcpy(dp->sCommandOut, "OK BID");
 		//可在此处增加收集叫牌信息的数组便于计算使用
+=======
+void GetBid(struct ddz * dp)					
+{	
+	if(dp->sCommandIn[4]=='W')					//如果输入信息为BID WHAT
+    {
+        strcpy(dp->sCommandOut,"BID _0");
+		dp->sCommandOut[4]=dp->cDir;
+		dp->iBid[dp->cDir-'A']=CalBid(dp);
+		dp->sCommandOut[5]=dp->iBid[dp->cDir-'A']+'0';		//调用叫牌函数
+		dp->sCommandOut[6]='\0';
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	}
 
 }
@@ -231,8 +250,14 @@ void CalOther(struct ddz * dp)
 	dp->iVoid = 0;
 }
 
+<<<<<<< HEAD
 int main()
 {
+=======
+
+int main()										
+{	
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	struct ddz d, *dp = &d;
 	init(dp);
 	while (dp->iStatus != 0) {
@@ -241,9 +266,15 @@ int main()
 		AICal(dp);								//分析并计算
 		AIOutput(dp);							//输出信息
 		CalOther(dp);							//闲暇时间利用
+<<<<<<< HEAD
 												//Log("左边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' +2) % 3]);
 												//Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
 												//Log("右边剩余牌：", dp->iRestHandCard[(dp->cDir - 'A' + 1) % 3]);
+=======
+		Log("左边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'-1]);
+		Log("自己剩余牌：", dp->iRestHandCard[dp->cDir - 'A']);
+		Log("右边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'+1]);
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	}
 	return 0;
 }

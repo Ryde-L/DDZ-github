@@ -31,7 +31,8 @@ struct ddz
 	int iTurnNow;               //当前轮次
 	int iTurnTotal;             //总轮数
 
-	int iRestHandCard[3];		//三家的剩余手牌
+	int HandCard[2];            //另外两家手中的剩余牌数
+	int iRestHandCard[3];		//剩余手牌
 	int WarLine;                //阵容确定 1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
 };
 
@@ -639,7 +640,12 @@ void init(struct ddz * dp)
 	for (i = 0; i<21; i++)						//初始化手牌
 		dp->iOnHand[i] = -2;
 
+<<<<<<< HEAD
 	//初始化手牌数
+=======
+	dp->HandCard[0]=17;    //初始化手牌数
+	dp->HandCard[1]=17;
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	dp->iRestHandCard[0] = 17;
 	dp->iRestHandCard[1] = 17;
 	dp->iRestHandCard[2] = 17;
@@ -708,10 +714,17 @@ void TakeOff(int iOnHand[], int iToTable[])
 void GetDou(struct ddz * dp)
 {
 	int i;
+<<<<<<< HEAD
 	for (i = 0; dp->sCommandIn[i] != '\0'; i++)
 		dp->sVer[i] = dp->sCommandIn[i];
 	dp->sVer[i] = '\0';
 	strcpy(dp->sCommandOut, "AuroraStudio_DDZ");
+=======
+	for(i=0; dp->sCommandIn[i]!='\0'; i++)
+		dp->sVer[i]=dp->sCommandIn[i];
+	dp->sVer[i]='\0';
+	strcpy(dp->sCommandOut,"ZSC_DDZ");
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 }
 
 
@@ -736,8 +749,13 @@ void GetInf(struct ddz * dp)
 }
 
 
+<<<<<<< HEAD
 /*发牌信息*/
 void GetDea(struct ddz * dp)
+=======
+/*底牌信息*/
+void GetDea(struct ddz * dp)		
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 {
 	int i, j = 0, t;
 	dp->cDir = dp->sCommandIn[5];     //获取本家AI方位编号
@@ -762,10 +780,16 @@ void GetDea(struct ddz * dp)
 		dp->iOnHand[i] = dp->iOnHand[16 - i];
 		dp->iOnHand[16 - i] = t;
 	}
+<<<<<<< HEAD
 	strcpy(dp->sCommandOut, "OK DEAL");  //回复信息
 	pokersort(dp->iOnHand);  //iOnHand[]从小到大排序
 							 /*for (int i = 0; i < 21; i++)
 							 log("\n牌：", dp->iOnHand[i]);*/
+=======
+	strcpy(dp->sCommandOut,"OK DEAL");  //回复信息
+    pokersort(dp->iOnHand);  //iOnHand[]从小到大排序
+
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 }
 
 
@@ -792,8 +816,26 @@ void GetLef(struct ddz * dp)
 				dp->iOnHand[0] = 0;
 			}
 		}
+<<<<<<< HEAD
 	}
 	strcpy(dp->sCommandOut, "OK LEFTOVER");
+=======
+	}
+	else 
+	{
+		
+		int cmp = dp->cLandlord - dp->cDir;  //地主和自己的相对位置，左手0 右手1
+		if (cmp == -1 || cmp == 2){
+			dp->HandCard[0]+=3;  			
+		}
+		else if (cmp == 1 || cmp == -2){
+			dp->HandCard[1]+=3;         //  手牌计数+=3			
+		}
+		
+	}
+	//cout <<"地主："<<dp->cDir<<"；tset:"<<test<<"；"<< dp->iRestHandCard[0] << " ," << dp->iRestHandCard[1] << " ," << dp->iRestHandCard[2] << endl;
+	strcpy(dp->sCommandOut,"OK LEFTOVER");
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	pokersort(dp->iOnHand);					//iOnHand[]从小到大排序
 }
 
@@ -812,12 +854,21 @@ void GetGam(struct ddz * dp)
 
 
 /*在arrToTable中返回所有可行序列 -1间隔,-2结束
+<<<<<<< HEAD
 @param：int arrOnHand[]		手中牌
 @param：int arrOnTable[]	已出牌数组
 @param：int arrToTable[]	保存要出的牌
 @param：int Hands[]			三家剩余的剩余牌
 @param：struct PaiXing *px
 @param：int Line			阵容1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
+=======
+	@param：int arrOnHand[]		手中牌
+	@param：int arrOnTable[]	已出牌数组
+	@param：int arrToTable[]	保存要出的牌
+	@param：int Hands[]			另外两家的剩余牌
+	@param：struct PaiXing *px
+	@param：int Line			阵容1.【农 AI 农】 2.【友 AI 地】 3.【地 AI 友】
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 */
 void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], int Line, struct PaiXing *px, struct ddz * dp)
 {

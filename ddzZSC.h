@@ -103,12 +103,38 @@ bool BomB(int a, struct PaiXing *px)     //a为最大牌（相同牌的最后一
 			px->ShouPai[i] = -2;
 			k++;
 		}
+<<<<<<< HEAD
 		log("有炸弹");
 		return 1;
 
 	}
 	else
 		return 0;
+=======
+	return 0;
+	/*int i,j,k=0,flag=0;
+	int PP=px->ShouPai[index];
+	for(i=0;i<5;i++) if(px->ZhaDan[i][0]==-2)
+	{                      //记录牌型类中 炸弹部分的空缺位置
+			j=i;
+			break;
+	}
+	//原for (i = 0; i < index; i++)
+	for (i = 0; i<=index; i++) if (PP / 4 == px->ShouPai[i] / 4 && px->ShouPai[i] >= 0)
+		flag++;            //判定条件
+	if(flag==4){
+		
+		for (i = 0; i <= index; i++) if (PP / 4 == px->ShouPai[i] / 4)
+		{
+			px->ZhaDan[j][k]=px->ShouPai[i];
+			px->ShouPai[i]=-2;
+			k++;
+		}
+		return 1;
+	}
+	else 
+		return 0;*/
+>>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 }
 
 
@@ -428,6 +454,29 @@ void AllHand(struct PaiXing *px)
 	for (i = 0; px->ShS[i][0]>0; i++)        px->Time++;
 	for (i = 0; px->SaS[i][0]>0; i++)        px->Time++;
 
+}
+
+
+/*
+另外两家手牌计算
+	@param：int cards[] 桌上牌
+
+	=========================
+	疑问：只能算iOnTable[0]和iOnTable[1]的牌数？
+*/
+void Calcu(int cards[],struct ddz *dp)
+{                         
+	int k=0,key=2;
+	for(int i=0;key;i++)//2次大循环
+	{
+		if(cards[i]==-1)//即iOnTable换行
+		{
+			key--;
+			k++;			
+		}
+		else 
+			dp->HandCard[k]--;//其他玩家k的牌数减一
+	}	
 }
 
 
