@@ -83,32 +83,66 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 				sign = i;
 			}
 		}
-		if (px->SaS[sign][px->SaS[sign][0] * 3]<40 || px->SaS[sign][0] >= 4)
-		{                              //最后一张牌需要小于K 或者形如 AAABBBCCCDDD
-			int count = 0;//计数，判断带牌
-			for (i = 0; px->DanPai[i] >= 0; i++) count++;
-			if (count >= px->SaS[sign][0])
-			{                               //先处理带牌,有多少带多少，不能带的拆开留下来
-				for (i = 0; i<count; i++)
+		/**************2018.7.28 Ryde改：三顺带牌问题**************/
+		if (px->SaS[sign][px->SaS[sign][0] * 3]<48 || px->SaS[sign][0] >= 4)
+		{                              //最后一张牌需要小于2 或者形如 AAABBBCCCDDD
+			int count = 0;//计单牌数，判断带牌
+			int countDuiPai = 0;
+			
+			for (i = 0; px->DanPai[i] >= 0; i++) count++;			//计单牌数
+			for (i = 0; px->DuiPai[i][0] >= 0; i++) countDuiPai++;	//计对牌数
+			//单
+			if (count >= px->SaS[sign][0])							//够带单
+			{
+				for (i = 0; i<px->SaS[sign][0]; i++)
 					ToTable[Num++] = px->DanPai[i];
 				for (i = 1; px->SaS[sign][i] >= 0; i++)
 					ToTable[Num++] = px->SaS[sign][i];
-			}
-			else if (count < px->SaS[sign][0] && count >= 2)
+				log("飞机带单");
+			}		
+			//对
+			else if (countDuiPai >= px->SaS[sign][0])
 			{
-				for (i = 0; i<count; i++)
-					ToTable[Num++] = px->DanPai[i];
-				for (i = 1; i<count * 3; i++)
+				for (i = 0; i < px->SaS[sign][0]; i++)
+				{
+					ToTable[Num++] = px->DuiPai[i][0];
+					ToTable[Num++] = px->DuiPai[i][1];
+				}
+				for (i = 1; px->SaS[sign][i] >= 0; i++)
 					ToTable[Num++] = px->SaS[sign][i];
+				log("飞机带对");
 			}
-			else
+			//对不够，拆对变单
+			else if ( ( countDuiPai * 2 + count ) >= px->SaS[sign][0])		
+			{
+				int indexD = 0;
+				int dan = 0, dui = 0;
+				for (i = 0; i < px->SaS[sign][0]; i++)
+				{
+					//小的单先带
+					if (px->DanPai[dan] < px->DuiPai[dui][0] && px->DanPai[dan]>=0)
+						ToTable[Num++] = px->DanPai[dan++];
+					else //拆小对带
+					{
+						if (indexD == 0)
+						{	ToTable[Num++] = px->DuiPai[dui][0]; indexD = 1;}
+						else
+						{	ToTable[Num++] = px->DuiPai[dui++][1]; indexD = 0;}
+					}					
+				}
+				
+				for (i = 1; px->SaS[sign][i] >= 0; i++)
+					ToTable[Num++] = px->SaS[sign][i];				
+			}
+
+			else												//不够带
 				for (i = 1; px->SaS[sign][i] >= 0; i++)
 					ToTable[Num++] = px->SaS[sign][i];
 			ToTable[Num++] = -1;
-		}
+		}		
 	}
 
-	if (px->ShS[0][0]>0)
+	if (px->ShS[0][0]>0)//双顺
 	{
 		sign = 0;
 		cmp = px->ShS[0][1] / 4;
@@ -124,7 +158,7 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 			for (i = 1; px->ShS[sign][i] >= 0; i++)
 				ToTable[Num++] = px->ShS[sign][i];
 			ToTable[Num++] = -1;
-		}
+		}		
 	}
 
 	if (px->DanShun[0][0]>0)
@@ -170,9 +204,14 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 			{
 				ToTable[Num++] = px->DuiPai[0][0];
 				ToTable[Num++] = px->DuiPai[0][1];
+				ToTable[Num++] = -1;
 			}
-			else if (count1>count2) ToTable[Num++] = px->DanPai[0];
-			ToTable[Num++] = -1;
+			else if (count1 > count2)
+			{
+				ToTable[Num++] = px->DanPai[0];
+				ToTable[Num++] = -1;
+			}
+			
 		}
 	}
 	if (px->DuiPai[0][0] >= 0 && (px->DuiPai[0][0]< 44 || px->Time <= 2))
@@ -206,38 +245,6 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 	}
 	///////////////////////////以下为上面的牌型皆不满足条件时时考虑策略/////////////////////////////////////////
 
-	if (px->SaS[0][0]>0)
-	{                                          //三顺
-		cmp = px->SaS[0][1] / 4;     //从小牌出手
-		for (i = 0; px->SaS[i][0]>0; i++)
-		{
-			if (cmp > px->SaS[i][1] / 4) {
-				cmp = px->SaS[i][1] / 4;
-				sign = i;
-			}
-		}
-		int count = 0;//计数，判断带牌
-		for (i = 0; px->DanPai[i] >= 0; i++) count++;
-		if (count >= px->SaS[sign][0])
-		{                               //先处理带牌,有多少带多少
-			for (i = 0; i<count; i++)
-				ToTable[Num++] = px->DanPai[i];
-			for (i = 1; px->SaS[sign][i] >= 0; i++)
-				ToTable[Num++] = px->SaS[sign][i];
-		}
-		else if (count < px->SaS[sign][0] && count >= 2)
-		{
-			for (i = 0; i<count; i++)
-				ToTable[Num++] = px->DanPai[i];
-			for (i = 1; i<count * 3; i++)
-				ToTable[Num++] = px->SaS[sign][i];
-		}
-		else
-			for (i = 1; px->SaS[sign][i] >= 0; i++)
-				ToTable[Num++] = px->SaS[sign][i];
-		ToTable[Num++] = -1;
-	}
-
 	if (px->ShS[0][0]>0)
 	{                                 //双顺
 		sign = 0;
@@ -270,6 +277,7 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 		for (i = 1; px->DanShun[sign][i] >= 0; i++)
 			ToTable[Num++] = px->DanShun[sign][i];
 		ToTable[Num++] = -1;
+		//return;
 	}
 
 	if (px->SanZhang[0][0] >= 0) {                     //三张
@@ -291,9 +299,14 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 		{
 			ToTable[Num++] = px->DuiPai[0][0];
 			ToTable[Num++] = px->DuiPai[0][1];
+			ToTable[Num++] = -1;
 		}
-		else if (count1>count2) ToTable[Num++] = px->DanPai[0];
-		ToTable[Num++] = -1;
+		else if (count1 > count2)
+		{
+			ToTable[Num++] = px->DanPai[0];
+			ToTable[Num++] = -1;
+		}
+		
 	}
 	if (px->Rocket&&px->Time <= 2)
 	{
@@ -316,8 +329,6 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 		ToTable[Num++] = px->DanPai[0];
 		ToTable[Num++] = -1;
 	}
-
-
 }
 
 
@@ -884,10 +895,25 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 	int nCardsLength = 0;//看已知连续的牌的张数是否与希望的单顺长度相同
 	int nCanInsert = 0;
 
-
+	int dan = 0;
+	int dui = 0;
+	int sanzhang = 0;
+	for (int m = 0; px->DanPai[m] >= 0; m++)
+		dan++;
+	for (int m = 0; px->DuiPai[m][0] >= 0; m++)
+		dui++;
+	for (int m = 0; px->SanZhang[m][0] >= 0; m++)
+		sanzhang++;
+	log("单张：", dan);
+	log("对子：", dui);
+	log("三张：", sanzhang);
+	log("三顺：", px->SaS[0][0]);
 	switch (nCardToPlay)
 	{
 	case 0:
+		log("自由打牌，手牌为：");
+		for (int n = 0; n<21; n++)
+			log("手牌：",dp->iOnHand[n]/4+3);
 		FreeToTable(px, arrToTable, nInsertCards, Line, anotherHands);
 		break;
 
@@ -1002,7 +1028,6 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 					px->SanZhang[i][0] = 55;
 					key = 1;
 				}
-
 			}
 			if (key)
 			{
@@ -1010,6 +1035,34 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 				arrToTable[nInsertCards++] = Test[1];
 				arrToTable[nInsertCards++] = Test[2];
 				arrToTable[nInsertCards++] = -1;
+			}
+		}
+		//2018.7.28 Ryde新增 ：无单无对可以拆三顺
+		else if (px->SaS[0][0] >= 0 && (px->DuiPai[0][0] < 0 || px->DanPai[0] < 0))
+		{
+			int Test[3] = { 55, -1, -1 }, key = 0;
+			for (int i = 0; i<2; i++)
+			{
+				for (int j = 1; j < px->SaS[i][0]; j += 3)
+				{
+					Test[0] = 55;
+					if (px->SaS[i][j] / 4 > nNumToCompare && px->SaS[i][j] < Test[0])
+					{
+						Test[0] = px->SaS[i][j];
+						Test[1] = px->SaS[i][j + 1];
+						Test[2] = px->SaS[i][j + 2];
+						key = 1;
+					}
+				}
+			}
+			if (key)//满足可以拆牌条件
+			{
+				if (px->DuiPai[0][0] >= 0 && nToTableCardsNum == 5)
+				{
+					arrToTable[nInsertCards++] = Test[0];
+					arrToTable[nInsertCards++] = Test[1];
+					arrToTable[nInsertCards++] = Test[2];
+				}
 			}
 		}
 		break;
@@ -1031,38 +1084,59 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 					key = 1;
 					break;
 				}
-
-
-			}
-			//log("case6 key值：", key);
+			}			
 			if (key)
 			{
-
-
-
-				//log("case6 DuiPai[0][0]值：", px->DuiPai[0][0]);
-				//log("case6 px->DanPai[0]值：", px->DanPai[0]);
-				if (px->DuiPai[0][0] >= 0 && nToTableCardsNum == 5)
-				{
-					arrToTable[nInsertCards++] = Test[0];
-					arrToTable[nInsertCards++] = Test[1];
-					arrToTable[nInsertCards++] = Test[2];
+				arrToTable[nInsertCards++] = Test[0];
+				arrToTable[nInsertCards++] = Test[1];
+				arrToTable[nInsertCards++] = Test[2];
+				if (px->DuiPai[0][0] >= 0 && nToTableCardsNum == 5)//带对
+				{					
 					arrToTable[nInsertCards++] = px->DuiPai[0][0];
 					arrToTable[nInsertCards++] = px->DuiPai[0][1];
-					//log("three and two", dp->iOTmax);
 				}
-				else if (px->DanPai[0] >= 0 && nToTableCardsNum == 4)
+				else if (px->DanPai[0] >= 0 && nToTableCardsNum == 4)//带单
 				{
-					arrToTable[nInsertCards++] = Test[0];
-					arrToTable[nInsertCards++] = Test[1];
-					arrToTable[nInsertCards++] = Test[2];
 					arrToTable[nInsertCards++] = px->DanPai[0];
-					//log("three and one", dp->iOTmax);
 				}
 				arrToTable[nInsertCards++] = -1;
 			}
 		}
-
+		//2018.7.28 Ryde新增 ：拆三顺成3带X
+		else if (px->SaS[0][0] >= 0 && (px->DuiPai[0][0] >= 0 || px->DanPai[0] >= 0))
+		{						
+			int Test[3] = { 55, -1, -1 }, key = 0;
+			for (int i = 0; i<2; i++)
+			{
+				for (int j = 1; j < px->SaS[i][0]; j+=3)
+				{
+					Test[0] = 55;
+					if (px->SaS[i][j] / 4 > nNumToCompare && px->SaS[i][j] < Test[0])
+					{
+						Test[0] = px->SaS[i][j];
+						Test[1] = px->SaS[i][j+1];
+						Test[2] = px->SaS[i][j+2];						
+						key = 1;
+					}
+				}
+			}
+			if (key)//满足可以拆牌条件
+			{
+				arrToTable[nInsertCards++] = Test[0];
+				arrToTable[nInsertCards++] = Test[1];
+				arrToTable[nInsertCards++] = Test[2];
+				if (px->DuiPai[0][0] >= 0 && nToTableCardsNum == 5)//带对
+				{					
+					arrToTable[nInsertCards++] = px->DuiPai[0][0];
+					arrToTable[nInsertCards++] = px->DuiPai[0][1];
+				}
+				else if (px->DanPai[0] >= 0 && nToTableCardsNum == 4)//带单
+				{
+					arrToTable[nInsertCards++] = px->DanPai[0];
+				}
+				arrToTable[nInsertCards++] = -1;
+			}						
+		}
 		break;
 
 	case 7:
@@ -1392,6 +1466,7 @@ void helpdz(int arrOnHand[], int arrOnTable[], int arrToTable[], int Hands[], in
 				arrToTable[nInsertCards++] = -1;
 				break;
 			}
+	
 			//地主为上家且地主牌少于等于2时
 			else if (dp->WarLine == 3 && anotherHands[0] <= 2)
 			{
