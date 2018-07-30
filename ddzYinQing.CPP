@@ -261,16 +261,26 @@ int main()
 	int totable[21];
 	int Hands[2] = {15,17};
 	int Num = 0;
-	init(dp);
-	dp->iOnHand[0] = 12;
+	init(dp);*/
+	/*dp->iOnHand[0] = 12;
 	dp->iOnHand[1] = 24;
 	dp->iOnHand[2] = 28;
 	dp->iOnHand[3] = 29;
-	dp->iOnHand[4] = 30;
-	dp->iOnHand[5] = 40;
+	dp->iOnHand[4] = 32;
+	dp->iOnHand[5] = 33;
 	dp->iOnHand[6] = 41;
 	dp->iOnHand[7] = 42;
-	dp->iOnHand[8] = 48;
+	dp->iOnHand[8] = 43;
+	dp->iOnHand[9] = 48;*/
+	/*dp->iOnHand[0] = 12;
+	dp->iOnHand[1] = 24;
+	dp->iOnHand[2] = 28;
+	dp->iOnHand[3] = 29;
+	dp->iOnHand[4] = 41;
+	dp->iOnHand[5] = 42;
+	dp->iOnHand[6] = 43;
+	dp->iOnHand[7] = 48;
+	dp->iOnHand[8] = -1;
 	dp->iOnHand[9] = -1;
 	dp->iOnHand[10] =-1;
 	dp->iOnHand[11] = -1;
@@ -287,7 +297,7 @@ int main()
 	pokersort(dp->iOnHand);//从小到大排序
 	GameInit(dp->iOnHand, px);     //初始化
 	Query(px);            	//手牌类方案初始化和分牌
-	AllHand(px);            //计算手数*/
+	AllHand(px); */           //计算手数*/
 	/*px->SaS[0][0] = 2;
 	px->SaS[0][1] = 36;
 	px->SaS[0][2] = 37;
@@ -304,8 +314,7 @@ int main()
 	px->DuiPai[1][1] = 32;
 	px->DuiPai[2][0] = -1;*/
 	/*FreeToTable(px, totable, Num, 0, Hands);
-	for (int i = 0; i < 21; i++)
-		cout << totable[i] << ",";
+	for (int i = 0; i < 21; i++)	cout << totable[i] << ",";
 	while (1);*/
 	return 0;
 }

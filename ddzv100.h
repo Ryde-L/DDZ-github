@@ -221,11 +221,11 @@ void FreeToTable(struct PaiXing *px, int ToTable[], int &Num, int Line, int Hand
 		for (i = 0; px->DuiPai[i][0] >= 0; i++) count2++;
 		if (count2<count1&&px->DuiPai[0][0] / 4 - px->DanPai[0] / 4 <= 4)  // 对牌比较少的时候先出
 		{
-			if (px->SanZhang[0][0] >= 0 && px->SanZhang[0][0]<48)
+			/*if (px->SanZhang[0][0] >= 0 && px->SanZhang[0][0]<48)
 				sign = 1;
-			else sign = 0;
+			else sign = 0;*/
 
-			ToTable[Num++] = px->DuiPai[sign][0];
+			ToTable[Num++] = px->DuiPai[sign][0];/********   sign=1时可能无效   *****/
 			ToTable[Num++] = px->DuiPai[sign][1];
 			ToTable[Num++] = -1;
 		}
