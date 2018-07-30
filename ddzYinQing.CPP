@@ -205,6 +205,10 @@ void GetPla(struct ddz * dp)
 	}
 	//当前手数加1
 	dp->iOTmax++;
+
+	//2018.7.28测试
+	for (int n = 0; n<21; n++)
+		log("toTable：", dp->iToTable[n] / 4 + 3);
 }
 
 
@@ -249,8 +253,18 @@ void CalOther(struct ddz * dp)
 {
 	dp->iVoid = 0;
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
+=======
+bool isDiff(int arr[], int compare)
+{
+	if (arr[compare-1] != 0)
+		return false;
+	arr[compare-1] = 1;
+	return true;
+}
+>>>>>>> 7342609bea76a8b7ac3f0a8209541e8012b7ad15
 int main()
 {
 =======
@@ -276,5 +290,66 @@ int main()
 		Log("右边剩余牌：", dp->iRestHandCard[dp->cDir - 'A'+1]);
 >>>>>>> parent of a35e52d... add a document & deal with param "HandCard" and realtive function
 	}
+	/*********测试**********/
+	/*struct ddz d, *dp = &d;
+	struct PaiXing p, *px = &p;
+	int totable[21];
+	int Hands[2] = {15,17};
+	int Num = 0;
+	init(dp);*/
+	/*dp->iOnHand[0] = 12;
+	dp->iOnHand[1] = 24;
+	dp->iOnHand[2] = 28;
+	dp->iOnHand[3] = 29;
+	dp->iOnHand[4] = 32;
+	dp->iOnHand[5] = 33;
+	dp->iOnHand[6] = 41;
+	dp->iOnHand[7] = 42;
+	dp->iOnHand[8] = 43;
+	dp->iOnHand[9] = 48;*/
+	/*dp->iOnHand[0] = 12;
+	dp->iOnHand[1] = 24;
+	dp->iOnHand[2] = 28;
+	dp->iOnHand[3] = 29;
+	dp->iOnHand[4] = 41;
+	dp->iOnHand[5] = 42;
+	dp->iOnHand[6] = 43;
+	dp->iOnHand[7] = 48;
+	dp->iOnHand[8] = -1;
+	dp->iOnHand[9] = -1;
+	dp->iOnHand[10] =-1;
+	dp->iOnHand[11] = -1;
+	dp->iOnHand[12] = -1;
+	dp->iOnHand[13] = -1;
+	dp->iOnHand[14] = -1;
+	dp->iOnHand[15] = -1;
+	dp->iOnHand[16] = -1;
+	dp->iOnHand[17] = -1;
+	dp->iOnHand[18] = -1;
+	dp->iOnHand[19] = -1;
+	dp->iOnHand[20] = -1;
+	dp->iOnHand[21] = -1;
+	pokersort(dp->iOnHand);//从小到大排序
+	GameInit(dp->iOnHand, px);     //初始化
+	Query(px);            	//手牌类方案初始化和分牌
+	AllHand(px); */           //计算手数*/
+	/*px->SaS[0][0] = 2;
+	px->SaS[0][1] = 36;
+	px->SaS[0][2] = 37;
+	px->SaS[0][3] = 38;
+	px->SaS[0][4] = 40;
+	px->SaS[0][5] = 41;
+	px->SaS[0][6] = 42;
+	px->DanPai[0] = 1;
+	px->DanPai[1] = 10;
+	px->DanPai[2] = -1;
+	px->DuiPai[0][0] = 20;
+	px->DuiPai[0][1] = 24;
+	px->DuiPai[1][0] = 28;
+	px->DuiPai[1][1] = 32;
+	px->DuiPai[2][0] = -1;*/
+	/*FreeToTable(px, totable, Num, 0, Hands);
+	for (int i = 0; i < 21; i++)	cout << totable[i] << ",";
+	while (1);*/
 	return 0;
 }

@@ -494,5 +494,5 @@ void Lineup(struct ddz *dp)
 	else if (dp->cDir - dp->cLandlord == 1 || (dp->cDir == 'A'&&dp->cLandlord == 'C'))
 		dp->WarLine = 3; //地主在自己先手CA AB BC
 
-	log("阵容为：", dp->WarLine);
+	//log("阵容为：", dp->WarLine);
 }
